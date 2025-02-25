@@ -1,4 +1,4 @@
-1. Colorblind Rouge-like
+1. ### Colorblind Rouge-like
   - "Colorblind Simulator"
   - Visuals are styled to color blind style
   
@@ -14,4 +14,4 @@
   
   - Levels have different color-blind palettes
 
-2. ...?
+2. ### ...?

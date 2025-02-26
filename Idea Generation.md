@@ -16,15 +16,15 @@
 
 ---
 
-###1. Category
+### 1. Category
 ####   - Rouge-like
 ####     - Third Person 3D
-###2. Setting
+### 2. Setting
    - Space
    - Fantasy
    - Cave
 ####   - Suburban
-###3. Theme
+### 3. Theme
    - Mystical
 ####   - Lucid Dream Thing
 

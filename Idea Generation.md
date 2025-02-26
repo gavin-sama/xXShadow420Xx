@@ -1,4 +1,4 @@
-1. ### Colorblind Rouge-like
+1. ### Colorblind Rouge-like    (Temp-Removed)
   - "Colorblind Simulator"
   - Visuals are styled to color blind style
   
@@ -14,4 +14,36 @@
   
   - Levels have different color-blind palettes
 
-2. ### ...?
+---
+
+###1. Category
+####   - Rouge-like
+####     - Third Person 3D
+###2. Setting
+   - Space
+   - Fantasy
+   - Cave
+####   - Suburban
+###3. Theme
+   - Mystical
+####   - Lucid Dream Thing
+
+---
+
+## General
+### Loop
+  - Room (Hub/Spawnpoint)
+  - Suburb (Level 1)
+  - City (Level 1)
+
+### Classes
+  - Pick the class out of a closet
+  - Mage
+  - Knight
+  - Brawler
+  - Lawyer
+  - Gunner
+
+#### Player System
+  - Character XP
+  - 

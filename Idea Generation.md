@@ -26,24 +26,40 @@
 ####   - Suburban
 ### 3. Theme
    - Mystical
-####   - Lucid Dream Thing
+####   - Lucid Dream Thing-a-Ma-Jigger
 
 ---
 
 ## General
 ### Loop
   - Room (Hub/Spawnpoint)
+  - Backyard (Tutorial) 
   - Suburb (Level 1)
-  - City (Level 1)
+  - City (Level 2)
 
 ### Classes
   - Pick the class out of a closet
   - Mage
   - Knight
-  - Brawler
-  - Lawyer
-  - Gunner
+  - Assassin (Beast/Dino Onsie)
+  - Lawyer (Gunner - Tuxedo Shirt)
+    - Money gun projectile
+    - Briefcase melee
+  - Wizard (Bathrobe)
+  - Brawler (Glass Cannon - Nude)
+  - Fisherman (Overalls) [Ian wants it to be eFISHent]
+    - Fishingrod projectile (pulls people in)
+    - Fish melee
 
 #### Player System
-  - Character XP
+  - Character XP during play
+  - Permanent spend at hub (pillow coins)
+  - Benchmark level point upgrade/evolve the abilities
+  - 
+
+
+
+#### Other
+  - Deer skull for tips in the home and tutorial
+  - Grainy art style (maybe)
   - 

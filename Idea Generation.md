@@ -23,10 +23,10 @@
    - Space
    - Fantasy
    - Cave
-####   - Suburban
+   - #### Suburban
 ### 3. Theme
    - Mystical
-####   - Lucid Dream Thing-a-Ma-Jigger
+   - #### Lucid Dream Thing-a-Ma-Jigger
 
 ---
 
@@ -62,4 +62,4 @@
 #### Other
   - Deer skull for tips in the home and tutorial
   - Grainy art style (maybe)
-  - 
+  - Dream journal as the  pause menu

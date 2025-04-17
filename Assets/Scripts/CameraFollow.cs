@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;  // Player Transform
-    public Vector3 offset = new Vector3(0, 1.5f, -2f);  // Camera offset
+    public Vector3 offset = new Vector3(0, 2.5f, -2f);  // Camera offset
     public float smoothSpeed = 10f;
     public float sensitivity = 2f;  // Mouse sensitivity
     public float maxVerticalAngle = 80f;  // Limit vertical rotation
@@ -27,6 +27,6 @@ public class CameraFollow : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
 
         // Always look at the player
-        transform.LookAt(target.position + Vector3.up * 1.5f);
+        transform.LookAt(target.position);
     }
 }

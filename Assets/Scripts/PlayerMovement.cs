@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public float crouchSpeed = 3f;
 
     // Jump timing parameters
-    public float jumpDelay = 0.5f; // Time in seconds before actual jump occurs after pressing space
+    public float jumpDelay = 0f; // Time in seconds before actual jump occurs after pressing space
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
@@ -33,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         if (animator == null)
         {
@@ -119,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
 
         // Looking around
-        if (canMove)
+        if (canMove && Cursor.lockState == CursorLockMode.Locked)
         {
             rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);

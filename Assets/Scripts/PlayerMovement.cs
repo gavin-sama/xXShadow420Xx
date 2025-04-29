@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpDelay = 0f; // Time in seconds before actual jump occurs after pressing space
 
     private Vector3 moveDirection = Vector3.zero;
-    private float rotationX = 0;
+    private float rotationY = 0;
     private CharacterController characterController;
     private bool canMove = true;
     private bool isJumpingAnimation = false;
@@ -119,9 +119,9 @@ public class PlayerMovement : MonoBehaviour
         // Looking around
         if (canMove && Cursor.lockState == CursorLockMode.Locked)
         {
-            rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            rotationY -= Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationY = Mathf.Clamp(rotationY, -lookXLimit, lookXLimit);
+            playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
 

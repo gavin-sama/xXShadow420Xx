@@ -140,9 +140,11 @@ public class PlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        AnimationHandler();
     }
 
-    private void FixedUpdate()
+    private void AnimationHandler()
     {
         // Handle animations - only if not currently jumping
         if (!isJumpingAnimation)

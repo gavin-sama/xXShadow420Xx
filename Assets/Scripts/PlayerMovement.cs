@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
     public Animator animator;
     public Camera playerCamera;
-
+ 
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
     public float jumpPower = 7f;
@@ -30,6 +31,22 @@ public class PlayerMovement : MonoBehaviour
     private bool isPerformingJump = false;
     private float jumpTimer = 0f;
 
+    private PlayerInput _playerInput;
+    private InputAction _move;
+    private InputAction _jump;
+    private InputAction _crouch;
+    private InputAction _sprint;
+    private InputAction _attack;
+    private InputAction _interact;
+
+    private bool isRunning;
+    private bool isWalkForward;
+    private bool isLStrafe;
+    private bool isRStrafe;
+    private bool isWalkBack;
+    private bool isJumpButtonPressed;
+    private bool isCrouching;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -38,19 +55,18 @@ public class PlayerMovement : MonoBehaviour
         {
             animator = GetComponent<Animator>();
         }
+
+        _playerInput = GetComponent<PlayerInput>();
+
+        SetInputActions();
     }
 
     void Update()
     {
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        bool isWalking = Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D);
-        bool isIdle = !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D);
-        bool lStrafe = Input.GetKey(KeyCode.A);
-        bool walkBack = Input.GetKey(KeyCode.S);
-        bool jumpButtonPressed = Input.GetButtonDown("Jump");
+        UpdateActions();
 
         // Handle jump initiation
-        if (jumpButtonPressed && canMove && characterController.isGrounded && !isJumpingAnimation)
+        if (isJumpButtonPressed && canMove && characterController.isGrounded && !isJumpingAnimation)
         {
             // Start jump animation
             isJumpingAnimation = true;
@@ -86,8 +102,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Allow movement but at reduced speed when jumping
         float movementMultiplier = isJumpingAnimation ? 0.5f : 1.0f;
-        float curSpeedX = canMove ? (isRunning && !isJumpingAnimation ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") * movementMultiplier : 0;
-        float curSpeedY = canMove ? (isRunning && !isJumpingAnimation ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") * movementMultiplier : 0;
+        float curSpeedX = canMove ? (isRunning && !isJumpingAnimation ? runSpeed : walkSpeed) * _move.ReadValue<Vector2>().y * movementMultiplier : 0;
+        float curSpeedY = canMove ? (isRunning && !isJumpingAnimation ? runSpeed : walkSpeed) * _move.ReadValue<Vector2>().x * movementMultiplier : 0;
 
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
@@ -100,11 +116,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Crouching
-        if (Input.GetKey(KeyCode.LeftControl) && canMove && !isJumpingAnimation)
+        if (isCrouching && canMove && !isJumpingAnimation)
         {
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
-            runSpeed = crouchSpeed;
+            runSpeed = crouchSpeed * 1.5f;
         }
         else if (!isJumpingAnimation)
         {
@@ -124,31 +140,50 @@ public class PlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+    }
 
+    private void FixedUpdate()
+    {
         // Handle animations - only if not currently jumping
         if (!isJumpingAnimation)
         {
-            if (isRunning && Input.GetKey(KeyCode.W))
+            if (isRunning)
             {
                 SetAnimationState("isRunning");
             }
-            else if (isWalking)
+            else if (isWalkForward)
             {
                 SetAnimationState("isWalking");
             }
-            else if (lStrafe)
+            else if (isLStrafe)
             {
                 SetAnimationState("isLStrafe");
             }
-            else if (walkBack)
+            else if (isRStrafe)
+            {
+                SetAnimationState("isRStrafe");
+            }
+            else if (isWalkBack)
             {
                 SetAnimationState("isWalk_Back");
             }
-            else if (isIdle)
+            else
             {
                 SetAnimationState("isIdle");
             }
         }
+    }
+
+    // Helper method to set the input keys
+    private void SetInputActions()
+    {
+        var actions = _playerInput.actions;
+        _move = actions["Move"];
+        _jump = actions["Jump"];
+        _crouch = actions["Crouch"];
+        _sprint = actions["Sprint"];
+        _attack = actions["Attack"];
+        _interact = actions["Interact"];
     }
 
     // Helper method to set animation state exclusively
@@ -158,7 +193,31 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isWalking", activeState == "isWalking");
         animator.SetBool("isIdle", activeState == "isIdle");
         animator.SetBool("isLStrafe", activeState == "isLStrafe");
+        animator.SetBool("isRStrafe", activeState == "isRStrafe");
         animator.SetBool("isWalk_Back", activeState == "isWalk_Back");
         animator.SetBool("isJumping", activeState == "isJumping");
+    }
+
+    private void UpdateActions()
+    {
+        if (Input.anyKey)
+        {
+            isRunning = _sprint.IsPressed() && _move.IsPressed();
+            isWalkForward = _move.ReadValue<Vector2>().y > 0.1f;
+            isLStrafe = _move.ReadValue<Vector2>().x < -0.1f;
+            isRStrafe = _move.ReadValue<Vector2>().x > 0.1f;
+            isWalkBack = _move.ReadValue<Vector2>().y < -0.1f;
+            isJumpButtonPressed = _jump.WasPressedThisFrame();
+            isCrouching = _crouch.IsPressed();
+        }
+        else
+        {
+            isRunning = false;
+            isWalkForward = false;
+            isLStrafe = false;
+            isRStrafe = false;
+            isWalkBack = false;
+            isJumpButtonPressed = false;
+        }
     }
 }

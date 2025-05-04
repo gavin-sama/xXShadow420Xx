@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,16 +10,22 @@ public class PauseMenu : MonoBehaviour
     public Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
+    public GameObject player;
+    private InputAction _pause;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Set user input for pause menu
+        _pause = player.GetComponent<PlayerInput>().actions["Pause"];
     }
 
     void Update()
     {
         // Toggle pause menu when Escape is pressed
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (_pause.WasPressedThisFrame())
         {
             if (isPaused)
                 ResumeGame();

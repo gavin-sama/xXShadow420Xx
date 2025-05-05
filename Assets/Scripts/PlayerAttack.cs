@@ -9,7 +9,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private LayerMask enemyLayers;
     [SerializeField] private Transform attackPoint;
 
-    [Header("Feedback")]
+    [Header("Feedback Settings")]
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private ParticleSystem hitEffect;
 

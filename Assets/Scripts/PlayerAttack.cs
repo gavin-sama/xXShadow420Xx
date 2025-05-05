@@ -52,18 +52,6 @@ public class PlayerAttack : MonoBehaviour
         {
             Debug.Log($"Attack state - canAttack: {canAttack}, isAttacking: {isAttacking}");
         }
-
-        if (Input.GetKeyDown(KeyCode.Z)) // Simulate attack
-        {
-            Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, 1.2f, enemyLayers);
-            foreach (Collider hit in hits)
-            {
-                Debug.Log("Trying to damage: " + hit.name);
-                AIController ai = hit.GetComponent<AIController>();
-                if (ai != null) ai.TakeDamage(10);
-            }
-        }
-
     }
 
     private void StartAttack()

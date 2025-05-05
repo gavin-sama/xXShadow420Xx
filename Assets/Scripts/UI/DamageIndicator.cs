@@ -12,7 +12,7 @@ public class DamageIndicator : MonoBehaviour
     [Header("Shake Settings")]
     [Tooltip("Maximum distance the camera can shake")]
     public float shakeAmount = 0.1f;
-    [Tooltip("How quickly the shake settles down")]
+    [Tooltip("How quickly the shake will settle down")]
     public float shakeDecreaseFactor = 1.0f;
     [Tooltip("Duration of the shake effect in seconds")]
     public float shakeDuration = 0.3f;

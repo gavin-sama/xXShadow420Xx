@@ -52,7 +52,7 @@ public class DamageIndicator : MonoBehaviour
     private void Update()
     {
         // Handle shake effect in Update
-        if (_currentShakeDuration > 0 && _cinemachineCamera != null)
+        if (_currentShakeDuration > 0 && _cinemachineCamera != null && Camera.main != null)
         {
             // Apply shake to the camera's position
             Vector3 shakeOffset = Random.insideUnitSphere * shakeAmount;

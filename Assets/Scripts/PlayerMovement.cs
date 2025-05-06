@@ -9,7 +9,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public Animator animator;
     public Camera playerCamera;
- 
+
+    public PlayerStats playerStats;
+
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
     public float jumpPower = 7f;
@@ -59,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
 
         SetInputActions();
+
+        if (playerStats == null)
+        {
+            playerStats = GetComponent<PlayerStats>(); 
+        }
     }
 
     void Update()
@@ -95,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
             isJumpingAnimation = false;
             isPerformingJump = false;
         }
+
 
         // Movement controls - don't allow running while jumping
         Vector3 forward = transform.TransformDirection(Vector3.forward);

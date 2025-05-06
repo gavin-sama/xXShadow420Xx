@@ -73,7 +73,6 @@ public class PlayerAttack : MonoBehaviour
         animator.SetTrigger(AttackTrigger);
 
         // Start cooldown coroutine
-        StopAllCoroutines(); // Stop any existing cooldown coroutines
         StartCoroutine(AttackCooldown());
 
         // Play attack sound if available
@@ -173,7 +172,10 @@ public class PlayerAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+        isAttacking = false;
     }
+
+
 
     private void OnDrawGizmosSelected()
     {

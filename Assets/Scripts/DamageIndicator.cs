@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Cinemachine;
 
 public class DamageIndicator : MonoBehaviour
 {
@@ -11,20 +12,20 @@ public class DamageIndicator : MonoBehaviour
 
     [Header("Shake Settings")]
     [Tooltip("Maximum distance the camera can shake")]
-    public float shakeAmount = 0.1f;
+    public float shakeAmount = 0.5f;
     [Tooltip("How quickly the shake will settle down")]
     public float shakeDecreaseFactor = 1.0f;
     [Tooltip("Duration of the shake effect in seconds")]
     public float shakeDuration = 0.3f;
 
     private Coroutine _currentFadeRoutine;
-    private Vector3 _originalCameraPos;
     private float _currentShakeDuration;
-    private Transform _cameraTransform;
+    private CinemachineCamera _cinemachineCamera;
+    private Vector3 _originalCameraOffset;
 
     private void Awake()
     {
-        // Initialize flash
+        // Initialize flash effect
         if (damageImage != null)
         {
             damageImage.enabled = false;
@@ -35,23 +36,40 @@ public class DamageIndicator : MonoBehaviour
             Debug.LogError("DamageIndicator: No Image assigned!", this);
         }
 
-        // Initialize shake
-        _cameraTransform = Camera.main.transform;
-        _originalCameraPos = _cameraTransform.localPosition;
+        // Find the Cinemachine Camera
+        _cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
+        if (_cinemachineCamera == null)
+        {
+            Debug.LogError("DamageIndicator: No CinemachineCamera found in scene!", this);
+        }
+        else
+        {
+            // Store the original offset
+            _originalCameraOffset = _cinemachineCamera.transform.localPosition;
+        }
     }
 
     private void Update()
     {
         // Handle shake effect in Update
-        if (_currentShakeDuration > 0)
+        if (_currentShakeDuration > 0 && _cinemachineCamera != null)
         {
-            _cameraTransform.localPosition = _originalCameraPos + Random.insideUnitSphere * shakeAmount;
+            // Apply shake to the camera's position
+            Vector3 shakeOffset = Random.insideUnitSphere * shakeAmount;
+
+            // Only apply shake to main camera, not the virtual camera
+            Camera.main.transform.position += shakeOffset;
+
+            // Decrease shake duration
             _currentShakeDuration -= Time.deltaTime * shakeDecreaseFactor;
         }
-        else
+        else if (_currentShakeDuration <= 0)
         {
+            // Reset shake
             _currentShakeDuration = 0f;
-            _cameraTransform.localPosition = _originalCameraPos;
+
+            // We don't need to reset the camera position as we're only temporarily
+            // offsetting it each frame rather than permanently changing its position
         }
     }
 
@@ -74,7 +92,6 @@ public class DamageIndicator : MonoBehaviour
     private IEnumerator FadeRoutine()
     {
         float currentAlpha = 1.0f;
-
         while (currentAlpha > 0f)
         {
             currentAlpha -= Time.deltaTime / flashSpeed;

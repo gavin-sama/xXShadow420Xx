@@ -40,7 +40,7 @@ public class AIController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("PlayerObj").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         navMeshAgent.speed = speedRun;
         lastAttackTime = -attackCooldown;

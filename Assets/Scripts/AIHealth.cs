@@ -13,8 +13,15 @@ public class AIHealth : MonoBehaviour
     public Slider healthSlider;
 
     [Header("Death Effects")]
-    public GameObject deathEffectPrefab; // Assign a simple particle system in Inspector
-    public AudioClip deathSound; // Assign a death sound effect
+    public GameObject deathEffectPrefab;
+    public AudioClip deathSound;
+
+    [Header("Fade Settings")]
+    public float fadeDelay = 2f;         // Wait time before fading starts
+    public float fadeDuration = 3f;      // Duration of the fade out
+
+    private Animator anim;
+    private SkinnedMeshRenderer meshRenderer;
 
     void Start()
     {
@@ -29,29 +36,15 @@ public class AIHealth : MonoBehaviour
         {
             Debug.LogError(gameObject.name + ": Health slider reference is missing!");
         }
-    }
 
-    // For testing only
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            TakeDamage(20);
-        }
+        anim = GetComponent<Animator>();
+        meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($"{gameObject.name} taking {damage} damage. Current health before: {currentHealth}");
-
         currentHealth -= damage;
-
-        if (healthSlider != null)
-        {
-            healthSlider.value = currentHealth;
-        }
-
-        Debug.Log($"{gameObject.name} health after damage: {currentHealth}");
+        if (healthSlider != null) healthSlider.value = currentHealth;
 
         if (currentHealth <= 0)
         {
@@ -59,7 +52,6 @@ public class AIHealth : MonoBehaviour
         }
     }
 
-    // Add this getter method for debugging
     public int GetCurrentHealth()
     {
         return currentHealth;
@@ -69,51 +61,44 @@ public class AIHealth : MonoBehaviour
     {
         Debug.Log(gameObject.name + " died.");
 
-        // 1. Disable AI components
+        // Disable AI logic
         GetComponent<NavMeshAgent>().enabled = false;
-        GetComponent<AIController>().enabled = false; 
+        GetComponent<AIController>().enabled = false;
 
-        // 2. Trigger death animation (if you have an Animator)
-        Animator anim = GetComponent<Animator>();
+        // Set animation bool
         if (anim != null)
         {
-            anim.SetTrigger("Die");
+            anim.SetBool("isDead", true);
         }
 
-        // 3. Disable collider to prevent weird physics
+        // Disable collider
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
-        // 4. Add slight delay before destruction with particle effect
+        // Start death coroutine
         StartCoroutine(DeathRoutine());
     }
 
+
     IEnumerator DeathRoutine()
     {
-        // 5. Optional death sound
-        AudioSource audio = GetComponent<AudioSource>();
-        if (audio != null)
+        // Play death sound even after object is destroyed
+        if (deathSound != null)
         {
-            audio.PlayOneShot(deathSound); // Add a public AudioClip deathSound variable
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
         }
 
-        // 6. Basic death particle effect
-        GameObject deathParticles = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-
-        // 7. Sink into ground slightly before disappearing
-        float sinkSpeed = 0.5f;
-        float sinkTime = 1.5f;
-        float timer = 0;
-
-        while (timer < sinkTime)
+        // Play particle effect
+        if (deathEffectPrefab != null)
         {
-            transform.position -= Vector3.up * sinkSpeed * Time.deltaTime;
-            timer += Time.deltaTime;
-            yield return null;
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
 
-        // 8. Destroy after everything is done
-        Destroy(deathParticles, 2f); // Clean up particles after they play
+        // Wait before fade starts
+        yield return new WaitForSeconds(fadeDelay);
+
+        // Destroy the object
         Destroy(gameObject);
     }
+
 }

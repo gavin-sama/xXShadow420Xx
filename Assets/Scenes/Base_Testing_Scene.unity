@@ -673,8 +673,8 @@ GameObject:
   - component: {fileID: 396857090}
   - component: {fileID: 396857089}
   - component: {fileID: 396857087}
-  - component: {fileID: 396857086}
   - component: {fileID: 396857085}
+  - component: {fileID: 396857086}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -811,8 +811,8 @@ MonoBehaviour:
       Owner: {fileID: 396857090}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: -1
+        InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        Gain: -3
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -822,7 +822,7 @@ MonoBehaviour:
         DecelTime: 0.2
     - Name: Orbit Scale
       Owner: {fileID: 396857090}
-      Enabled: 1
+      Enabled: 0
       Input:
         InputAction: {fileID: -423771258819551211, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
@@ -857,7 +857,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0.8, y: 0.96, z: 0}
+  TargetOffset: {x: 1.3, y: 1.52, z: 0}
   Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
@@ -887,14 +887,14 @@ MonoBehaviour:
   Radius: 5.21
   Orbits:
     Top:
-      Radius: 0.32
-      Height: 5.46
+      Radius: 3
+      Height: 3
     Center:
-      Radius: 3.59
-      Height: 2.35
+      Radius: 4
+      Height: 1
     Bottom:
-      Radius: 0.68
-      Height: -0.85
+      Radius: 2.3
+      Height: 0
     SplineCurvature: 1
   RecenteringTarget: 2
   HorizontalAxis:
@@ -948,10 +948,10 @@ MonoBehaviour:
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 490588174}
-    LookAtTarget: {fileID: 0}
+    LookAtTarget: {fileID: 1975337172}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 90
+    FieldOfView: 45
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -978,8 +978,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396857084}
   serializedVersion: 2
+<<<<<<< HEAD
+  m_LocalRotation: {x: -0.06397599, y: 0.062009595, z: 0.0039829975, w: 0.9960151}
+  m_LocalPosition: {x: 7.27, y: 1.4, z: 1.3499999}
+=======
   m_LocalRotation: {x: 0.18365745, y: 0.0000000031261411, z: -5.840737e-10, w: 0.9829903}
   m_LocalPosition: {x: 7.27, y: 2.3509998, z: 1.76}
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1181,7 +1186,7 @@ MonoBehaviour:
   runSpeed: 12
   jumpPower: 7
   gravity: 25
-  lookSpeed: 2
+  lookSpeed: 0.15
   lookXLimit: 45
   defaultHeight: 2
   crouchHeight: 1
@@ -3646,8 +3651,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804287891}
   serializedVersion: 2
+<<<<<<< HEAD
+  m_LocalRotation: {x: -0.063976, y: 0.062009595, z: 0.0039829975, w: 0.9960151}
+  m_LocalPosition: {x: 7.27, y: 1.4, z: 1.3499999}
+=======
   m_LocalRotation: {x: 0.18365747, y: 0.0000000031261413, z: -5.8407407e-10, w: 0.9829903}
   m_LocalPosition: {x: 7.27, y: 2.3509998, z: 1.76}
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4125,7 +4135,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
+--- !u!1 &1975337171
+=======
 --- !u!1 &1975601139
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4133,28 +4147,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
+  - component: {fileID: 1975337172}
+  m_Layer: 0
+  m_Name: LookAt
+=======
   - component: {fileID: 1975601140}
   - component: {fileID: 1975601142}
   - component: {fileID: 1975601141}
   m_Layer: 5
   m_Name: Background
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
+--- !u!4 &1975337172
+Transform:
+=======
 --- !u!224 &1975601140
 RectTransform:
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 1975337171}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+=======
   m_GameObject: {fileID: 1975601139}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
+<<<<<<< HEAD
+  m_Father: {fileID: 490588174}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
   m_Father: {fileID: 1445787225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4200,6 +4235,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1975601139}
   m_CullTransparentMesh: 1
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
 --- !u!1 &2028153325
 GameObject:
   m_ObjectHideFlags: 0
@@ -4751,15 +4787,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 43.7575
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9df5ae8cddc97bf44876fe8882444daa, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9df5ae8cddc97bf44876fe8882444daa, type: 3}
       insertIndex: -1
+<<<<<<< HEAD
+      addedObject: {fileID: 1975337172}
+=======
       addedObject: {fileID: 1149869037}
     - targetCorrespondingSourceObject: {fileID: 6502182839619065283, guid: 9df5ae8cddc97bf44876fe8882444daa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 724454640}
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9df5ae8cddc97bf44876fe8882444daa, type: 3}
       insertIndex: -1

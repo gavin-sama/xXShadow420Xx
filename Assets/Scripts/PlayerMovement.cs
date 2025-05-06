@@ -9,6 +9,18 @@ public class PlayerMovement : MonoBehaviour
 {
     public Animator animator;
     public Camera playerCamera;
+<<<<<<< HEAD
+ 
+    public float walkSpeed;
+    public float runSpeed;
+    public float jumpPower;
+    public float gravity;
+    public float lookSpeed;
+    public float lookXLimit;
+    public float defaultHeight;
+    public float crouchHeight;
+    public float crouchSpeed;
+=======
 
     public PlayerStats playerStats;
 
@@ -21,9 +33,11 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
 
     // Jump timing parameters
-    public float jumpDelay = 0f; // Time in seconds before actual jump occurs after pressing space
+    public float jumpDelay; // Time in seconds before actual jump occurs after pressing space
+
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationY = 0;
@@ -40,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction _sprint;
     private InputAction _attack;
     private InputAction _interact;
+    private InputAction _look;
 
     private bool isRunning;
     private bool isWalkForward;
@@ -143,10 +158,10 @@ public class PlayerMovement : MonoBehaviour
         // Looking around
         if (canMove && Cursor.lockState == CursorLockMode.Locked)
         {
-            rotationY -= Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationY -= _look.ReadValue<Vector2>().y;
             rotationY = Mathf.Clamp(rotationY, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0).normalized;
+            transform.rotation *= Quaternion.Euler(0, _look.ReadValue<Vector2>().x * lookSpeed, 0);
         }
 
         AnimationHandler();
@@ -194,6 +209,7 @@ public class PlayerMovement : MonoBehaviour
         _sprint = actions["Sprint"];
         _attack = actions["Attack"];
         _interact = actions["Interact"];
+        _look = actions["Look"];
     }
 
     // Helper method to set animation state exclusively

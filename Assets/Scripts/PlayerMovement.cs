@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public Animator animator;
     public Camera playerCamera;
+<<<<<<< HEAD
  
     public float walkSpeed;
     public float runSpeed;
@@ -19,6 +20,20 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
     public float crouchHeight;
     public float crouchSpeed;
+=======
+
+    public PlayerStats playerStats;
+
+    public float walkSpeed = 6f;
+    public float runSpeed = 12f;
+    public float jumpPower = 7f;
+    public float gravity = 25f;
+    public float lookSpeed = 2f;
+    public float lookXLimit = 45f;
+    public float defaultHeight = 2f;
+    public float crouchHeight = 1f;
+    public float crouchSpeed = 3f;
+>>>>>>> efbce18b297511d9196f300e4fc292e0521eab61
 
     // Jump timing parameters
     public float jumpDelay; // Time in seconds before actual jump occurs after pressing space
@@ -61,6 +76,11 @@ public class PlayerMovement : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
 
         SetInputActions();
+
+        if (playerStats == null)
+        {
+            playerStats = GetComponent<PlayerStats>(); 
+        }
     }
 
     void Update()
@@ -97,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
             isJumpingAnimation = false;
             isPerformingJump = false;
         }
+
 
         // Movement controls - don't allow running while jumping
         Vector3 forward = transform.TransformDirection(Vector3.forward);

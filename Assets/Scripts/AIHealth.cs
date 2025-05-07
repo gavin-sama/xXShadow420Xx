@@ -10,7 +10,8 @@ public class AIHealth : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
-    public int Xp = 20;
+    //This will be different for every enemy so this will be deleted eventually
+    private int Xp = 20;
 
     [Header("UI References")]
     public Slider healthSlider;
@@ -90,9 +91,8 @@ public class AIHealth : MonoBehaviour
             PlayerStats playerStats = player.GetComponent<PlayerStats>();
             if (playerStats != null)
             {
-                Debug.Log("Current XP:" + playerStats.currentXp);
                 playerStats.GainXP(Xp);
-                Debug.Log("Current XP:" + playerStats.currentXp);
+                Debug.Log("Granting XP: " + Xp);
             }
         }
 

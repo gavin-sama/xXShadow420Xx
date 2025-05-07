@@ -26,7 +26,7 @@ public class PlayerStats : MonoBehaviour
 
         //XP bar (CHANGE WHEN YOU HAVE MULTIPLE LEVELS)
         currentXp = 0;
-        xpBar.SetSlider(currentXp);
+        xpBar.SetSliderCap(xpCap);
 
         // Get the Animator component attached to the player
         animator = GetComponent<Animator>();

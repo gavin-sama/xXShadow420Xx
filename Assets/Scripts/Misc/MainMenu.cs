@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -25,6 +26,10 @@ public class MainMenu : MonoBehaviour
         // Open the canvas for the 4 load saves
         // Overwrite the option chosen
         // Clone and launch the fresh start scene
+
+        SavesMenu.Saves += 1;
+
+        SceneManager.LoadScene("Load1");
     }
 
     public void LoadGame()

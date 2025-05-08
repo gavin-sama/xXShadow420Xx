@@ -6,6 +6,10 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private float xpCap;
     [SerializeField] public float currentXp;
+
+    private float targetXp;
+    [SerializeField] private float xpLerpSpeed = 3f;
+
     public HealthBar healthBar;
     public XPBar xpBar;
     public DamageIndicator damageIndicator;
@@ -42,18 +46,32 @@ public class PlayerStats : MonoBehaviour
         {
             Die();
         }
+
+        // Gradually update XP
+        if (currentXp != targetXp)
+        {
+            currentXp = Mathf.Lerp(currentXp, targetXp, xpLerpSpeed * Time.deltaTime);
+
+            // Optional: snap to target when close enough
+            if (Mathf.Abs(currentXp - targetXp) < 0.01f)
+            {
+                currentXp = targetXp;
+            }
+
+            xpBar.SetSlider(currentXp);
+        }
     }
+
 
     public void GainXP(float amount)
     {
-        currentXp += amount;
-        if (currentXp > xpCap)
+        targetXp += amount;
+        if (targetXp > xpCap)
         {
-            currentXp = xpCap;
+            targetXp = xpCap;
         }
-        
-        xpBar.SetSlider(currentXp);
     }
+
 
     public void TakeDamage(float amount)
     {

@@ -3,11 +3,15 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
 
+
+
 public class AIHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
+    //This will be different for every enemy so this will be deleted eventually
+    private int Xp = 20;
 
     [Header("UI References")]
     public Slider healthSlider;
@@ -77,6 +81,21 @@ public class AIHealth : MonoBehaviour
 
         // Start death coroutine
         StartCoroutine(DeathRoutine());
+
+        
+        // Giving XP to the player (CHANGE WHEN MULTIPLE ENEMIES AND ENEMY CLASS)
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            PlayerStats playerStats = player.GetComponent<PlayerStats>();
+            if (playerStats != null)
+            {
+                playerStats.GainXP(Xp);
+                Debug.Log("Granting XP: " + Xp);
+            }
+        }
+
     }
 
 

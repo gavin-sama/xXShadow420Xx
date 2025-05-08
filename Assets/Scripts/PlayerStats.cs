@@ -4,7 +4,10 @@ using System.Collections;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
+    [SerializeField] private float xpCap;
+    [SerializeField] public float currentXp;
     public HealthBar healthBar;
+    public XPBar xpBar;
     public DamageIndicator damageIndicator;
 
     [SerializeField] private float attackAnimationDuration = 0.9f; // Set this value to match the attack animation duration
@@ -21,6 +24,10 @@ public class PlayerStats : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
 
+        //XP bar (CHANGE WHEN YOU HAVE MULTIPLE LEVELS)
+        currentXp = 0;
+        xpBar.SetSliderCap(xpCap);
+
         // Get the Animator component attached to the player
         animator = GetComponent<Animator>();
     }
@@ -35,11 +42,17 @@ public class PlayerStats : MonoBehaviour
         {
             Die();
         }
-        if (Input.GetKeyDown(KeyCode.K))
+    }
+
+    public void GainXP(float amount)
+    {
+        currentXp += amount;
+        if (currentXp > xpCap)
         {
-            TakeDamage(10f);
-            damageIndicator.Flash();
+            currentXp = xpCap;
         }
+        
+        xpBar.SetSlider(currentXp);
     }
 
     public void TakeDamage(float amount)

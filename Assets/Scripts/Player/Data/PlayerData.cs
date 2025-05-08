@@ -7,6 +7,5 @@ public class PlayerData
     public int attackDamage;
     public float attackRange;
     public float attackSpeed;
-
     public int teeth;
 }

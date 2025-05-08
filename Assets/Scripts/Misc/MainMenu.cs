@@ -8,16 +8,14 @@ public class MainMenu : MonoBehaviour
     public GameObject newButton;
     public GameObject loadButton;
 
-    private int gameSaves;
-
     private void Start()
     {
-        gameSaves = SavesMenu.Saves;
+        DataSave.LoadPlayerData();
 
-        if (gameSaves == 4)
+        if (SavesMenu.Saves == 4)
             newButton.GetComponent<Button>().interactable = false;
 
-        if (gameSaves == 0)
+        else if (SavesMenu.Saves == 0)
             loadButton.GetComponent<Button>().interactable = false;
     }
 

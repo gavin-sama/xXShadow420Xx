@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Audio;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
@@ -11,9 +10,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform attackPoint;
 
     [Header("Feedback")]
-    private AudioSource audioSource;
-    public AudioClip attackClip;
-
+    [SerializeField] private AudioSource attackSound;
     [SerializeField] private ParticleSystem hitEffect;
 
     private Animator animator;
@@ -40,12 +37,6 @@ public class PlayerAttack : MonoBehaviour
         {
             Debug.LogError("Enemy layers not set in PlayerAttack script!");
         }
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
     }
 
     private void Update()
@@ -61,6 +52,18 @@ public class PlayerAttack : MonoBehaviour
         {
             Debug.Log($"Attack state - canAttack: {canAttack}, isAttacking: {isAttacking}");
         }
+
+        if (Input.GetKeyDown(KeyCode.Z)) // Simulate attack
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, 1.2f, enemyLayers);
+            foreach (Collider hit in hits)
+            {
+                Debug.Log("Trying to damage: " + hit.name);
+                AIController ai = hit.GetComponent<AIController>();
+                if (ai != null) ai.TakeDamage(10);
+            }
+        }
+
     }
 
     private void StartAttack()
@@ -72,16 +75,6 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        if (attackClip != null)
-        {
-            audioSource.PlayOneShot(attackClip);
-        }
-        else
-        {
-            Debug.LogWarning("Attack clip not assigned!");
-        }
-
-
         isAttacking = true;
         canAttack = false;
 
@@ -92,17 +85,16 @@ public class PlayerAttack : MonoBehaviour
         animator.SetTrigger(AttackTrigger);
 
         // Start cooldown coroutine
+        StopAllCoroutines(); // Stop any existing cooldown coroutines
         StartCoroutine(AttackCooldown());
-    }
 
-    private void PlaySound(AudioClip clip)
-    {
-        if (audioSource.clip != clip)
+        // Play attack sound if available
+        if (attackSound != null)
         {
-            audioSource.clip = clip;
-            audioSource.loop = true;
-            audioSource.Play();
+            attackSound.Play();
         }
+
+        Debug.Log("Attack started");
     }
 
     // This should be called via Animation Event at the exact frame when the attack hits
@@ -193,10 +185,7 @@ public class PlayerAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(attackSpeed);
         canAttack = true;
-        isAttacking = false;
     }
-
-
 
     private void OnDrawGizmosSelected()
     {

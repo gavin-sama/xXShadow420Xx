@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] public static float maxHealth;
+    public static float maxHealth = 100;
     [SerializeField] private float xpCap;
     [SerializeField] public float currentXp;
 

@@ -23,6 +23,12 @@ public class AIController : MonoBehaviour
     public LayerMask playerMask;
     public LayerMask obstacleMask;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip attackClip;
+    public AudioClip runClip;
+    public AudioClip hurtClip;
+
     private Transform player;
     private float lastAttackTime;
     private bool isAttacking;
@@ -74,6 +80,20 @@ public class AIController : MonoBehaviour
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(player.position);
         navMeshAgent.speed = speedRun;
+
+        // Play the running sound if the AI is moving and not already playing
+        if (runClip != null && !audioSource.isPlaying && navMeshAgent.velocity.magnitude > 0.1f)
+        {
+            audioSource.clip = runClip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        // Stop the running sound when the AI stops moving
+        if (navMeshAgent.velocity.magnitude < 0.1f && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 
     void AttackBehavior()
@@ -99,6 +119,11 @@ public class AIController : MonoBehaviour
         isAttacking = true;
         attackStartTime = Time.time;
         lastAttackTime = Time.time;
+
+        if (attackClip != null)
+        {
+            audioSource.PlayOneShot(attackClip);
+        }
     }
 
     public void ApplyAttackDamage()
@@ -128,6 +153,12 @@ public class AIController : MonoBehaviour
         if (aiHealth != null)
         {
             aiHealth.TakeDamage(damage); // This forwards damage to AIHealth
+        }
+
+        // Play hurt sound without interfering with other sounds
+        if (hurtClip != null && !audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(hurtClip);
         }
     }
 

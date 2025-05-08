@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
@@ -10,7 +11,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform attackPoint;
 
     [Header("Feedback")]
-    [SerializeField] private AudioSource attackSound;
+    private AudioSource audioSource;
+    public AudioClip attackClip;
+
     [SerializeField] private ParticleSystem hitEffect;
 
     private Animator animator;
@@ -36,6 +39,12 @@ public class PlayerAttack : MonoBehaviour
         if (enemyLayers.value == 0)
         {
             Debug.LogError("Enemy layers not set in PlayerAttack script!");
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
@@ -63,6 +72,16 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
+        if (attackClip != null)
+        {
+            audioSource.PlayOneShot(attackClip);
+        }
+        else
+        {
+            Debug.LogWarning("Attack clip not assigned!");
+        }
+
+
         isAttacking = true;
         canAttack = false;
 
@@ -74,14 +93,16 @@ public class PlayerAttack : MonoBehaviour
 
         // Start cooldown coroutine
         StartCoroutine(AttackCooldown());
+    }
 
-        // Play attack sound if available
-        if (attackSound != null)
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource.clip != clip)
         {
-            attackSound.Play();
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            audioSource.Play();
         }
-
-        Debug.Log("Attack started");
     }
 
     // This should be called via Animation Event at the exact frame when the attack hits

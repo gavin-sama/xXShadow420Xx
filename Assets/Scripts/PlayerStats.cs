@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class PlayerStats : MonoBehaviour
     public HealthBar healthBar;
     public XPBar xpBar;
     public DamageIndicator damageIndicator;
+
+    public AudioSource audioSource;
+    public AudioClip hurtClip;
+    public AudioClip deathClip;
 
     [SerializeField] private float attackAnimationDuration = 0.9f; // Set this value to match the attack animation duration
 
@@ -86,6 +91,12 @@ public class PlayerStats : MonoBehaviour
             // Reset 'isHit' after the animation duration
             StartCoroutine(ResetHitAnimation());
         }
+
+        // Play hurt sound without interfering with other sounds
+        if (hurtClip != null && !audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(hurtClip);
+        }
     }
 
     private IEnumerator ResetHitAnimation()
@@ -120,6 +131,12 @@ public class PlayerStats : MonoBehaviour
         // Pause the game
         Time.timeScale = 0f;
 
+
+        // Play death sound even after object is destroyed
+        if (deathClip != null)
+        {
+            audioSource.PlayOneShot(deathClip);
+        }
         // Activate death screen
         //...
     }

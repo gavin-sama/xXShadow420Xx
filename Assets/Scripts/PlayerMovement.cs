@@ -10,6 +10,14 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public Camera playerCamera;
 
+    //AUDIO
+    public AudioClip runClip;
+    public AudioClip idleClip;
+    public AudioClip jumpClip;
+
+    private AudioSource audioSource;
+
+    //STATS
     public PlayerStats playerStats;
 
     public float walkSpeed;
@@ -69,6 +77,13 @@ public class PlayerMovement : MonoBehaviour
         {
             playerStats = GetComponent<PlayerStats>(); 
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
     }
 
     void Update()
@@ -78,11 +93,11 @@ public class PlayerMovement : MonoBehaviour
         // Handle jump initiation
         if (isJumpButtonPressed && canMove && characterController.isGrounded && !isJumpingAnimation)
         {
-            // Start jump animation
             isJumpingAnimation = true;
             jumpTimer = 0f;
 
-            // Set the jumping animation parameter
+            PlayOneShot(jumpClip);
+
             SetAnimationState("isJumping");
         }
 
@@ -104,6 +119,14 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumpingAnimation = false;
             isPerformingJump = false;
+        }
+
+        if (isJumpButtonPressed && canMove && characterController.isGrounded && !isJumpingAnimation)
+        {
+            isJumpingAnimation = true;
+            jumpTimer = 0f;
+            PlayOneShot(jumpClip);
+            SetAnimationState("isJumping");
         }
 
 
@@ -155,37 +178,43 @@ public class PlayerMovement : MonoBehaviour
         AnimationHandler();
     }
 
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource.clip != clip)
+        {
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+    private void PlayOneShot(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+
+
     private void AnimationHandler()
     {
-        // Handle animations - only if not currently jumping
         if (!isJumpingAnimation)
         {
             if (isRunning)
             {
+                PlaySound(runClip);
                 SetAnimationState("isRunning");
             }
             else if (isWalkForward)
             {
+                PlaySound(runClip);
                 SetAnimationState("isWalking");
-            }
-            else if (isLStrafe)
-            {
-                SetAnimationState("isLStrafe");
-            }
-            else if (isRStrafe)
-            {
-                SetAnimationState("isRStrafe");
-            }
-            else if (isWalkBack)
-            {
-                SetAnimationState("isWalk_Back");
             }
             else
             {
+                PlaySound(idleClip);
                 SetAnimationState("isIdle");
             }
         }
     }
+
 
     // Helper method to set the input keys
     private void SetInputActions()

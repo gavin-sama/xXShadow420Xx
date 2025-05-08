@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private float maxHealth;
+    [SerializeField] public static float maxHealth;
     [SerializeField] private float xpCap;
     [SerializeField] public float currentXp;
 
@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private float attackAnimationDuration = 0.9f; // Set this value to match the attack animation duration
 
-
+    public static int teethCurrency;
 
     private float currentHealth;
 

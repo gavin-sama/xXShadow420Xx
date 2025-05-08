@@ -92,4 +92,10 @@ public class PlayerStats : MonoBehaviour
         // Activate death screen
         //...
     }
+
+	// This is being used in PlayerSpawn to trigger the action
+	public float GetCurrentHealth()
+	{
+		return currentHealth;
+	}
 }

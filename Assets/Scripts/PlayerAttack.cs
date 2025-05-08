@@ -4,9 +4,9 @@ using UnityEngine.Audio;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
-    [SerializeField] private int attackDamage = 20;
-    [SerializeField] private float attackRange = 1.5f;
-    [SerializeField] private float attackCooldown = 0.6f;
+    [SerializeField] public static int attackDamage = 20;
+    [SerializeField] public static float attackRange = 1.5f;
+    [SerializeField] public static float attackSpeed = 0.6f;
     [SerializeField] private LayerMask enemyLayers;
     [SerializeField] private Transform attackPoint;
 
@@ -191,7 +191,7 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator AttackCooldown()
     {
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(attackSpeed);
         canAttack = true;
         isAttacking = false;
     }

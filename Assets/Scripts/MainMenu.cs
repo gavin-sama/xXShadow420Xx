@@ -1,49 +1,62 @@
+using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
-{    
-    public GameObject newButton;
-    public GameObject loadButton;
+{
+    public GameObject savesCanvas;
+    public Button newButton;
+    public Button loadButton;
 
     private void Start()
     {
-        DataSave.LoadPlayerData();
+        savesCanvas.SetActive(false);
+        SavesMenu.savesCanvas = savesCanvas;
 
-        if (SavesMenu.Saves == 4)
-            newButton.GetComponent<Button>().interactable = false;
-
-        else if (SavesMenu.Saves == 0)
-            loadButton.GetComponent<Button>().interactable = false;
+        newButton.interactable = (CountSaves() < 4);
+        loadButton.interactable = SaveExists();
     }
 
     public void NewGame()
     {
-        // Open the canvas for the 4 load saves
-        // Overwrite the option chosen
-        // Clone and launch the fresh start scene
-
-        SavesMenu.Saves += 1;
-
-        SceneManager.LoadScene("Load1");
+        savesCanvas.SetActive(true);
+        SavesMenu.newGameMode = true;
     }
 
     public void LoadGame()
     {
-        // Open the canvas for the 4 load saves
-        // Launch the option chosen
-
-        SavesMenu.savesCanvas.SetActive(true);
+        if (SaveExists())
+        {
+            savesCanvas.SetActive(true);
+            SavesMenu.newGameMode = false;
+        }
     }
 
-    public void Options()
+    private bool SaveExists()
     {
-        // Open the settings canvas
+        for (int i = 0; i < 4; i++)
+        {
+            string path = Application.persistentDataPath + "/save" + i + ".json";
+            if (File.Exists(path))
+                return true;
+        }
+        return false;
     }
 
-    public void Exit()
+    private int CountSaves()
+    {
+        int count = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            string path = Application.persistentDataPath + "/save" + i + ".json";
+            if (File.Exists(path))
+                count++;
+        }
+        return count;
+    }
+
+    public void QuitGame()
     {
         Application.Quit();
     }

@@ -14,7 +14,9 @@ public class PlayerAttack : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip attackClip;
 
-    [SerializeField] private ParticleSystem hitEffect;
+    [Header("Weapon Effects")]
+    [SerializeField] private GameObject weaponSparkEffect;
+    [SerializeField] private AudioClip sparkSound; 
 
     private Animator animator;
     private bool canAttack = true;
@@ -80,7 +82,6 @@ public class PlayerAttack : MonoBehaviour
         {
             Debug.LogWarning("Attack clip not assigned!");
         }
-
 
         isAttacking = true;
         canAttack = false;
@@ -154,12 +155,6 @@ public class PlayerAttack : MonoBehaviour
                 enemyHealth.TakeDamage(attackDamage);
                 hitAny = true;
 
-                // Spawn hit effect at the enemy's position if available
-                if (hitEffect != null)
-                {
-                    Instantiate(hitEffect, enemy.transform.position, Quaternion.identity);
-                }
-
                 Debug.Log($"Hit enemy: {enemy.name} for {attackDamage} damage. Current health: {enemyHealth.GetCurrentHealth()}");
             }
             else
@@ -168,24 +163,45 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
+        // Play weapon spark effect if we hit any enemy
+        if (hitAny)
+        {
+            PlayWeaponSparkEffect();
+        }
+
         if (!hitAny)
         {
             Debug.Log("No enemies hit");
         }
     }
 
-    // Called by Animation Event at the end of attack animation
+    // Method to play spark effect on weapon
+    private void PlayWeaponSparkEffect()
+    {
+        GameObject sparkInstance = Instantiate(weaponSparkEffect, attackPoint.position, attackPoint.rotation);
+
+        Destroy(sparkInstance, 0.3f);
+
+        // spark sound
+        if (sparkSound != null)
+        {
+            audioSource.PlayOneShot(sparkSound);
+        }
+    }
+
+
+    // Called by Anim Event at the end of attack anim
     public void EndAttack()
     {
         if (!isAttacking)
         {
-            Debug.LogWarning("EndAttack called but isAttacking was already false!");
+            Debug.LogWarning("EndAttack called but isAttacking was already false");
         }
 
         isAttacking = false;
         Debug.Log("Attack animation completed");
 
-        // Make sure the trigger is reset
+        // Resetting the trigger
         animator.ResetTrigger(AttackTrigger);
     }
 
@@ -196,8 +212,7 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = false;
     }
 
-
-
+    // Testing Purposes
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;

@@ -1,48 +1,69 @@
 using UnityEngine;
-using System.Collections;
 
-public class RangedEnemy : MonoBehaviour
+public class RangedEnemy : BaseAIController
 {
     public GameObject bulletPrefab;
     public Transform shootPoint;
     public float bulletSpeed = 25f;
-    public float attackCooldown = 1.5f;
-    private bool canShoot = true;
+    public float attackCooldown = 2f;
+    public float shootingRange = 10f;
 
-    private void OnTriggerStay(Collider other)
+    private float lastShotTime;
+    private bool isShooting;
+
+    private bool isAttacking;
+
+    protected override void HandleAI()
     {
-        if (other.CompareTag("Player") && canShoot)
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Throwing"))
         {
-            Debug.Log("Player in range");
-            StartCoroutine(Shoot(other.transform));
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            return;
+        }
+
+        if (Time.time < lastShotTime + attackCooldown)
+        {
+            isAttacking = true;
+            navMeshAgent.isStopped = true;
+            return;
+        }
+
+        isAttacking = false;
+
+        if (distanceToPlayer <= shootingRange)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+
+            Vector3 lookDir = (player.position + Vector3.up * 1.5f - transform.position).normalized;
+            lookDir.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDir);
+
+            animator.SetTrigger("Throwing");
+            lastShotTime = Time.time;
+        }
+        else
+        {
+            navMeshAgent.isStopped = false;
+            ChasePlayer();
         }
     }
 
-    IEnumerator Shoot(Transform target)
-    {
-        canShoot = false;
 
-        // Aim toward player's chest (1.5 units above feet)
-        Vector3 aimPoint = target.position + Vector3.up * 1.5f;
+
+    public void ShootAtPlayer()
+    {
+        if (player == null) return;
+
+        Vector3 aimPoint = player.position + Vector3.up * 1.5f;
         Vector3 direction = (aimPoint - shootPoint.position).normalized;
 
-        // Rotate enemy to look at player horizontally only
-        Vector3 flatLook = new Vector3(aimPoint.x, transform.position.y, aimPoint.z);
-        transform.LookAt(flatLook);
+        GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.LookRotation(direction));
+        bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
 
-        // Spawn and shoot bullet
-        GameObject bullet = Instantiate(
-            bulletPrefab,
-            shootPoint.position,
-            Quaternion.LookRotation(direction)
-        );
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = direction * bulletSpeed;
-
-        Debug.Log("Bullet fired");
-
-        yield return new WaitForSeconds(attackCooldown);
-        canShoot = true;
+        Debug.Log(" Bullet fired by animation event");
     }
 }

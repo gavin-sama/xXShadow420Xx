@@ -67,7 +67,7 @@ public class AIHealth : MonoBehaviour
 
         // Disable AI logic
         GetComponent<NavMeshAgent>().enabled = false;
-        GetComponent<AIController>().enabled = false;
+        GetComponent<BaseAIController>().enabled = false;
 
         // Set animation bool
         if (anim != null)

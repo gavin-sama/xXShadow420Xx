@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    //Storing specific data for different player classes
     public PlayerClassData playerClassData;
 
     public Animator animator;
@@ -26,9 +25,6 @@ public class PlayerMovement : MonoBehaviour
     public float lookSpeed;
     public float lookXLimit;
     public float defaultHeight;
-    public float crouchHeight;
-    public float crouchSpeed;
-
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationY = 0;
@@ -38,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput _playerInput;
     private InputAction _move;
-    private InputAction _crouch;
     private InputAction _sprint;
     private InputAction _look;
 
@@ -46,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 lookInput;
 
     private bool isRunning;
-    private bool isCrouching;
 
     void Start()
     {
@@ -64,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         UpdateInputs();
@@ -78,15 +71,12 @@ public class PlayerMovement : MonoBehaviour
         walkSpeed = playerClassData.walkSpeed;
         runSpeed = playerClassData.runSpeed;
         gravity = playerClassData.gravity;
-        crouchSpeed = playerClassData.crouchSpeed;
     }
-
 
     private void UpdateInputs()
     {
         moveInput = _move.ReadValue<Vector2>();
         lookInput = _look.ReadValue<Vector2>();
-        isCrouching = _crouch.IsPressed();
         isRunning = _sprint.IsPressed() && moveInput.y > 0.1f;
     }
 
@@ -105,17 +95,8 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
         moveDirection.y = verticalVelocity;
 
-        // Gravity
         if (!characterController.isGrounded)
             moveDirection.y -= gravity * Time.deltaTime;
-
-        // Crouching
-        if (isCrouching && canMove)
-        {
-            characterController.height = crouchHeight;
-            walkSpeed = crouchSpeed;
-            runSpeed = crouchSpeed * 1.5f;
-        }
 
         characterController.Move(moveDirection * Time.deltaTime);
     }
@@ -153,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
     {
         var actions = _playerInput.actions;
         _move = actions["Move"];
-        _crouch = actions["Crouch"];
         _sprint = actions["Sprint"];
         _look = actions["Look"];
     }

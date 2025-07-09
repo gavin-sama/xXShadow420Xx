@@ -15,12 +15,10 @@ MonoBehaviour:
   className: Wizard
   walkSpeed: 4
   runSpeed: 5
-  jumpPower: 50
   gravity: 20
-  crouchSpeed: 3
-  jumpDelay: 0.2
-  baseAnimatorController: {fileID: 9100000, guid: c6aaeaedf5f137444be0426cc633de6a, type: 2}
-  runAnim: {fileID: 7400000, guid: 1e5b475f89986494bb209aea42a71c03, type: 2}
-  idleAnim: {fileID: 7400000, guid: 185c4b391630cee46895147577f0dbfa, type: 2}
-  attackAnim: {fileID: 7400000, guid: af6248e8d8b81954580e6dafea7c861b, type: 2}
+  baseAnimatorController: {fileID: 9100000, guid: f06cf49135999774abe65f0247b5db2b, type: 2}
+  runAnim: {fileID: 7400000, guid: c920c0668887c654c82ed1e7671e5626, type: 2}
+  idleAnim: {fileID: 7400000, guid: e37b27a83a3df7046841ef6be37516b8, type: 2}
+  attackAnim: {fileID: 0}
+  walkAnim: {fileID: 7400000, guid: f3fe1e1136388994b82544eba3279e18, type: 2}
   specialAbilityPrefab: {fileID: 0}

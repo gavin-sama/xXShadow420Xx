@@ -9,13 +9,13 @@ public class PlayerClassData : ScriptableObject
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
     public float gravity = 20f;
-    public float crouchSpeed = 3f;
 
     // Animation Clips
     public RuntimeAnimatorController baseAnimatorController;
     public AnimationClip runAnim;
     public AnimationClip idleAnim;
     public AnimationClip attackAnim;
+    public AnimationClip walkAnim;
 
     // Abilities
     public GameObject specialAbilityPrefab;

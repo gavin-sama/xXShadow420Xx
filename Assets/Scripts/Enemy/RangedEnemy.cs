@@ -62,7 +62,8 @@ public class RangedEnemy : BaseAIController
         Vector3 direction = (aimPoint - shootPoint.position).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.LookRotation(direction));
-        bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
+        bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed; // slight correction from 'linearVelocity'
+        bullet.GetComponent<EnemyBullet>().InitializeShooter(gameObject); // pass the shooter
 
         Debug.Log(" Bullet fired by animation event");
     }

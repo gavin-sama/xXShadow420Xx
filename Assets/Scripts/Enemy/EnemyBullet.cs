@@ -4,15 +4,27 @@ public class EnemyBullet : MonoBehaviour
 {
     public float Damage = 10f;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Bullet hit something: " + other.name);
+    private GameObject shooter;
 
-        if (other.CompareTag("Player"))
+    public void InitializeShooter(GameObject shooterObj)
+    {
+        shooter = shooterObj;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject hitObject = collision.gameObject;
+
+        // Prevent hitting the shooter
+        if (hitObject == shooter) return;
+
+        Debug.Log("Bullet hit something: " + hitObject.name);
+
+        if (hitObject.CompareTag("Player"))
         {
             Debug.Log("Bullet hit player");
 
-            PlayerStats player = other.GetComponent<PlayerStats>();
+            PlayerStats player = hitObject.GetComponent<PlayerStats>();
             if (player != null)
             {
                 Debug.Log("PlayerStats found");
@@ -23,5 +35,8 @@ public class EnemyBullet : MonoBehaviour
                 Debug.Log("PlayerStats not found");
             }
         }
+
+        // Destroy the bullet on any collision
+        Destroy(gameObject);
     }
 }

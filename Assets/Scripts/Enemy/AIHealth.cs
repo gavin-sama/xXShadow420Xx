@@ -3,14 +3,11 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
 
-
-
 public class AIHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
-    //This will be different for every enemy so this will be deleted eventually
     private int Xp = 20;
 
     [Header("UI References")]
@@ -21,11 +18,15 @@ public class AIHealth : MonoBehaviour
     public AudioClip deathSound;
 
     [Header("Fade Settings")]
-    public float fadeDelay = 2f;         // Wait time before fading starts
-    public float fadeDuration = 3f;      // Duration of the fade out
+    public float fadeDelay = 0.5f;         // Wait before starting fade
+    public float fadeDuration = 2f;        // Duration of fade out
 
-    private Animator anim;
+    private NavMeshAgent navAgent;
+    private BaseAIController aiController;
+    private Collider enemyCollider;
     private SkinnedMeshRenderer meshRenderer;
+    private Material[] materials;
+    private bool isDead = false;
 
     void Start()
     {
@@ -38,15 +39,30 @@ public class AIHealth : MonoBehaviour
         }
         else
         {
-            Debug.LogError(gameObject.name + ": Health slider reference is missing!");
+            Debug.LogWarning(gameObject.name + ": Health slider reference is missing!");
         }
 
-        anim = GetComponent<Animator>();
+        navAgent = GetComponent<NavMeshAgent>();
+        aiController = GetComponent<BaseAIController>();
+        enemyCollider = GetComponent<Collider>();
         meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        if (meshRenderer != null)
+        {
+            // Cache all materials to fade them later
+            materials = meshRenderer.materials;
+        }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
         if (healthSlider != null) healthSlider.value = currentHealth;
 
@@ -56,35 +72,40 @@ public class AIHealth : MonoBehaviour
         }
     }
 
-    public int GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-
     void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log(gameObject.name + " died.");
 
-        // Disable AI logic
-        GetComponent<NavMeshAgent>().enabled = false;
-        GetComponent<BaseAIController>().enabled = false;
+        // Disable AI logic and collider immediately
+        if (navAgent != null) navAgent.enabled = false;
+        if (aiController != null) aiController.enabled = false;
+        if (enemyCollider != null) enemyCollider.enabled = false;
 
-        // Set animation bool
-        if (anim != null)
+        // Play death sound
+        if (deathSound != null)
         {
-            anim.SetBool("isDead", true);
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
         }
 
-        // Disable collider
-        Collider col = GetComponent<Collider>();
-        if (col != null) col.enabled = false;
+        // Spawn death particles immediately
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
 
-        // Start death coroutine
-        StartCoroutine(DeathRoutine());
+        // Give XP to player
+        GiveXPToPlayer();
 
-        
-        // Giving XP to the player (CHANGE WHEN MULTIPLE ENEMIES AND ENEMY CLASS)
+        // Destroy the enemy immediately — no fade delay or coroutine
+        Destroy(gameObject);
+    }
 
+
+    void GiveXPToPlayer()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -95,29 +116,5 @@ public class AIHealth : MonoBehaviour
                 Debug.Log("Granting XP: " + Xp);
             }
         }
-
     }
-
-
-    IEnumerator DeathRoutine()
-    {
-        // Play death sound even after object is destroyed
-        if (deathSound != null)
-        {
-            AudioSource.PlayClipAtPoint(deathSound, transform.position);
-        }
-
-        // Play particle effect
-        if (deathEffectPrefab != null)
-        {
-            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
-
-        // Wait before fade starts
-        yield return new WaitForSeconds(fadeDelay);
-
-        // Destroy the object
-        Destroy(gameObject);
-    }
-
 }

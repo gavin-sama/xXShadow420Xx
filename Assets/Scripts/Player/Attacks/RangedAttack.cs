@@ -22,6 +22,7 @@ public class RangedAttack : PlayerAttackBase
 
     [Header("Audio Feedback")]
     public AudioClip castSound;
+    public AudioClip ultimateSound;
 
     private static readonly int AttackTrigger = Animator.StringToHash("Attack");
 
@@ -49,14 +50,21 @@ public class RangedAttack : PlayerAttackBase
 
     private void Update()
     {
-        Debug.Log("Update running");
-
+        // Handle ultimate (CTRL key)
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
         {
             Debug.Log("CTRL key detected");
             TriggerUltimate();
         }
+
+        // Handle normal attack (LMB)
+        if (Input.GetMouseButtonDown(0) && canAttack)
+        {
+            Debug.Log("LMB clicked, performing regular attack");
+            PerformAttack();  // This triggers the normal attack
+        }
     }
+
 
 
     // Called via Animation Event for normal attack
@@ -69,21 +77,15 @@ public class RangedAttack : PlayerAttackBase
         }
 
         Vector3 direction = transform.forward;
-        if (Camera.main != null)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                direction = (hit.point - shootPoint.position).normalized;
-            }
-        }
 
         GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
         projectile.SetActive(true);
+
         if (projectile.TryGetComponent(out Rigidbody rb))
         {
             rb.linearVelocity = direction * projectileSpeed;
         }
+
 
         if (castSound != null)
         {
@@ -107,8 +109,15 @@ public class RangedAttack : PlayerAttackBase
         Debug.Log("Animator found, setting Ultimate trigger");
         animator.SetTrigger(UltimateTrigger);
 
+        // Play ultimate sound
+        if (ultimateSound != null)
+        {
+            audioSource.PlayOneShot(ultimateSound);
+        }
+
         lastAttackTime = Time.time;
     }
+
 
 
     // Called via Animation Event at the right moment

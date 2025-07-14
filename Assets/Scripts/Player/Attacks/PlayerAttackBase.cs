@@ -6,7 +6,8 @@ public abstract class PlayerAttackBase : MonoBehaviour
     public float attackCooldown = 1f;
 
     protected float lastAttackTime;
-    protected bool canAttack => Time.time >= lastAttackTime + attackCooldown;
 
-    public abstract void PerformAttack(); // Used by subclasses if needed
+    public virtual void PerformAttack() { }
+    public virtual void PerformUltimate() { }
+    protected bool canAttack => Time.time >= lastAttackTime + attackCooldown;
 }

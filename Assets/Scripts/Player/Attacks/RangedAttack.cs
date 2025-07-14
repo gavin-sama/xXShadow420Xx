@@ -3,17 +3,27 @@ using UnityEngine;
 public class RangedAttack : PlayerAttackBase
 {
     private Animator animator;
-    private static readonly int AttackTrigger = Animator.StringToHash("Attack");
+    private AudioSource audioSource;
 
     [Header("Projectile Settings")]
     public GameObject projectilePrefab;
     public Transform shootPoint;
     public float projectileSpeed = 30f;
 
+    [Header("Ultimate Settings")]
+    public float ultimateRange = 6f;
+    public LayerMask enemyLayers;
+    private static readonly int UltimateTrigger = Animator.StringToHash("Ultimate");
+
+    [Header("Ultimate Visual Effect")]
+    public GameObject ultimateEffectPrefab; // assign your particle system prefab in inspector
+
+    private GameObject activeUltimateEffect;
+
     [Header("Audio Feedback")]
     public AudioClip castSound;
-    private AudioSource audioSource;
 
+    private static readonly int AttackTrigger = Animator.StringToHash("Attack");
 
     private void Start()
     {
@@ -39,14 +49,17 @@ public class RangedAttack : PlayerAttackBase
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canAttack)
+        Debug.Log("Update running");
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
         {
-            animator.SetTrigger(AttackTrigger); // Play attack animation
-            lastAttackTime = Time.time;
+            Debug.Log("CTRL key detected");
+            TriggerUltimate();
         }
     }
 
-    // Animation Event calls this during the animation when casting completes
+
+    // Called via Animation Event for normal attack
     public void CastProjectile()
     {
         if (projectilePrefab == null || shootPoint == null)
@@ -55,7 +68,6 @@ public class RangedAttack : PlayerAttackBase
             return;
         }
 
-        // Aim from center of screen
         Vector3 direction = transform.forward;
         if (Camera.main != null)
         {
@@ -65,13 +77,9 @@ public class RangedAttack : PlayerAttackBase
                 direction = (hit.point - shootPoint.position).normalized;
             }
         }
-        else
-        {
-            Debug.LogWarning("Main camera not found. Defaulting to forward.");
-        }
 
         GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
-        projectile.SetActive(true); // Just in case it's off
+        projectile.SetActive(true);
         if (projectile.TryGetComponent(out Rigidbody rb))
         {
             rb.linearVelocity = direction * projectileSpeed;
@@ -82,17 +90,114 @@ public class RangedAttack : PlayerAttackBase
             audioSource.PlayOneShot(castSound);
         }
 
-        Debug.Log("Fireball spawned: " + projectile.name);
+        Debug.Log("Projectile fired!");
+    }
+
+    // Triggers the ultimate attack animation
+    private void TriggerUltimate()
+    {
+        Debug.Log("Entered TriggerUltimate");
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null!");
+            return;
+        }
+
+        Debug.Log("Animator found, setting Ultimate trigger");
+        animator.SetTrigger(UltimateTrigger);
+
+        lastAttackTime = Time.time;
+    }
+
+
+    // Called via Animation Event at the right moment
+    public void CastUltimate()
+    {
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, ultimateRange, enemyLayers);
+
+        if (hitEnemies.Length == 0)
+        {
+            Debug.Log("No enemies in range for ultimate.");
+            return;
+        }
+
+        foreach (Collider enemy in hitEnemies)
+        {
+            Debug.Log($"Ultimate hit: {enemy.name}");
+
+            AIHealth health = enemy.GetComponent<AIHealth>();
+            if (health != null)
+            {
+                health.Die();  // Call the Die method instead of Destroy
+            }
+            else
+            {
+                Debug.LogWarning($"Enemy {enemy.name} has no AIHealth component!");
+            }
+        }
+
+        Debug.Log($"Ultimate affected {hitEnemies.Length} enemies!");
     }
 
     public override void PerformAttack()
     {
-        // Animation event will handle actual casting
+        animator.SetTrigger(AttackTrigger);
+        lastAttackTime = Time.time;
     }
 
-    // Optional: Animation Event at end of attack animation
+    public override void PerformUltimate()
+    {
+        TriggerUltimate(); // External call support
+    }
+
+    // Spawn the particle effect prefab during ultimate start
+    private void SpawnUltimateEffect()
+    {
+        if (ultimateEffectPrefab == null)
+        {
+            Debug.LogWarning("Ultimate effect prefab not assigned!");
+            return;
+        }
+
+        if (activeUltimateEffect != null)
+        {
+            Destroy(activeUltimateEffect);
+        }
+
+        activeUltimateEffect = Instantiate(ultimateEffectPrefab, transform.position, Quaternion.identity, transform);
+    }
+
+    // Call this at the end of your ultimate animation (Animation Event or EndAttack method)
+    public void StopUltimateEffect()
+    {
+        if (activeUltimateEffect != null)
+        {
+            // If it has a ParticleSystem component, stop it gracefully
+            ParticleSystem ps = activeUltimateEffect.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                Destroy(activeUltimateEffect, ps.main.duration);
+            }
+            else
+            {
+                Destroy(activeUltimateEffect);
+            }
+            activeUltimateEffect = null;
+        }
+    }
+
+    // Optional animation end
     public void EndAttack()
     {
         animator.ResetTrigger(AttackTrigger);
+        animator.ResetTrigger(UltimateTrigger);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, ultimateRange);
     }
 }

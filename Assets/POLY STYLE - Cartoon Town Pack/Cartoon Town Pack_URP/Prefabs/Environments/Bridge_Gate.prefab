@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8143360427198473147}
   - component: {fileID: 1256434946788124296}
   - component: {fileID: 8335537646723722834}
-  m_Layer: 0
+  - component: {fileID: 5729624451388673252}
+  m_Layer: 8
   m_Name: Bridge_Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,3 +93,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5729624451388673252
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4606570230340594476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_LayerOverridePriority: 1
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8487626924056215177, guid: 010df8dc3e826b747a0087e3d1137dfa, type: 3}

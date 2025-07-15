@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 466587277089695146}
   - component: {fileID: 8034862555140806914}
   - component: {fileID: 2463329130377802207}
-  m_Layer: 0
+  - component: {fileID: -5145566720452808102}
+  m_Layer: 9
   m_Name: Shed_Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,3 +100,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-5145566720452808102
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26301935693190424}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 1
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -610147251036236552, guid: 010df8dc3e826b747a0087e3d1137dfa, type: 3}

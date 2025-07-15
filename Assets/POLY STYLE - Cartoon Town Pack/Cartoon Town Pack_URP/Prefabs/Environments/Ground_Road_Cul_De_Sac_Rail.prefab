@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 5767624702251644524}
   - component: {fileID: 5761599416036929378}
   - component: {fileID: 5980235088342669161}
-  m_Layer: 0
+  - component: {fileID: 6038161869146455422}
+  m_Layer: 8
   m_Name: Ground_Road_Cul_De_Sac_Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,3 +92,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6038161869146455422
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147317800409874635}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_LayerOverridePriority: 1
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -952719926515082879, guid: 010df8dc3e826b747a0087e3d1137dfa, type: 3}

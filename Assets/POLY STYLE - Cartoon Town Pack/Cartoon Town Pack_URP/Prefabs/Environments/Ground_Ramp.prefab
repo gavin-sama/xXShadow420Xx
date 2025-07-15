@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6230257747341384734}
   - component: {fileID: 641265980308247639}
   - component: {fileID: 5820306744278106681}
-  m_Layer: 0
+  - component: {fileID: 8219526798574084744}
+  m_Layer: 8
   m_Name: Ground_Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,3 +92,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8219526798574084744
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2615450563762506593}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_LayerOverridePriority: 1
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3940635179679464267, guid: 010df8dc3e826b747a0087e3d1137dfa, type: 3}

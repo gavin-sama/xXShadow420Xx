@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bridge : GroundBase
+public class BridgeOpen : GroundBase
 {
     [field: SerializeField] public override List<RoadTypeDirection> NorthRoadPrefabs { get; set; }
     [field: SerializeField] public override List<RoadTypeDirection> EastRoadPrefabs { get; set; }

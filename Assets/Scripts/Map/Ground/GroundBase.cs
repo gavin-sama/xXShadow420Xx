@@ -10,6 +10,7 @@ public abstract class GroundBase : MonoBehaviour
     public abstract List<RoadTypeDirection> SouthRoadPrefabs { get; set; }
     public abstract List<RoadTypeDirection> WestRoadPrefabs { get; set; }
 
+    public abstract Direction[] PlaceableDirections { get; }
 
     public virtual List<GameObject> HousePrefabs { get; set; }
     public virtual List<GameObject> GrassPrefabs { get; set; }

@@ -8,6 +8,7 @@ public class RoadIntersection : GroundBase
     [field: SerializeField] public override List<RoadTypeDirection> SouthRoadPrefabs { get; set; }
     [field: SerializeField] public override List<RoadTypeDirection> WestRoadPrefabs { get; set; }
 
+    public override Direction[] PlaceableDirections { get { return new Direction[] { Direction.North, Direction.East, Direction.South, Direction.West }; } }
 
     [field: SerializeField] public override List<GameObject> GrassPrefabs { get; set; }
     [field: SerializeField] public override List<GameObject> StonePrefabs { get; set; }

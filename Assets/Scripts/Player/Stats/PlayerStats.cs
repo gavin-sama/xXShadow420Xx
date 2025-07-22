@@ -21,6 +21,11 @@ public class PlayerStats : MonoBehaviour
 
     public static int teethCurrency;
 
+    public static int attackUpgrades = 0;
+    public static int healthUpgrades = 0;
+    public static int speedUpgrades = 0;
+
+
     private float currentHealth;
 
     // Add an Animator reference
@@ -72,8 +77,16 @@ public class PlayerStats : MonoBehaviour
         if (targetXp > xpCap)
         {
             targetXp = xpCap;
+            OpenUpgradeMenu();
         }
     }
+
+    private void OpenUpgradeMenu()
+    {
+        Time.timeScale = 0f;
+        UpgradeUI.instance.Show();
+    }
+
 
 
     public void TakeDamage(float amount)
@@ -116,5 +129,13 @@ public class PlayerStats : MonoBehaviour
         }
         // Activate death screen
         //...
+
+        PlayerStats.attackUpgrades = 0;
+        PlayerStats.healthUpgrades = 0;
+        PlayerStats.speedUpgrades = 0;
+
+        PlayerAttack.attackDamage = 20;
+        PlayerAttack.attackSpeed = 0.6f;
+        maxHealth = 100;
     }
 }

@@ -42,6 +42,27 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isRunning;
 
+    // Omnimovement variables
+    private Vector2 smoothedMoveInput;
+    public float inputSmoothTime = 0.1f;
+    private Vector2 inputVelocity;
+
+    // Movement direction enum for cleaner animation handling
+    public enum MovementDirection
+    {
+        Idle,
+        Forward,
+        Backward,
+        Left,
+        Right,
+        ForwardLeft,
+        ForwardRight,
+        BackwardLeft,
+        BackwardRight
+    }
+
+    private MovementDirection currentMovementDirection = MovementDirection.Idle;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -76,23 +97,69 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateInputs()
     {
         moveInput = _move.ReadValue<Vector2>();
+
+        // Smooth the input for more natural movement
+        smoothedMoveInput = Vector2.SmoothDamp(smoothedMoveInput, moveInput, ref inputVelocity, inputSmoothTime);
+
         lookInput = _look.ReadValue<Vector2>();
-        isRunning = _sprint.IsPressed() && moveInput.y > 0.1f;
+        isRunning = _sprint.IsPressed() && smoothedMoveInput.magnitude > 0.1f;
+
+        // Determine movement direction based on input
+        currentMovementDirection = GetMovementDirection(smoothedMoveInput);
     }
+
+    private MovementDirection GetMovementDirection(Vector2 input)
+    {
+        const float threshold = 0.1f;
+
+        if (input.magnitude < threshold)
+            return MovementDirection.Idle;
+
+        float x = input.x;
+        float y = input.y;
+
+        // Ignore diagonals: pick the dominant axis only
+        if (Mathf.Abs(y) > Mathf.Abs(x))
+        {
+            return y > 0 ? MovementDirection.Forward : MovementDirection.Backward;
+        }
+        else
+        {
+            return x > 0 ? MovementDirection.Right : MovementDirection.Left;
+        }
+    }
+
 
     private void HandleMovement()
     {
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+        if (!canMove)
+        {
+            moveDirection.y -= gravity * Time.deltaTime;
+            characterController.Move(moveDirection * Time.deltaTime);
+            return;
+        }
 
-        float movementMultiplier = 1.0f;
+        // Calculate movement based on camera-relative directions
+        Vector3 forward = playerCamera.transform.forward;
+        Vector3 right = playerCamera.transform.right;
+
+        // Remove y component for ground movement
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
+
         float speed = isRunning ? runSpeed : walkSpeed;
 
-        float curSpeedX = canMove ? speed * moveInput.y * movementMultiplier : 0;
-        float curSpeedY = canMove ? speed * moveInput.x * movementMultiplier : 0;
+        // Use smoothed input for movement calculation
+        Vector3 desiredMove = forward * smoothedMoveInput.y + right * smoothedMoveInput.x;
+
+        // Normalize diagonal movement to prevent speed boost
+        if (desiredMove.magnitude > 1f)
+            desiredMove.Normalize();
 
         float verticalVelocity = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        moveDirection = desiredMove * speed;
         moveDirection.y = verticalVelocity;
 
         if (!characterController.isGrounded)
@@ -113,22 +180,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAnimation()
     {
-        if (isRunning)
+        // Set movement speed for blend trees
+        float movementMagnitude = smoothedMoveInput.magnitude;
+        float speedMultiplier = isRunning ? 2f : 1f;
+
+        // Set animator parameters for omnidirectional movement
+        animator.SetFloat("Speed", movementMagnitude * speedMultiplier);
+        animator.SetFloat("InputX", smoothedMoveInput.x);
+        animator.SetFloat("InputY", smoothedMoveInput.y);
+
+        // Set boolean states
+        animator.SetBool("isMoving", movementMagnitude > 0.1f);
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isWalking", movementMagnitude > 0.1f && !isRunning);
+        animator.SetBool("isIdle", movementMagnitude <= 0.1f);
+
+
+        // Handle audio
+        if (movementMagnitude > 0.1f)
         {
             PlaySound(runClip);
-            SetAnimationState("isRunning");
-        }
-        else if (moveInput.y > 0.1f)
-        {
-            PlaySound(runClip);
-            SetAnimationState("isWalking");
         }
         else
         {
             PlaySound(idleClip);
-            SetAnimationState("isIdle");
         }
     }
+
 
     private void SetInputActions()
     {
@@ -136,13 +214,6 @@ public class PlayerMovement : MonoBehaviour
         _move = actions["Move"];
         _sprint = actions["Sprint"];
         _look = actions["Look"];
-    }
-
-    private void SetAnimationState(string activeState)
-    {
-        animator.SetBool("isRunning", activeState == "isRunning");
-        animator.SetBool("isWalking", activeState == "isWalking");
-        animator.SetBool("isIdle", activeState == "isIdle");
     }
 
     private void PlaySound(AudioClip clip)
@@ -158,5 +229,16 @@ public class PlayerMovement : MonoBehaviour
     private void PlayOneShot(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
+    }
+
+    // Debug method to visualize current movement direction
+    void OnGUI()
+    {
+        if (Application.isPlaying)
+        {
+            GUI.Label(new Rect(10, 10, 200, 20), $"Direction: {currentMovementDirection}");
+            GUI.Label(new Rect(10, 30, 200, 20), $"Input: {smoothedMoveInput}");
+            GUI.Label(new Rect(10, 50, 200, 20), $"Running: {isRunning}");
+        }
     }
 }

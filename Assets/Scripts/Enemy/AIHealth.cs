@@ -26,6 +26,7 @@ public class AIHealth : MonoBehaviour
     private Collider enemyCollider;
     private SkinnedMeshRenderer meshRenderer;
     private Material[] materials;
+    public GameObject coinPrefab; //need coin prefab so the enemy drops coin 
     private bool isDead = false;
 
     void Start()
@@ -95,6 +96,9 @@ public class AIHealth : MonoBehaviour
         {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
+
+        //Instantiate coin 
+        Instantiate(coinPrefab, transform.position, Quaternion.identity);
 
         // Give XP to player
         GiveXPToPlayer();

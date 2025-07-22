@@ -1440,6 +1440,7 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   fadeDelay: 2
   fadeDuration: 3
+  coinPrefab: {fileID: 6023640041408912478, guid: 908fa576d1ccab3429b115858fcf041c, type: 3}
 --- !u!95 &287530218
 Animator:
   serializedVersion: 7
@@ -2657,6 +2658,7 @@ MonoBehaviour:
   lookXLimit: 45
   gravity: 25
   defaultHeight: 2
+  inputSmoothTime: 0.1
 --- !u!143 &490588171
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3181,6 +3183,51 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &529388946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 529388948}
+  - component: {fileID: 529388947}
+  m_Layer: 0
+  m_Name: CurrencyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &529388947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529388946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d4b59eab9077b429536b826073ea4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coins: 0
+--- !u!4 &529388948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529388946}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.538872, y: 1.7173032, z: 68.41185}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &542675707
 GameObject:
   m_ObjectHideFlags: 0
@@ -5116,15 +5163,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216877770083484165, guid: 43f8f328655d3bf45a831bb3f7b89073, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216877770083484165, guid: 43f8f328655d3bf45a831bb3f7b89073, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216877770083484165, guid: 43f8f328655d3bf45a831bb3f7b89073, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -4216877770083484165, guid: 43f8f328655d3bf45a831bb3f7b89073, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6572,7 +6619,7 @@ Animator:
   m_GameObject: {fileID: 1248938056}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f06cf49135999774abe65f0247b5db2b, type: 2}
+  m_Controller: {fileID: 9100000, guid: a2416b53a23e83e41b377f36536d4c6d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6602,12 +6649,13 @@ MonoBehaviour:
   runClip: {fileID: 0}
   idleClip: {fileID: 0}
   playerStats: {fileID: 1248938065}
-  walkSpeed: 3
-  runSpeed: 6
+  walkSpeed: 6
+  runSpeed: 12
   lookSpeed: 0.5
   lookXLimit: 45
   gravity: 25
   defaultHeight: 2
+  inputSmoothTime: 0.1
 --- !u!143 &1248938060
 CharacterController:
   m_ObjectHideFlags: 0
@@ -8212,6 +8260,7 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 1a150f077253fba4fa79cc0c55e870bc, type: 3}
   fadeDelay: 2
   fadeDuration: 3
+  coinPrefab: {fileID: 0}
 --- !u!54 &1317940760
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10146,6 +10195,30 @@ PrefabInstance:
     - target: {fileID: -1889265623667537728, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -120.879395
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.001623
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00113
+      objectReference: {fileID: 0}
+    - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.001307
       objectReference: {fileID: 0}
     - target: {fileID: -1854394178677371626, guid: e30a7d820f54a124289c490cbfd9df18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14065,6 +14138,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 396857092}
   - {fileID: 1113705735}
+  - {fileID: 529388948}
   - {fileID: 1920778460}
   - {fileID: 1037477422}
   - {fileID: 543450651621290792}

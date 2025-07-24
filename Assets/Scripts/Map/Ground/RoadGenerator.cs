@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,27 +12,28 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] private GameObject startingAreaPrefab;
 
     //private List<GameObject> possibleGroundTiles;
-    [SerializeField] private Tile[] tileObjects;
-    [SerializeField] private Cell cellObj;
+    [SerializeField] private GameObject cellObj;
     int cellSizeX = 45;
     int cellSizeZ = 45;
 
     private List<GameObject> gridComponents;
-    private Stack<Cell> cellsToGenerate;
+    private List<GameObject> groundComponents;
+    private List<Cell> cellsToGenerate;
     private bool isComplete;
 
 
     private void Awake()
     {
-        gridComponents = new List<Cell>();
-        cellsToGenerate = new Stack<Cell>();
+        gridComponents = new List<GameObject>();
+        groundComponents = new List<GameObject>();
+        cellsToGenerate = new List<Cell>();
         isComplete = false;
 
 
         if (startingAreaPrefab.GetComponentCount() == 2)  // We are not going to use the 'transform' at index '0'
         {
-            Instantiate(startingAreaPrefab, GroundBase.lastTransformPosition, Quaternion.identity);
-
+            gridComponents.Add(Instantiate(startingAreaPrefab, GroundBase.lastTransformPosition, Quaternion.identity));
+            InitializeNextGrid(gridComponents[0]);
         }
     }
 
@@ -46,18 +48,19 @@ public class RoadGenerator : MonoBehaviour
         {
             GroundBase.lastTransformPosition = groundToGenerateAround.transform.position;
             GroundBase groundScript = groundToGenerateAround.GetComponentAtIndex(1) as GroundBase;
-            Cell newCellN = Instantiate(cellObj, groundScript.GetNextPosition(cellSizeX, cellSizeZ, Direction.North), Quaternion.identity);
-            Cell newCellE = Instantiate(cellObj, groundScript.GetNextPosition(cellSizeX, cellSizeZ, Direction.East), Quaternion.identity);
-            Cell newCellS = Instantiate(cellObj, groundScript.GetNextPosition(cellSizeX, cellSizeZ, Direction.South), Quaternion.identity);
-            Cell newCellW = Instantiate(cellObj, groundScript.GetNextPosition(cellSizeX, cellSizeZ, Direction.West), Quaternion.identity);
-            newCellN.CreateCell(false, tileObjects);
-            newCellE.CreateCell(false, tileObjects);
-            newCellS.CreateCell(false, tileObjects);
-            newCellW.CreateCell(false, tileObjects);
-            gridComponents.Add(newCellN);
-            gridComponents.Add(newCellE);
-            gridComponents.Add(newCellS);
-            gridComponents.Add(newCellW);
+            Direction[] allDirections = (Direction[])Enum.GetValues(typeof(Direction));
+            foreach (Direction direction in allDirections)
+            {
+                GameObject newCell = Instantiate(cellObj, groundScript.GetNextPosition(direction), Quaternion.identity);
+                Cell cellScript = newCell.GetComponentAtIndex(newCell.GetComponentCount() - 1) as Cell;
+                cellScript.CreateCell(false, roadPrefabs); 
+                ValidateCellPosition(newCell);
+                
+                if (newCell)
+                    gridComponents.Add(newCell);
+                if (groundScript.GetAvailablePositions().Contains(newCell.transform.position))
+                    cellsToGenerate.Add(cellScript);
+            }
         }
         else
         {
@@ -67,20 +70,48 @@ public class RoadGenerator : MonoBehaviour
 
     IEnumerator CheckEntropy()
     {
-        yield return null;
+        List<Cell> tempGrid = new List<Cell>(cellsToGenerate);
+        tempGrid.RemoveAll(c => c.filled);
+        tempGrid.Sort((a, b) => a.tileOptions.Count - b.tileOptions.Count);
+        tempGrid.RemoveAll(a => a.tileOptions.Count != tempGrid[0].tileOptions.Count);
+
+        yield return new WaitForSeconds(0.125f);
+
+        FillRandomCell(tempGrid);
     }
 
-    void CollapseCell(List<Cell> tempGrid)
+    void FillRandomCell(List<Cell> tempGrid)
     {
+        int randIndex = UnityEngine.Random.Range(0, tempGrid.Count);
 
+        Cell cellToFill = tempGrid[randIndex];
+
+        cellToFill.filled = true;
+        int random = UnityEngine.Random.Range(0, cellToFill.tileOptions.Count);
+        RoadTypeDirection selectedRoad = cellToFill.tileOptions[random];
+        cellToFill.tileOptions = new List<RoadTypeDirection> { selectedRoad };
+
+        RoadTypeDirection foundRoad = cellToFill.tileOptions[0];
+        Quaternion rotation = Quaternion.identity;
+        rotation.y = foundRoad.rotations[UnityEngine.Random.Range(0, foundRoad.rotations.Count)];
+        groundComponents.Add(Instantiate(foundRoad.prefab, cellToFill.transform.position, Quaternion.identity));
+        gridComponents.Add(groundComponents[groundComponents.Count - 1]);
     }
 
-    void UpdateGeneration(Cell cell)
+    void ValidateCellPosition(GameObject cell)
     {
-        foreach (Cell cell in gridComponents)
+        foreach (GameObject component in gridComponents)
         {
-            if (cell.transform )
+            if (cell.transform == component.transform)
+            {
+                Destroy(cell);
+            }
         }
+    }
+
+    void UpdateGeneration()
+    {
+        List<GameObject>
     }
 
     void CheckValidity()

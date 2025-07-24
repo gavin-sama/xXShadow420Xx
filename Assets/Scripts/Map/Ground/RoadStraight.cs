@@ -17,5 +17,4 @@ public class RoadStraight : GroundBase
     [field: SerializeField] public override List<GameObject> TreePrefabs { get; set; }
 
     [field: SerializeField] public override float RailLikelihood { get; set; } = 0.35f;
-    public override int sizeZ { get { return 30; } }
 }

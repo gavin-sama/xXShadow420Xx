@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8665312311292660027}
   - component: {fileID: 5552139685578065102}
   - component: {fileID: 6085528462585027200}
-  - component: {fileID: 5624061711525875695}
   - component: {fileID: 5475920593594261473}
   m_Layer: 0
   m_Name: Cell
@@ -88,27 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5624061711525875695
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649724680648757351}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5475920593594261473
 MonoBehaviour:
   m_ObjectHideFlags: 0

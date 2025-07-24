@@ -24,11 +24,11 @@ public abstract class GroundBase : MonoBehaviour
     public static int currentHeightChange = 0;
     public static Vector3 lastTransformPosition = new Vector3(0, 0, 0);
 
-    public virtual int sizeX { get { return 45; } }
-    public virtual int sizeZ { get { return 45; } }
+    public int sizeX { get { return 45; } }
+    public int sizeZ { get { return 45; } }
 
 
-    public Vector3 GetNextPosition(int nextGroundSizeX, int nextGroundSizeZ, Direction direction)
+    public Vector3 GetNextPosition(Direction direction)
     {
         float x = 0;
         float y = 0;
@@ -39,26 +39,38 @@ public abstract class GroundBase : MonoBehaviour
             case Direction.North:
                 x = lastTransformPosition.x;
                 y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z + ((this.sizeZ + nextGroundSizeZ) / 2);
+                z = lastTransformPosition.z + this.sizeZ;
                 break;
             case Direction.East:
-                x = lastTransformPosition.x + ((this.sizeX + nextGroundSizeX) / 2);
+                x = lastTransformPosition.x + this.sizeX;
                 y = (currentHeightChange * heightAdjustment);
                 z = lastTransformPosition.z;
                 break;
             case Direction.South:
                 x = lastTransformPosition.x;
                 y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z + (-1 * ((this.sizeZ + nextGroundSizeZ) / 2));
+                z = lastTransformPosition.z + (-1 * this.sizeZ);
                 break;
             case Direction.West:
-                x = lastTransformPosition.x + (-1 * ((this.sizeX + nextGroundSizeX) / 2));
+                x = lastTransformPosition.x + (-1 * this.sizeX);
                 y = (currentHeightChange * heightAdjustment);
                 z = lastTransformPosition.z;
                 break;
         }
 
             return new Vector3(x, y, z);
+    }
+
+    public List<Vector3> GetAvailablePositions()
+    {
+        List<Vector3> availablePositions = new List<Vector3>();
+
+        foreach (Direction direction in PlaceableDirections)
+        {
+            availablePositions.Add(GetNextPosition(direction));
+        }
+
+        return availablePositions;
     }
 }
 

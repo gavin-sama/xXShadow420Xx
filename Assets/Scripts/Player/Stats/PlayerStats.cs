@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Audio;
 
 public class PlayerStats : MonoBehaviour
@@ -20,59 +19,47 @@ public class PlayerStats : MonoBehaviour
     public AudioClip deathClip;
 
     public static int teethCurrency;
-
     public static int attackUpgrades = 0;
     public static int healthUpgrades = 0;
     public static int speedUpgrades = 0;
 
-
     private float currentHealth;
-
-    // Add an Animator reference
-    private Animator animator;
+    private bool isDead = false;
 
     private void Start()
     {
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
 
-        //XP bar (CHANGE WHEN YOU HAVE MULTIPLE LEVELS)
         currentXp = 0;
         xpBar.SetSliderCap(xpCap);
-
-        // Get the Animator component attached to the player
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        if (isDead) return;
 
-        // Gradually update XP
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        if (currentHealth <= 0)
+            Die();
+
         if (currentXp != targetXp)
         {
             currentXp = Mathf.Lerp(currentXp, targetXp, xpLerpSpeed * Time.deltaTime);
 
-            // Optional: snap to target when close enough
             if (Mathf.Abs(currentXp - targetXp) < 0.01f)
-            {
                 currentXp = targetXp;
-            }
 
             xpBar.SetSlider(currentXp);
         }
     }
 
-
     public void GainXP(float amount)
     {
+        if (isDead) return;
+
         targetXp += amount;
         if (targetXp > xpCap)
         {
@@ -87,48 +74,39 @@ public class PlayerStats : MonoBehaviour
         UpgradeUI.instance.Show();
     }
 
-
-
     public void TakeDamage(float amount)
     {
+        if (isDead) return;
+
         currentHealth -= amount;
         healthBar.SetSlider(currentHealth);
 
-        // Play hurt sound without interfering with other sounds
         if (hurtClip != null && !audioSource.isPlaying)
-        {
             audioSource.PlayOneShot(hurtClip);
-        }
-    }
 
+        if (damageIndicator != null)
+            damageIndicator.Flash();
+    }
 
     public void HealPlayer(float amount)
     {
+        if (isDead) return;
+
         currentHealth += amount;
         healthBar.SetSlider(currentHealth);
     }
 
     private void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log("You died!");
 
-        // Play death animation
-        if (animator != null)
-        {
-            animator.SetBool("isDead", true);
-        }
-
-        // Pause the game
-        Time.timeScale = 0f;
-
-
-        // Play death sound even after object is destroyed
         if (deathClip != null)
-        {
             audioSource.PlayOneShot(deathClip);
-        }
-        // Activate death screen
-        //...
+
+        Time.timeScale = 0f;
 
         PlayerStats.attackUpgrades = 0;
         PlayerStats.healthUpgrades = 0;

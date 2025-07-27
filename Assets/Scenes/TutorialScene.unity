@@ -2837,8 +2837,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5e9aa73fc909ad445bd87be8bb5a8e11, type: 3}
-  m_Resource: {fileID: 8300000, guid: 5e9aa73fc909ad445bd87be8bb5a8e11, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.093
   m_Pitch: 1
@@ -7270,24 +7270,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8693436764281777323, guid: 010df8dc3e826b747a0087e3d1137dfa, type: 3}
---- !u!1 &1218301364 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6044771161127098992, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  m_PrefabInstance: {fileID: 22375186170672415}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1218301373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218301364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a1d626745ad0b4aba98f54203e026d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cineCam: {fileID: 0}
 --- !u!1 &1234799770
 GameObject:
   m_ObjectHideFlags: 0
@@ -13546,10 +13528,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6044771161127098992, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1218301373}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

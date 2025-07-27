@@ -1993,7 +1993,7 @@ MonoBehaviour:
   playerClassData: {fileID: 11400000, guid: f2cb3007057344d4bb3707f06fafeea9, type: 2}
   animator: {fileID: 6680735361690529369}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  runClip: {fileID: 0}
+  runClip: {fileID: 8300000, guid: 0d5ca09b4cc72f146a19be9c3da63ea2, type: 3}
   idleClip: {fileID: 0}
   playerStats: {fileID: 4140532963775796}
   walkSpeed: 6
@@ -2074,8 +2074,8 @@ MonoBehaviour:
   xpBar: {fileID: 3176639254311752977}
   damageIndicator: {fileID: 6785711701032524097}
   audioSource: {fileID: 0}
-  hurtClip: {fileID: 0}
-  deathClip: {fileID: 0}
+  hurtClip: {fileID: 8300000, guid: 850a3eb3e5f00284286d71b098460fa3, type: 3}
+  deathClip: {fileID: 8300000, guid: 9d805ac91588fc843b31d82c2ead2c50, type: 3}
 --- !u!114 &6953631660948651653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2238,5 +2238,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   ultimateEffectPrefab: {fileID: 5793841387165916247, guid: 8a474c5401202784ab11371270ef4e33, type: 3}
-  castSound: {fileID: 8300000, guid: e129d625ea0c7b9498babb3d4346010f, type: 3}
-  ultimateSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: fd9a91cccf29cc34aab299f32fa25251, type: 3}
+  ultimateSound: {fileID: 8300000, guid: 13138315883e4cc42b4f4c66a7ebf44e, type: 3}

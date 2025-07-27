@@ -94,7 +94,7 @@ public class RoadGenerator : MonoBehaviour
         RoadTypeDirection foundRoad = cellToFill.tileOptions[0];
         Quaternion rotation = Quaternion.identity;
         rotation.y = foundRoad.rotations[UnityEngine.Random.Range(0, foundRoad.rotations.Count)];
-        groundComponents.Add(Instantiate(foundRoad.prefab, cellToFill.transform.position, Quaternion.identity));
+        groundComponents.Add(Instantiate(foundRoad.prefab, cellToFill.transform.position, rotation));
         gridComponents.Add(groundComponents[groundComponents.Count - 1]);
     }
 
@@ -111,10 +111,28 @@ public class RoadGenerator : MonoBehaviour
 
     void UpdateGeneration()
     {
-        List<GameObject>
+        List<Cell> newGenerationCell = new List<Cell>(cellsToGenerate);
+
+        for (int i = 0; i < cellsToGenerate.Count; i++)
+        {
+            if (cellsToGenerate[i].filled)
+            {
+                newGenerationCell[i] = cellsToGenerate[i];
+            }
+            else
+            {
+                List<GameObject> options = new List<GameObject>();
+                foreach (GameObject go in roadPrefabs)
+                {
+                    options.Add(go);
+                }
+
+                if ()
+            }
+        }
     }
 
-    void CheckValidity()
+    void CheckValidity(List<GameObject> optionList, List<GameObject> validOption)
     {
 
     }

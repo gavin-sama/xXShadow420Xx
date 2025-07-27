@@ -63,3 +63,43 @@
   - Deer skull for tips in the home and tutorial
   - Grainy art style (maybe)
   - Dream journal as the  pause menu
+
+
+
+
+
+
+
+## Timeline
+### July 1st
+- Templates
+- Prefabs
+- Character Models
+
+#### By June 26th
+- Catchup
+- Templates
+- Refactoring
+
+#### By July 10th
+- Character Models
+- Prefabs
+
+
+### August 1st
+- Functional game
+- procedural generation
+- animated characters
+- enemy models/animated
+- evolutional progression
+- lore (fish)
+
+
+#### By July 24th
+- Procedural Generation
+- Animations/Models
+
+#### By August 7th
+- Lore
+- Evolution Animation
+- Transitions

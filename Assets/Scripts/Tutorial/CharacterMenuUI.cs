@@ -79,24 +79,5 @@ public class CharacterMenuUI : MonoBehaviour
         currentCharacter = Instantiate(prefab, spawnPosition, spawnRotation);
 
         yield return new WaitUntil(() => currentCharacter != null);
-
-        // Assign to camera
-        var freeLook = Object.FindFirstObjectByType<CinemachineCamera>();
-        if (freeLook)
-        {
-            freeLook.Follow = currentCharacter.transform;
-            freeLook.LookAt = currentCharacter.transform;
-        }
-
-        // Assign playerCamera in PlayerMovement if needed
-        PlayerMovement movement = currentCharacter.GetComponent<PlayerMovement>();
-        if (movement)
-        {
-            Camera mainCam = Camera.main;
-            if (mainCam)
-            {
-                movement.playerCamera = mainCam;
-            }
-        }
     }
 }

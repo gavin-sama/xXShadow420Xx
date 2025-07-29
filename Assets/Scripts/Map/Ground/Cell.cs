@@ -10,10 +10,9 @@ public class Cell : MonoBehaviour
     {
         filled = filledState;
         tileOptions = new List<RoadTypeDirection>();
-        List<Direction> allDirections = new List<Direction> { Direction.North, Direction.East, Direction.South, Direction.West};
         foreach (GameObject roadPrefab in roads)
         {
-            tileOptions.Add(new RoadTypeDirection { prefab = roadPrefab, rotations = allDirections });
+            tileOptions.Add(new RoadTypeDirection { prefab = roadPrefab, rotations = new List<int>() { 0, 90, 180, 270} });
         }
     }
 

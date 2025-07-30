@@ -28,14 +28,15 @@ public abstract class BaseAIController : MonoBehaviour
     protected virtual void Awake()
     {
         aiHealth = GetComponent<AIHealth>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
 
     protected virtual void Update()
     {
-        if (player == null) return;
+        // Optional pause check, replace with your own pause manager if needed
+        if (player == null || Time.timeScale == 0f) return;
 
         HandleAI();
         UpdateAnimations();
@@ -45,6 +46,17 @@ public abstract class BaseAIController : MonoBehaviour
 
     protected void ChasePlayer()
     {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        // Check stopping distance
+        if (distanceToPlayer <= stopDistanceFromPlayer)
+        {
+            StopMovement();
+            Debug.Log("BaseAIController: Stopping chase due to proximity.");
+            return;
+        }
+
+        // Chase logic
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(player.position);
         navMeshAgent.speed = speedRun;
@@ -60,6 +72,13 @@ public abstract class BaseAIController : MonoBehaviour
         {
             audioSource.Stop();
         }
+    }
+
+    protected void StopMovement()
+    {
+        navMeshAgent.isStopped = true;
+        navMeshAgent.velocity = Vector3.zero;
+        transform.position = navMeshAgent.nextPosition;
     }
 
     public virtual void TakeDamage(int damage)

@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -18,6 +21,10 @@ public class PlayerStats : MonoBehaviour
     public AudioClip hurtClip;
     public AudioClip deathClip;
 
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Image fadeOverlay;
+    [SerializeField] private float fadeSpeed = 1f;
+
     public static int teethCurrency;
     public static int attackUpgrades = 0;
     public static int healthUpgrades = 0;
@@ -33,6 +40,10 @@ public class PlayerStats : MonoBehaviour
 
         currentXp = 0;
         xpBar.SetSliderCap(xpCap);
+
+        // Ensure fade overlay starts transparent
+        if (fadeOverlay != null)
+            fadeOverlay.color = new Color(0, 0, 0, 0);
     }
 
     private void Update()
@@ -41,9 +52,6 @@ public class PlayerStats : MonoBehaviour
 
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
-
-        if (currentHealth <= 0)
-            Die();
 
         if (currentXp != targetXp)
         {
@@ -86,6 +94,9 @@ public class PlayerStats : MonoBehaviour
 
         if (damageIndicator != null)
             damageIndicator.Flash();
+
+        if (currentHealth <= 0)
+            Die();
     }
 
     public void HealPlayer(float amount)
@@ -106,14 +117,51 @@ public class PlayerStats : MonoBehaviour
         if (deathClip != null)
             audioSource.PlayOneShot(deathClip);
 
-        Time.timeScale = 0f;
+        if (playerAnimator != null)
+            playerAnimator.SetTrigger("Die");
 
+        StartCoroutine(FadeScreen());
+    }
+
+    public void OnDeathAnimationFinished()
+    {
+        StartCoroutine(HandleDeathSequence());
+    }
+
+    private IEnumerator HandleDeathSequence()
+    {
+
+        // Wait for death animation duration (e.g., length of deathClip)
+        float waitTime = deathClip != null ? deathClip.length : 2f;
+        yield return new WaitForSeconds(waitTime);
+
+        // Reset player stats
         PlayerStats.attackUpgrades = 0;
         PlayerStats.healthUpgrades = 0;
         PlayerStats.speedUpgrades = 0;
-
         PlayerAttack.attackDamage = 20;
         PlayerAttack.attackSpeed = 0.6f;
         maxHealth = 100;
+
+        // Load scene
+        SceneManager.LoadScene("Hub");
     }
+
+    private IEnumerator FadeScreen()
+    {
+        if (fadeOverlay != null)
+        {
+            Color fadeColor = fadeOverlay.color;
+            fadeColor.a = 0;
+            fadeOverlay.color = fadeColor;
+
+            while (fadeColor.a < 1f)
+            {
+                fadeColor.a += Time.deltaTime * fadeSpeed;
+                fadeOverlay.color = fadeColor;
+                yield return null;
+            }
+        }
+    }
+
 }

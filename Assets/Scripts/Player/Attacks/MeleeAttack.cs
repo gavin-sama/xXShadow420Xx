@@ -10,25 +10,71 @@ public class MeleeAttack : PlayerAttackBase
     public Animator animator;
     public GameObject impactEffect;
 
+    [Header("Charge Settings")]
+    public float chargeSpeed = 3f;
+    public float chargeDamageMultiplier = 1.5f; // Optional: increase damage when charged
+
+    private bool isCharging;
+    private bool wasCharging; // Track previous charging state
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canAttack)
+        bool shouldCharge = Input.GetMouseButton(0) &&
+                           (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.LeftShift));
+
+        // Start charging attack
+        if (shouldCharge && canAttack)
         {
-            PerformAttack();
+            if (!isCharging)
+            {
+                isCharging = true;
+                animator.SetBool("isCharging", true);
+                Debug.Log("Started charging attack");
+            }
+
+            // Move forward during charge
+            transform.position += transform.forward * Time.deltaTime * chargeSpeed;
         }
+        // Release charge when buttons are released
+        else if (isCharging && !shouldCharge)
+        {
+            // Release charge
+            isCharging = false;
+            lastAttackTime = Time.time;
+            animator.SetBool("isCharging", false);
+
+            // Calculate damage based on charge
+            int finalDamage = Mathf.RoundToInt(damage * chargeDamageMultiplier);
+            PerformAttack(finalDamage);
+
+            Debug.Log("Released charge attack");
+        }
+
+        wasCharging = isCharging;
     }
 
     public override void PerformAttack()
     {
+        PerformAttack(damage);
+    }
+
+    public void PerformAttack(int attackDamage)
+    {
         lastAttackTime = Time.time;
-        animator.SetTrigger("Attack");
+
+        // Only trigger attack animation if not charging
+        if (!isCharging)
+        {
+            animator.SetTrigger("Attack");
+        }
 
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, range, enemyLayers);
+
         foreach (Collider enemy in hitEnemies)
         {
             if (enemy.TryGetComponent(out AIHealth enemyHealth))
             {
-                enemyHealth.TakeDamage(damage);
+                enemyHealth.TakeDamage(attackDamage);
             }
         }
 
@@ -42,7 +88,7 @@ public class MeleeAttack : PlayerAttackBase
     {
         if (attackPoint != null)
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = isCharging ? Color.yellow : Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, range);
         }
     }

@@ -22,6 +22,7 @@ public abstract class BaseAIController : MonoBehaviour
     [Header("Audio Settings")]
     public AudioClip runClip;
     public AudioClip hurtClip;
+    public AudioClip attackClip;
 
     protected AIHealth aiHealth;
 

@@ -9,6 +9,7 @@ public class RangedAttack : PlayerAttackBase
     public GameObject projectilePrefab;
     public Transform shootPoint;
     public float projectileSpeed = 30f;
+    public LayerMask aimLayerMask;
 
     [Header("Ultimate Settings")]
     public float ultimateRange = 6f;
@@ -76,16 +77,20 @@ public class RangedAttack : PlayerAttackBase
             return;
         }
 
-        Vector3 direction = transform.forward;
+        // Spawn exactly at shootPoint
+        Vector3 spawnPosition = shootPoint.position;
 
-        GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
+        // Direction tilted slightly right
+        Vector3 direction = transform.forward + transform.right * 0.2f;
+        direction.Normalize(); // Make sure it's a unit vector
+
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.LookRotation(direction));
         projectile.SetActive(true);
 
         if (projectile.TryGetComponent(out Rigidbody rb))
         {
             rb.linearVelocity = direction * projectileSpeed;
         }
-
 
         if (castSound != null)
         {
@@ -94,6 +99,9 @@ public class RangedAttack : PlayerAttackBase
 
         Debug.Log("Projectile fired!");
     }
+
+
+
 
     // Triggers the ultimate attack animation
     private void TriggerUltimate()

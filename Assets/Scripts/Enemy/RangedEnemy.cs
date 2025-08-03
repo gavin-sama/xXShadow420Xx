@@ -16,6 +16,13 @@ public class RangedEnemy : BaseAIController
     protected override void HandleAI()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (PlayerStats.isUndetectable)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            animator.SetBool("isWalking", false);
+            return;
+        }
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Throwing"))
         {

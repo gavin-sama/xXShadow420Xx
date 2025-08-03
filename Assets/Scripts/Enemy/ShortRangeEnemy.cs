@@ -17,6 +17,14 @@ public class ShortRangeEnemy : BaseAIController
     protected override void HandleAI()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (PlayerStats.isUndetectable)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            animator.SetBool("isWalking", false);
+            return;
+        }
+
         bool inAttackRange = distanceToPlayer <= attackRange;
 
         if (!isAttacking || Time.time > attackStartTime + attackAnimationDuration)

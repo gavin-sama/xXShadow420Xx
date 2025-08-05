@@ -3,6 +3,8 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.LowLevel;
+using Unity.Cinemachine;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -121,6 +123,11 @@ public class PlayerStats : MonoBehaviour
             playerAnimator.SetTrigger("Die");
 
         StartCoroutine(FadeScreen());
+
+        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<CharacterController>().enabled = false; // if used
+        GetComponent<CinemachineCamera>().enabled = false;
+
     }
 
     public void OnDeathAnimationFinished()

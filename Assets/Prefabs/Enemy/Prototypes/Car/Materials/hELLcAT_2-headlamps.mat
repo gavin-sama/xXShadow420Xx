@@ -17,7 +17,8 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -115,12 +116,16 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 0.86851376, b: 0.40533715, a: 1}
-    - _Color: {r: 1, g: 0.86851376, b: 0.40533715, a: 1}
+    - _Color: {r: 1, g: 0.86851376, b: 0.40533713, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+<<<<<<< HEAD
 --- !u!114 &3689948650117801849
+=======
+--- !u!114 &7837279609421683825
+>>>>>>> affc9c4aefd4e2fb93cf79cde79e33f2b08aa439
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

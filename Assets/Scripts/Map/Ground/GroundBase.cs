@@ -11,6 +11,7 @@ public abstract class GroundBase : MonoBehaviour
     public abstract List<RoadTypeDirection> WestRoadPrefabs { get; set; }
 
     public abstract Direction[] PlaceableDirections { get; }
+    public abstract int extraEnds { get; }
 
     public virtual List<GameObject> HousePrefabs { get; set; }
     public virtual List<GameObject> GrassPrefabs { get; set; }
@@ -22,7 +23,7 @@ public abstract class GroundBase : MonoBehaviour
 
     public const float heightAdjustment = 2.418f;
     public static int currentHeightChange = 0;
-    public static Vector3 lastTransformPosition = new Vector3(0, 0, 0);
+    public static Transform lastTransform;
 
     public int sizeX { get { return 45; } }
     public int sizeZ { get { return 45; } }
@@ -30,35 +31,31 @@ public abstract class GroundBase : MonoBehaviour
 
     public Vector3 GetNextPosition(Direction direction)
     {
-        float x = 0;
-        float y = 0;
-        float z = 0;
+        Vector3 lastTransformFlat = new Vector3(lastTransform.forward.x, 0, lastTransform.forward.z).normalized;
+        Vector3 nextPosition;
 
-        switch (direction)
+        if (direction == Direction.North)
         {
-            case Direction.North:
-                x = lastTransformPosition.x;
-                y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z + this.sizeZ;
-                break;
-            case Direction.East:
-                x = lastTransformPosition.x + this.sizeX;
-                y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z;
-                break;
-            case Direction.South:
-                x = lastTransformPosition.x;
-                y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z + (-1 * this.sizeZ);
-                break;
-            case Direction.West:
-                x = lastTransformPosition.x + (-1 * this.sizeX);
-                y = (currentHeightChange * heightAdjustment);
-                z = lastTransformPosition.z;
-                break;
+            nextPosition = lastTransform.position + lastTransformFlat * 45f;
+            nextPosition.y = currentHeightChange * heightAdjustment;
+        }
+        else if (direction == Direction.East)
+        {
+            nextPosition = lastTransform.position + (Quaternion.Euler(0, 90, 0) * lastTransformFlat) * 45f;
+            nextPosition.y = currentHeightChange * heightAdjustment;
+        }
+        else if (direction == Direction.South)
+        {
+            nextPosition = lastTransform.position + (-lastTransformFlat) * 45f;
+            nextPosition.y = currentHeightChange * heightAdjustment;
+        }
+        else
+        {
+            nextPosition = lastTransform.position + (Quaternion.Euler(0, -90, 0) * lastTransformFlat) * 45f;
+            nextPosition.y = currentHeightChange * heightAdjustment;
         }
 
-            return new Vector3(x, y, z);
+        return nextPosition;
     }
 
     public List<Vector3> GetAvailablePositions()

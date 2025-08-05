@@ -10,5 +10,7 @@ public class BridgeGate : GroundBase
 
     public override Direction[] PlaceableDirections { get { return new Direction[] { Direction.North, Direction.South }; } }
 
+    public override int extraEnds { get { return 0; } }
+
     [field: SerializeField] public override float RailLikelihood { get; set; } = 0.35f;
 }

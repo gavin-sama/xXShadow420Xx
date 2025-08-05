@@ -70,7 +70,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     IEnumerator Spawn(GameObject prefab)
     {
-        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(0, 0, 0);
+        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(-32, 0, -75);
         Quaternion spawnRotation = currentCharacter ? currentCharacter.transform.rotation : Quaternion.identity;
 
         if (currentCharacter)

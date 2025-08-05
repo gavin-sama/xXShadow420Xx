@@ -2124,6 +2124,7 @@ MonoBehaviour:
     m_Bits: 128
   runClip: {fileID: 0}
   hurtClip: {fileID: 0}
+  attackClip: {fileID: 0}
   bulletPrefab: {fileID: 6408893135164469857, guid: f5953d23943ce0447815b31e858226ed, type: 3}
   shootPoint: {fileID: 1047140714}
   bulletSpeed: 7
@@ -2506,10 +2507,10 @@ MonoBehaviour:
     Controllers:
     - Name: Look Orbit X
       Owner: {fileID: 396857090}
-      Enabled: 0
+      Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: 1
+        Gain: -1
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -2586,7 +2587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0.8, y: 0, z: 0}
+  TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
     BindingMode: 3
     PositionDamping: {x: 0, y: 0, z: 0}
@@ -2597,13 +2598,13 @@ MonoBehaviour:
   Radius: 5.21
   Orbits:
     Top:
-      Radius: 0.32
+      Radius: 0.94
       Height: 5.46
     Center:
-      Radius: 3.59
+      Radius: 5.03
       Height: 2.35
     Bottom:
-      Radius: 0.68
+      Radius: 1.11
       Height: -0.85
     SplineCurvature: 1
   RecenteringTarget: 2
@@ -3402,6 +3403,9 @@ MonoBehaviour:
   audioSource: {fileID: 490588183}
   hurtClip: {fileID: 8300000, guid: 435836c4be48b22428b0ef40dfcef47a, type: 3}
   deathClip: {fileID: 8300000, guid: a739a0d5019c02e4faca0257a7fc2e76, type: 3}
+  playerAnimator: {fileID: 0}
+  fadeOverlay: {fileID: 0}
+  fadeSpeed: 1
 --- !u!114 &490588181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5905,7 +5909,7 @@ MonoBehaviour:
   evolutionDropdown: {fileID: 138926365}
   characterSelectCanvas: {fileID: 495394533}
   wizardEvo1: {fileID: 8992028533467506775, guid: 63a6682c7a96ac64aab4b9d58c1a6e27, type: 3}
-  wizardEvo2: {fileID: 0}
+  wizardEvo2: {fileID: 2247799444302444256, guid: 6108bafaa0cd62d4eaa972bb99136782, type: 3}
   wizardEvo3: {fileID: 0}
   brawlerEvo1: {fileID: 0}
   brawlerEvo2: {fileID: 0}
@@ -5977,7 +5981,7 @@ RectTransform:
   m_Father: {fileID: 1295275410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9262,11 +9266,9 @@ MonoBehaviour:
     m_Bits: 0
   runClip: {fileID: 0}
   hurtClip: {fileID: 0}
+  attackClip: {fileID: 0}
   attackRange: 1
   attackCooldown: 1.5
-  attackDamage: 10
-  attackAnimationDuration: 0.9
-  attackClip: {fileID: 0}
 --- !u!1 &1335972522 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8741970972656723525, guid: 1356aff08b3b31642bc87e0d5ab5c46b, type: 3}

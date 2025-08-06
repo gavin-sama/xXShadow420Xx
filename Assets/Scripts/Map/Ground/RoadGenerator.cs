@@ -14,7 +14,6 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] private GameObject miniBossAreaPrefab;
     [SerializeField] private GameObject startingAreaPrefab;
 
-    //private List<GameObject> possibleGroundTiles;
     [SerializeField] private GameObject cellObj;
 
     private int allowedEnds;
@@ -61,7 +60,6 @@ public class RoadGenerator : MonoBehaviour
         if (!isComplete)
         {
             GroundBase groundScript = (GroundBase)groundToGenerateAround.GetComponentAtIndex(1);
-            //Direction[] allDirections = (Direction[])Enum.GetValues(typeof(Direction));
             foreach (Direction direction in groundScript.PlaceableDirections)
             {
                 GameObject newCell = Instantiate(cellObj, groundScript.GetNextPosition(direction), new Quaternion(0, 0, 0, 0));
@@ -125,7 +123,7 @@ public class RoadGenerator : MonoBehaviour
                 foreach (Vector3 transform in componentAvailablePositions)
                     if (groundTransforms.Contains(transform))
                         n++;
-                if (n == 4)
+                if (n == componentAvailablePositions.Count)
                     groundComponents.Remove(groundComponents[x]);
                 else
                 {
@@ -134,71 +132,78 @@ public class RoadGenerator : MonoBehaviour
                         // Is current groundComponent the cell's South object
                         if (groundScript.GetNextPosition(Direction.North) == cellsToGenerate[i].transform.position)
                         {
+                            Debug.Log($"Hit North with {cellsToGenerate.Count} cellsToGenerate");
+                            Debug.Log($"GroundComponent #{x}");
                             foreach (RoadTypeDirection prefab in groundScript.NorthRoadPrefabs)
                             {
                                 for (int r = 0; r < prefab.rotations.Count; r++)
                                 {
-                                    prefab.rotations[r] += (int)groundComponents[x].transform.rotation.y;
+                                    //Debug.Log(prefab.rotations[r]);
+                                    prefab.rotations[r] = (int)((prefab.rotations[r] + groundComponents[x].transform.rotation.y) % 360);
+                                    //Debug.Log(prefab.rotations[r]);
+                                    //Debug.Log($"Float: {groundComponents[x].transform.rotation.y} + Int Variant: {(int)groundComponents[x].transform.rotation.y}");
                                 }
                             }
                             CheckValidity(ref options, groundScript.NorthRoadPrefabs);
-                            Debug.Log($"Direction: North");
                         }
 
                         // Is current groundComponent the cell's West object
                         else if (groundScript.GetNextPosition(Direction.East) == cellsToGenerate[i].transform.position)
                         {
-                            foreach (RoadTypeDirection prefab in groundScript.NorthRoadPrefabs)
+                            Debug.Log($"Hit East with {cellsToGenerate.Count} cellsToGenerate");
+                            Debug.Log($"GroundComponent #{x}");
+                            foreach (RoadTypeDirection prefab in groundScript.EastRoadPrefabs)
                             {
                                 for (int r = 0; r < prefab.rotations.Count; r++)
                                 {
-                                    prefab.rotations[r] += (int)groundComponents[x].transform.rotation.y;
+                                    prefab.rotations[r] = (int)((prefab.rotations[r] + groundComponents[x].transform.rotation.y) % 360);
                                 }
                             }
                             CheckValidity(ref options, groundScript.EastRoadPrefabs);
-                            Debug.Log($"Direction: East");
                         }
 
                         // Is current groundComponent the cell's North object
                         else if (groundScript.GetNextPosition(Direction.South) == cellsToGenerate[i].transform.position)
                         {
-                            foreach (RoadTypeDirection prefab in groundScript.NorthRoadPrefabs)
+                            Debug.Log($"Hit South with {cellsToGenerate.Count} cellsToGenerate");
+                            Debug.Log($"GroundComponent #{x}");
+                            foreach (RoadTypeDirection prefab in groundScript.SouthRoadPrefabs)
                             {
                                 for (int r = 0; r < prefab.rotations.Count; r++)
                                 {
-                                    prefab.rotations[r] += (int)groundComponents[x].transform.rotation.y;
+                                    prefab.rotations[r] = (int)((prefab.rotations[r] + groundComponents[x].transform.rotation.y) % 360);
                                 }
                             }
                             CheckValidity(ref options, groundScript.SouthRoadPrefabs);
-                            Debug.Log($"Direction: South");
                         }
 
-                        // Current groundComponent is the cell's East object
+                        //Current groundComponent is the cell's East object
                         else
                         {
-                            foreach (RoadTypeDirection prefab in groundScript.NorthRoadPrefabs)
+                            Debug.Log($"Hit West with {cellsToGenerate.Count} cellsToGenerate");
+                            Debug.Log($"GroundComponent #{x}");
+                            foreach (RoadTypeDirection prefab in groundScript.WestRoadPrefabs)
                             {
                                 for (int r = 0; r < prefab.rotations.Count; r++)
                                 {
-                                    prefab.rotations[r] += (int)groundComponents[x].transform.rotation.y;
+                                    prefab.rotations[r] = (int)((prefab.rotations[r] + groundComponents[x].transform.rotation.y) % 360);
                                 }
                             }
                             CheckValidity(ref options, groundScript.WestRoadPrefabs);
-                            Debug.Log($"Direction: West");
                         }
                     }
                 }
             }
 
             cellsToGenerate[i].tileOptions = options;
-            string s = "";
-            foreach (RoadTypeDirection option in options)
-            {
-                s += $"{option.prefab} + ";
-                foreach (int rotation in option.rotations)
-                    s += $"{rotation} + ";
-            }
-            Debug.Log(s);
+            //string s = $"CellTransform: {cellsToGenerate[i].transform.ToString()}";
+            //foreach (RoadTypeDirection option in options)
+            //{
+            //    s += $" + {option.prefab}";
+            //    foreach (int rotation in option.rotations)
+            //        s += $" + {rotation}";
+            //}
+            //Debug.Log(s);
         }
 
         if (gridComponents.Count >= 20)
@@ -209,13 +214,17 @@ public class RoadGenerator : MonoBehaviour
 
     void CheckValidity(ref List<RoadTypeDirection> optionList, List<RoadTypeDirection> validOptions)
     {
+        Debug.Log($"OptionList: {optionList.Count}");
         if (optionList.Count == 0)
         {
             List<GameObject> validOptionsPrefabs = new List<GameObject>();
+            Debug.Log($"ValidOptions: {validOptions.Count}");
             for (int x = 0; x < validOptions.Count; x++)
             {
                 if (allowedEnds <= 1 && (validOptions[x].prefab.GetComponent<RoadCulDeSac>() != null || validOptions[x].prefab.GetComponent<RoadCulDeSacRail>() != null))
+                {
                     validOptions.Remove(validOptions[x]);
+                }
                 else
                 {
                     validOptionsPrefabs.Add(validOptions[x].prefab);
@@ -240,7 +249,6 @@ public class RoadGenerator : MonoBehaviour
             {
                 if (!validOptions.Contains(optionList[x]))
                 {
-                    Debug.Log($"Removed {optionList[x].prefab}");
                     optionList.RemoveAt(x);
                 }
             }
@@ -249,38 +257,22 @@ public class RoadGenerator : MonoBehaviour
 
     IEnumerator CheckEntropy()
     {
-        //List<Cell> tempGrid = new List<Cell>(cellsToGenerate);
         List<GameObject> tempGrid1 = new List<GameObject>(cells);
         tempGrid1.Sort((a, b) => ((Cell)a.GetComponentAtIndex(a.GetComponentCount() - 1)).tileOptions.Count - ((Cell)b.GetComponentAtIndex(b.GetComponentCount() - 1)).tileOptions.Count);
         tempGrid1.RemoveAll(a => ((Cell)a.GetComponentAtIndex(a.GetComponentCount() - 1)).tileOptions.Count != ((Cell)tempGrid1[0].GetComponentAtIndex(tempGrid1[0].GetComponentCount() - 1)).tileOptions.Count);
-        //tempGrid.RemoveAll(c => c.filled);
-        //tempGrid.Sort((a, b) => a.tileOptions.Count - b.tileOptions.Count);
-        //tempGrid.RemoveAll(a => a.tileOptions.Count != tempGrid[0].tileOptions.Count);
         tempGrid = tempGrid1;
 
-        yield return new WaitForSeconds(2.125f);
+        yield return new WaitForSeconds(1.125f);
 
-        //FillRandomCell();
         isReady = true;
     }
 
     void FillRandomCell()
     {
         int randIndex = UnityEngine.Random.Range(0, tempGrid.Count);
-        Debug.Log(tempGrid.Count);
-        Debug.Log(tempGrid[0]);
-        string s = "Cell Fillable:\n";
-        foreach (RoadTypeDirection option in cellsToGenerate[0].tileOptions)
-        {
-            s += $"{option.prefab} + ";
-            foreach (int r in option.rotations)
-                s += $"{r} + ";
-        }
-        Debug.Log(s);
-
+        
         GameObject cell = tempGrid[randIndex];
-        Cell cellToFill = (Cell)cell.GetComponentAtIndex(cell.GetComponentCount() - 1);
-        cellToFill.CreateCell(false, roadPrefabs);
+        Cell cellToFill = (Cell)tempGrid[randIndex].GetComponentAtIndex(tempGrid[randIndex].GetComponentCount() - 1);
 
         int random = UnityEngine.Random.Range(0, cellToFill.tileOptions.Count);
         RoadTypeDirection selectedRoad = cellToFill.tileOptions[random];
@@ -288,7 +280,7 @@ public class RoadGenerator : MonoBehaviour
 
         RoadTypeDirection foundRoad = cellToFill.tileOptions[0];
         float y = foundRoad.rotations[UnityEngine.Random.Range(0, foundRoad.rotations.Count)];
-        GameObject obj = Instantiate(foundRoad.prefab, cellToFill.transform.position, new Quaternion(0, y, 0, 0));
+        GameObject obj = Instantiate(foundRoad.prefab, cellToFill.transform.position, Quaternion.Euler(0, y, 0).normalized);
         GroundBase.lastTransform = obj.transform;
 
         allowedEnds += ((GroundBase)foundRoad.prefab.GetComponentAtIndex(1)).extraEnds;
@@ -306,5 +298,5 @@ public class RoadGenerator : MonoBehaviour
         isReady = false;
 
         InitializeNextGrid(obj);
-    }           /////////////////////////// Rotation is incorrect now?!?!
+    }
 }

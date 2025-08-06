@@ -31,7 +31,7 @@ public abstract class GroundBase : MonoBehaviour
 
     public Vector3 GetNextPosition(Direction direction)
     {
-        Vector3 lastTransformFlat = new Vector3(lastTransform.forward.x, 0, lastTransform.forward.z).normalized;
+        Vector3 lastTransformFlat = new Vector3(this.transform.forward.x, 0, this.transform.forward.z).normalized;
         Vector3 nextPosition;
 
         if (direction == Direction.North)

@@ -19,6 +19,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     void Start()
     {
+        SceneManager.UnloadSceneAsync("Hub");
         characterSelectCanvas.SetActive(true);
         Time.timeScale = 0f; // Freeze game until selection
     }
@@ -34,7 +35,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     public void ReturnToHub()
     {
-      SceneManager.LoadScene("Hub"); 
+        SceneManager.LoadScene("Hub"); 
     }
 
     public void StartGame()

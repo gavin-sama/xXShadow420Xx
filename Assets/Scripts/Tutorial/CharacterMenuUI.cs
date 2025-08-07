@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class CharacterMenuUI : MonoBehaviour
 {
@@ -29,6 +30,11 @@ public class CharacterMenuUI : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
+
+    public void ReturnToHub()
+    {
+      SceneManager.LoadScene("Hub"); 
     }
 
     public void StartGame()
@@ -77,6 +83,13 @@ public class CharacterMenuUI : MonoBehaviour
             Destroy(currentCharacter);
 
         currentCharacter = Instantiate(prefab, spawnPosition, spawnRotation);
+        PlayerController.Instance = currentCharacter.transform;
+
+        foreach (RangedEnemy enemy in FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None))
+        {
+            enemy.AssignPlayer(currentCharacter.transform);
+        }
+
 
         yield return new WaitUntil(() => currentCharacter != null);
     }

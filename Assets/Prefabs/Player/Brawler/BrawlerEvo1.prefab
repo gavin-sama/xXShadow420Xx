@@ -2256,13 +2256,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerClassData: {fileID: 11400000, guid: a3cfaf48044e0764fb207ec8b8b37a10, type: 2}
   animator: {fileID: 3160344337352825647}
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
   runClip: {fileID: 0}
   idleClip: {fileID: 0}
   playerStats: {fileID: 4258232815059415040}
   walkSpeed: 6
   runSpeed: 12
-  lookSpeed: 0.5
+  lookSpeed: 150
   lookXLimit: 45
   gravity: 25
   defaultHeight: 2

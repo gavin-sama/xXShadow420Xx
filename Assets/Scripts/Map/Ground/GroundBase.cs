@@ -35,7 +35,6 @@ public abstract class GroundBase : MonoBehaviour
         Vector3 transformFlatRight = new Vector3(this.gameObject.transform.right.x, 0, this.gameObject.transform.right.z);
         Vector3 nextPosition;
 
-        Debug.Log($"Current Position: {this.gameObject.transform.position.ToString()}");
 
         if (direction == Direction.North)
         {
@@ -62,7 +61,6 @@ public abstract class GroundBase : MonoBehaviour
             nextPosition.y = currentHeightChange * heightAdjustment;
         }
 
-        Debug.Log($"New Position: {nextPosition.ToString()}");
 
         return new Vector3(
             Mathf.Round(nextPosition.x / 45f) * 45f,

@@ -242,4 +242,5 @@ public class PlayerMovement : MonoBehaviour
             GUI.Label(new Rect(10, 50, 200, 20), $"Running: {isRunning}");
         }
     }
+
 }

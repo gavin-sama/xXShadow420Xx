@@ -243,4 +243,19 @@ public class HubPlayerMovement : MonoBehaviour
             GUI.Label(new Rect(10, 50, 200, 20), $"Running: {isRunning}");
         }
     }
+    
+    //Ian added this to stop Hub Character from moving in the menus
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+
+        if (!enabled)
+        {
+            // Optional: reset velocity so player stops immediately
+            moveDirection = Vector3.zero;
+            
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isIdle", true);
+        }
+    }
 }

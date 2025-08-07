@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -72,6 +73,9 @@ public class PlayerMovement : MonoBehaviour
 
         playerStats = playerStats ?? GetComponent<PlayerStats>();
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+        playerCamera = FindFirstObjectByType<Camera>();
+        CinemachineCamera temp = playerCamera.gameObject.GetComponent<CinemachineCamera>();
+        temp.Follow = this.gameObject.transform;
 
         if (playerClassData != null)
         {
@@ -172,10 +176,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove || Cursor.lockState != CursorLockMode.Locked) return;
 
-        rotationY -= lookInput.y;
-        rotationY = Mathf.Clamp(rotationY, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up)), Time.deltaTime * lookSpeed);
     }
 
     private void HandleAnimation()

@@ -1045,7 +1045,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3908,6 +3908,7 @@ GameObject:
   - component: {fileID: 6785711701032524097}
   - component: {fileID: 95113232952810781}
   - component: {fileID: 4339780298489733799}
+  - component: {fileID: -8155710181425989919}
   m_Layer: 0
   m_Name: WizardEvo1
   m_TagString: Player
@@ -4078,10 +4079,10 @@ MonoBehaviour:
   healthBar: {fileID: 6953631660948651653}
   xpBar: {fileID: 3176639254311752977}
   damageIndicator: {fileID: 6785711701032524097}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 95113232952810781}
   hurtClip: {fileID: 8300000, guid: 850a3eb3e5f00284286d71b098460fa3, type: 3}
   deathClip: {fileID: 8300000, guid: 9d805ac91588fc843b31d82c2ead2c50, type: 3}
-  playerAnimator: {fileID: 0}
+  playerAnimator: {fileID: 6680735361690529369}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
 --- !u!114 &6953631660948651653
@@ -4251,6 +4252,19 @@ MonoBehaviour:
   ultimateEffectPrefab: {fileID: 5793841387165916247, guid: 8a474c5401202784ab11371270ef4e33, type: 3}
   castSound: {fileID: 8300000, guid: fd9a91cccf29cc34aab299f32fa25251, type: 3}
   ultimateSound: {fileID: 8300000, guid: 13138315883e4cc42b4f4c66a7ebf44e, type: 3}
+--- !u!114 &-8155710181425989919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8992028533467506775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f1b857b2173e042b830d19e92a1b3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerClassData: {fileID: 11400000, guid: f2cb3007057344d4bb3707f06fafeea9, type: 2}
 --- !u!1 &9009305573932344789
 GameObject:
   m_ObjectHideFlags: 0

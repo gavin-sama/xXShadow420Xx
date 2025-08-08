@@ -103,7 +103,13 @@ public class AIHealth : MonoBehaviour
         }
 
         //Instantiate coin 
-        Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
+        for (int i = 0; i < coinDropCount; i++)
+        {
+            Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
+            dropPosition.y = transform.position.y;
+            Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+        }
 
         // Give XP to player
         GiveXPToPlayer();

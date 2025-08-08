@@ -19,8 +19,20 @@ public class ShortRangeEnemy : BaseAIController
 
     protected override void Awake()
     {
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (PlayerStats.isUndetectable)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            animator.SetBool("isWalking", false);
+            return;
+        }
+
+        bool inAttackRange = distanceToPlayer <= attackRange;
         base.Awake();
         navMeshAgent.stoppingDistance = attackRange;
+
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
@@ -97,7 +109,7 @@ public class ShortRangeEnemy : BaseAIController
         }
         else
         {
-            Debug.Log("ShortRangeEnemy: Player out of melee range — attack missed.");
+            Debug.Log("ShortRangeEnemy: Player out of melee range â€” attack missed.");
         }
     }
 

@@ -32,13 +32,34 @@ public class PlayerStats : MonoBehaviour
     public static int healthUpgrades = 0;
     public static int speedUpgrades = 0;
 
+    public static int permAttackUpgrades = 0;
+    public static int permHealthUpgrades = 0;
+    public static int permSpeedUpgrades = 0;
+
+    public static bool hasResurrection = false;
+    public static bool extraCoins = false;
+    public static bool lowHealthStealth = false;
+
+    private bool isStealthed = false;
+    private float stealthDuration = 10f;
+    private float stealthCooldown = 30f;
+    private float stealthTimer = 0f;
+    private float stealthCooldownTimer = 0f;
+
+    public static bool isUndetectable = false;
+
+
     private float currentHealth;
     private bool isDead = false;
 
     private void Start()
     {
+        maxHealth = 100 + (permHealthUpgrades * 10);
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
+
+        PlayerAttack.attackDamage = 20 + (permAttackUpgrades * 5);
+        PlayerAttack.attackSpeed = 0.6f + (permSpeedUpgrades * 0.1f);
 
         currentXp = 0;
         xpBar.SetSliderCap(xpCap);
@@ -47,6 +68,7 @@ public class PlayerStats : MonoBehaviour
         if (fadeOverlay != null)
             fadeOverlay.color = new Color(0, 0, 0, 0);
     }
+
 
     private void Update()
     {
@@ -64,6 +86,32 @@ public class PlayerStats : MonoBehaviour
 
             xpBar.SetSlider(currentXp);
         }
+
+        if (lowHealthStealth)
+        {
+            float healthPercent = currentHealth / maxHealth;
+
+            if (!isStealthed && stealthCooldownTimer <= 0f && healthPercent <= 0.25f)
+            {
+                ActivateStealth();
+            }
+
+            if (isStealthed)
+            {
+                stealthTimer -= Time.deltaTime;
+                if (stealthTimer <= 0f)
+                {
+                    DeactivateStealth();
+                    stealthCooldownTimer = stealthCooldown;
+                }
+            }
+
+            if (stealthCooldownTimer > 0f && !isStealthed)
+            {
+                stealthCooldownTimer -= Time.deltaTime;
+            }
+        }
+
     }
 
     public void GainXP(float amount)
@@ -109,9 +157,44 @@ public class PlayerStats : MonoBehaviour
         healthBar.SetSlider(currentHealth);
     }
 
+    private void ActivateStealth()
+    {
+        isStealthed = true;
+        isUndetectable = true;
+        stealthTimer = stealthDuration;
+
+        var renderers = GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+            r.enabled = false;
+
+        Debug.Log("Stealth activated!");
+    }
+
+    private void DeactivateStealth()
+    {
+        isStealthed = false;
+        isUndetectable = false;
+
+        var renderers = GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+            r.enabled = true;
+
+        Debug.Log("Stealth ended.");
+    }
+
+
     private void Die()
     {
         if (isDead) return;
+
+        if (hasResurrection)
+        {
+            hasResurrection = false;
+            currentHealth = maxHealth * 0.5f;
+            healthBar.SetSlider(currentHealth);
+            Debug.Log("Resurrected at 50% HP");
+            return;
+        }
         isDead = true;
 
         Debug.Log("You died!");
@@ -146,6 +229,7 @@ public class PlayerStats : MonoBehaviour
         PlayerStats.attackUpgrades = 0;
         PlayerStats.healthUpgrades = 0;
         PlayerStats.speedUpgrades = 0;
+
         PlayerAttack.attackDamage = 20;
         PlayerAttack.attackSpeed = 0.6f;
         maxHealth = 100;

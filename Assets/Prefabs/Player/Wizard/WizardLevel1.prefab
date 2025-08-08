@@ -1998,7 +1998,7 @@ MonoBehaviour:
   playerStats: {fileID: 4140532963775796}
   walkSpeed: 6
   runSpeed: 12
-  lookSpeed: 0.5
+  lookSpeed: 150
   lookXLimit: 45
   gravity: 25
   defaultHeight: 2
@@ -2076,6 +2076,9 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   hurtClip: {fileID: 8300000, guid: 850a3eb3e5f00284286d71b098460fa3, type: 3}
   deathClip: {fileID: 8300000, guid: 9d805ac91588fc843b31d82c2ead2c50, type: 3}
+  playerAnimator: {fileID: 0}
+  fadeOverlay: {fileID: 0}
+  fadeSpeed: 1
 --- !u!114 &6953631660948651653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2233,6 +2236,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8793510976239746625, guid: 8fa5143051527e949b0ae174c8430414, type: 3}
   shootPoint: {fileID: 98687499774008047}
   projectileSpeed: 6
+  aimLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   ultimateRange: 6
   enemyLayers:
     serializedVersion: 2

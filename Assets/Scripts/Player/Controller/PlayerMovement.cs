@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -36,11 +37,24 @@ public class PlayerMovement : MonoBehaviour
     private InputAction _move;
     private InputAction _sprint;
     private InputAction _look;
+    private InputAction _dodge;
 
     private Vector2 moveInput;
     private Vector2 lookInput;
 
     private bool isRunning;
+    private bool isDodging;
+
+    //Dodge
+    public float dodgeCooldown = 3f;
+    public float lastDodgeTime = -Mathf.Infinity;
+    private Vector3 dodgeDirection;
+    public float dodgeDistance = 5f;
+    public float dodgeDuration = 0.3f;
+    public bool isInvincible = false;
+    public GameObject dodgeEffectPrefab;
+
+
 
     // Omnimovement variables
     private Vector2 smoothedMoveInput;
@@ -72,6 +86,9 @@ public class PlayerMovement : MonoBehaviour
 
         playerStats = playerStats ?? GetComponent<PlayerStats>();
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+        playerCamera = FindFirstObjectByType<Camera>();
+        CinemachineCamera temp = playerCamera.gameObject.GetComponent<CinemachineCamera>();
+        temp.Follow = this.gameObject.transform;
 
         if (playerClassData != null)
         {
@@ -103,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
 
         lookInput = _look.ReadValue<Vector2>();
         isRunning = _sprint.IsPressed() && smoothedMoveInput.magnitude > 0.1f;
+        isDodging = _dodge.WasPressedThisFrame();
 
         // Determine movement direction based on input
         currentMovementDirection = GetMovementDirection(smoothedMoveInput);
@@ -128,8 +146,6 @@ public class PlayerMovement : MonoBehaviour
             return x > 0 ? MovementDirection.Right : MovementDirection.Left;
         }
     }
-
-
     private void HandleMovement()
     {
         if (!canMove)
@@ -167,17 +183,12 @@ public class PlayerMovement : MonoBehaviour
 
         characterController.Move(moveDirection * Time.deltaTime);
     }
-
     private void HandleLooking()
     {
         if (!canMove || Cursor.lockState != CursorLockMode.Locked) return;
 
-        rotationY -= lookInput.y;
-        rotationY = Mathf.Clamp(rotationY, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationY, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up)), Time.deltaTime * lookSpeed);
     }
-
     private void HandleAnimation()
     {
         // Set movement speed for blend trees
@@ -195,6 +206,10 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isWalking", movementMagnitude > 0.1f && !isRunning);
         animator.SetBool("isIdle", movementMagnitude <= 0.1f);
 
+        if (isDodging && smoothedMoveInput.magnitude > 0.1f && Time.time >= lastDodgeTime + dodgeCooldown)
+        {
+            StartCoroutine(DodgeRoutine());
+        }
 
         // Handle audio
         if (movementMagnitude > 0.1f)
@@ -206,6 +221,44 @@ public class PlayerMovement : MonoBehaviour
             PlaySound(idleClip);
         }
     }
+    private IEnumerator DodgeRoutine()
+    {
+        canMove = false;
+        isInvincible = true;
+
+        animator.SetFloat("DodgeX", smoothedMoveInput.x);
+        animator.SetFloat("DodgeY", smoothedMoveInput.y);
+        animator.SetTrigger("Dodge");
+
+        lastDodgeTime = Time.time;
+
+        // Calculate dodge direction
+        Vector3 forward = playerCamera.transform.forward;
+        Vector3 right = playerCamera.transform.right;
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
+
+        dodgeDirection = (forward * smoothedMoveInput.y + right * smoothedMoveInput.x).normalized;
+
+        // Spawn dodge effect
+        if (dodgeEffectPrefab != null)
+        {
+            Instantiate(dodgeEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        float elapsed = 0f;
+        while (elapsed < dodgeDuration)
+        {
+            characterController.Move(dodgeDirection * (dodgeDistance / dodgeDuration) * Time.deltaTime);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        isInvincible = false;
+        canMove = true;
+    }
 
 
     private void SetInputActions()
@@ -214,8 +267,8 @@ public class PlayerMovement : MonoBehaviour
         _move = actions["Move"];
         _sprint = actions["Sprint"];
         _look = actions["Look"];
+        _dodge = actions["Dodge"];
     }
-
     private void PlaySound(AudioClip clip)
     {
         if (audioSource.clip != clip)
@@ -225,7 +278,6 @@ public class PlayerMovement : MonoBehaviour
             audioSource.Play();
         }
     }
-
     private void PlayOneShot(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
@@ -239,6 +291,9 @@ public class PlayerMovement : MonoBehaviour
             GUI.Label(new Rect(10, 10, 200, 20), $"Direction: {currentMovementDirection}");
             GUI.Label(new Rect(10, 30, 200, 20), $"Input: {smoothedMoveInput}");
             GUI.Label(new Rect(10, 50, 200, 20), $"Running: {isRunning}");
+            GUI.Label(new Rect(10, 70, 200, 20), $"Dodge Ready: {Time.time >= lastDodgeTime + dodgeCooldown}");
+            GUI.Label(new Rect(10, 90, 200, 20), $"Cooldown Left: {Mathf.Max(0, (lastDodgeTime + dodgeCooldown - Time.time)).ToString("F1")}s");
         }
     }
+
 }

@@ -13,6 +13,13 @@ public class RangedEnemy : BaseAIController
 
     private bool isAttacking;
 
+    public void AssignPlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+    }
+
+
+
     protected override void HandleAI()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -58,8 +65,6 @@ public class RangedEnemy : BaseAIController
             ChasePlayer();
         }
     }
-
-
 
     public void ShootAtPlayer()
     {

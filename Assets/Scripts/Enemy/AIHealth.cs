@@ -62,16 +62,21 @@ public class AIHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
+        BeastAttack beast = GetComponent<BeastAttack>();
+        if (beast != null && beast.isInUltimate)
+        {
+            damage = Mathf.RoundToInt(damage * beast.damageReductionFactor);
+        }
 
         currentHealth -= damage;
-        if (healthSlider != null) healthSlider.value = currentHealth;
+        Debug.Log($"{gameObject.name} took {damage} damage. Remaining: {currentHealth}");
 
         if (currentHealth <= 0)
         {
             Die();
         }
     }
+
 
     public void Die()
     {

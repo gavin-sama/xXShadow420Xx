@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class CharacterMenuUI : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class CharacterMenuUI : MonoBehaviour
 
     void Start()
     {
+        if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
+            SceneManager.UnloadSceneAsync(2);
         characterSelectCanvas.SetActive(true);
         Time.timeScale = 0f; // Freeze game until selection
     }
@@ -29,6 +32,11 @@ public class CharacterMenuUI : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
+
+    public void ReturnToHub()
+    {
+        SceneManager.LoadScene(2); 
     }
 
     public void StartGame()
@@ -70,13 +78,24 @@ public class CharacterMenuUI : MonoBehaviour
 
     IEnumerator Spawn(GameObject prefab)
     {
-        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(0, 0, 0);
+        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(-32, 0, -75);
         Quaternion spawnRotation = currentCharacter ? currentCharacter.transform.rotation : Quaternion.identity;
 
         if (currentCharacter)
             Destroy(currentCharacter);
 
         currentCharacter = Instantiate(prefab, spawnPosition, spawnRotation);
+        currentCharacter.name = "Player"; // Set name for lookup
+        PlayerController.Instance = currentCharacter.transform;
+
+        foreach (RangedEnemy enemy in FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None))
+        {
+            enemy.AssignPlayer(currentCharacter.transform);
+        }
+        foreach (ShortRangeEnemy enemy in FindObjectsByType<ShortRangeEnemy>(FindObjectsSortMode.None))
+        {
+            enemy.AssignPlayer(currentCharacter.transform);
+        }
 
         yield return new WaitUntil(() => currentCharacter != null);
     }

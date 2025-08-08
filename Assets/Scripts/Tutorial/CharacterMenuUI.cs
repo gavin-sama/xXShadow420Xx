@@ -19,7 +19,8 @@ public class CharacterMenuUI : MonoBehaviour
 
     void Start()
     {
-        SceneManager.UnloadSceneAsync("Hub");
+        if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
+            SceneManager.UnloadSceneAsync(2);
         characterSelectCanvas.SetActive(true);
         Time.timeScale = 0f; // Freeze game until selection
     }
@@ -35,7 +36,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     public void ReturnToHub()
     {
-        SceneManager.LoadScene("Hub"); 
+        SceneManager.LoadScene(2); 
     }
 
     public void StartGame()
@@ -84,13 +85,17 @@ public class CharacterMenuUI : MonoBehaviour
             Destroy(currentCharacter);
 
         currentCharacter = Instantiate(prefab, spawnPosition, spawnRotation);
+        currentCharacter.name = "Player"; // Set name for lookup
         PlayerController.Instance = currentCharacter.transform;
 
         foreach (RangedEnemy enemy in FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None))
         {
             enemy.AssignPlayer(currentCharacter.transform);
         }
-
+        foreach (ShortRangeEnemy enemy in FindObjectsByType<ShortRangeEnemy>(FindObjectsSortMode.None))
+        {
+            enemy.AssignPlayer(currentCharacter.transform);
+        }
 
         yield return new WaitUntil(() => currentCharacter != null);
     }

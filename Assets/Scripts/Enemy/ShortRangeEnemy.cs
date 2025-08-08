@@ -7,6 +7,16 @@ public class ShortRangeEnemy : BaseAIController
     private float lastAttackTime;
     private bool isAttacking;
 
+    PlayerMovement playerMovement;
+
+    public void AssignPlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+        playerMovement = player.GetComponent<PlayerMovement>();
+    }
+
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -80,7 +90,7 @@ public class ShortRangeEnemy : BaseAIController
         }
 
         float distance = Vector3.Distance(transform.position, player.position);
-        if (distance <= attackRange + 0.5f)
+        if (distance <= attackRange + 0.5f && !playerMovement.isInvincible)
         {
             player.GetComponent<PlayerStats>()?.TakeDamage(20);
             Debug.Log("ShortRangeEnemy: Melee attack hit the player.");

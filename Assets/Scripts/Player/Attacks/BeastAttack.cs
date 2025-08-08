@@ -11,7 +11,28 @@ public class BeastAttack : PlayerAttackBase
     public Animator animator;
     public GameObject impactEffect;
 
-    [Header("Charge Settings")]
+    [Header("Ultimate Settings")]
+    public float ultimateRange = 6f;
+    public GameObject ultimateEffectPrefab;
+
+    private GameObject activeUltimateEffect;
+
+    [Header("Ultimate Transformation")]
+    public float ultimateDuration = 5f;
+    public float damageMultiplierDuringUltimate = 2f;
+    public float damageReductionFactor = 0.5f; // 50% damage taken
+    public bool isInUltimate;
+    private float ultimateEndTime;
+    private Vector3 originalScale;
+
+
+    [Header("Ultimate Audio")]
+    public AudioClip ultimateSound;
+    private AudioSource audioSource;
+
+    private static readonly int UltimateTrigger = Animator.StringToHash("Ultimate");
+
+        [Header("Charge Settings")]
     public float chargeSpeed = 3f;
     public float chargeDamageMultiplier = 1.5f;
 
@@ -24,10 +45,24 @@ public class BeastAttack : PlayerAttackBase
 
     // Track enemies hit during current charge
     private HashSet<Collider> hitEnemiesDuringCharge = new HashSet<Collider>();
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+        originalScale = transform.localScale;
+    }
 
     private void Update()
     {
         bool shouldCharge = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
+
+        // Handle Ultimate input independently
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) && canAttack)
+        {
+            TriggerUltimate();
+        }
 
         // Start charging
         if (shouldCharge && canAttack)
@@ -73,6 +108,14 @@ public class BeastAttack : PlayerAttackBase
                 {
                     enemyAnimator.SetTrigger("Knockback");
                 }
+
+                if (isInUltimate && Time.time >= ultimateEndTime)
+                {
+                    transform.localScale = originalScale;
+                    isInUltimate = false;
+                    Debug.Log("Beast Ultimate ended, reverting to normal.");
+                }
+
             }
         }
         else if (isCharging)
@@ -100,19 +143,93 @@ public class BeastAttack : PlayerAttackBase
             animator.SetTrigger("Attack");
         }
 
+        int finalDamage = isInUltimate ? Mathf.RoundToInt(attackDamage * damageMultiplierDuringUltimate) : attackDamage;
+
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, range, enemyLayers);
         foreach (Collider enemy in hitEnemies)
         {
             if (enemy.TryGetComponent(out AIHealth enemyHealth))
             {
-                enemyHealth.TakeDamage(attackDamage);
-                Debug.Log($"Normal hit: {attackDamage} damage to {enemy.name}");
+                enemyHealth.TakeDamage(finalDamage);
+                Debug.Log($"Normal hit: {finalDamage} damage to {enemy.name}");
             }
         }
 
         if (impactEffect != null)
         {
             Instantiate(impactEffect, attackPoint.position, Quaternion.identity);
+        }
+    }
+
+
+    private void TriggerUltimate()
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null!");
+            return;
+        }
+
+        animator.SetTrigger(UltimateTrigger);
+
+        if (ultimateSound != null)
+        {
+            audioSource.PlayOneShot(ultimateSound);
+        }
+
+        lastAttackTime = Time.time;
+
+        // Begin transformation
+        transform.localScale = originalScale * 2f;
+        isInUltimate = true;
+        ultimateEndTime = Time.time + ultimateDuration;
+
+        Debug.Log("Beast has entered Ultimate state!");
+    }
+
+
+    public void CastUltimate()
+    {
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, ultimateRange, enemyLayers);
+
+        foreach (Collider enemy in hitEnemies)
+        {
+            if (enemy.TryGetComponent(out AIHealth health))
+            {
+                health.Die();
+                Debug.Log($"Beast Ultimate hit: {enemy.name}");
+            }
+        }
+
+        Debug.Log($"Beast Ultimate affected {hitEnemies.Length} enemies!");
+    }
+
+    private void SpawnUltimateEffect()
+    {
+        if (ultimateEffectPrefab == null) return;
+
+        if (activeUltimateEffect != null)
+            Destroy(activeUltimateEffect);
+
+        activeUltimateEffect = Instantiate(ultimateEffectPrefab, transform.position, Quaternion.identity, transform);
+    }
+
+    public void StopUltimateEffect()
+    {
+        if (activeUltimateEffect != null)
+        {
+            ParticleSystem ps = activeUltimateEffect.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                Destroy(activeUltimateEffect, ps.main.duration);
+            }
+            else
+            {
+                Destroy(activeUltimateEffect);
+            }
+
+            activeUltimateEffect = null;
         }
     }
 

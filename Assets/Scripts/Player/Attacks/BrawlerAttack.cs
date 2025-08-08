@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class BrawlerAttack : PlayerAttackBase
 {
@@ -8,52 +7,69 @@ public class BrawlerAttack : PlayerAttackBase
     public float range = 1.5f;
     public Transform attackPoint;
     public LayerMask enemyLayers;
-    public Animator animator;
     public GameObject impactEffect;
 
     [Header("Combo Settings")]
-    public float comboResetTime = 1.2f; // Time before combo resets
+    public Animator animator;
+    public float comboResetTime = 1.2f;
+
     private int comboStep = 0;
     private float lastComboTime;
+    private bool inputBuffered = false;
+    private bool isAttacking = false;
 
     private void Update()
     {
-        // Detect attack input
         if (Input.GetMouseButtonDown(0) && canAttack)
         {
-            PerformComboAttack();
+            inputBuffered = true;
+
+            // Start combo if not attacking
+            if (!isAttacking)
+            {
+                StartCombo();
+            }
         }
 
-        // Reset combo if too much time has passed
         if (Time.time - lastComboTime > comboResetTime)
         {
-            comboStep = 0;
+            ResetCombo();
         }
     }
 
-    public void PerformComboAttack()
+    private void StartCombo()
     {
-        lastAttackTime = Time.time;
+        comboStep = 1;
         lastComboTime = Time.time;
+        isAttacking = true;
 
-        // Cycle through combo steps: 1 2, 3
-        comboStep = (comboStep % 3) + 1;
+        animator.CrossFade("PunchCombo", 0.1f);
+        animator.SetFloat("PunchIndex", comboStep - 1);
 
-        // Trigger corresponding animation
-        switch (comboStep)
+        DealDamage();
+    }
+
+    public void TryContinueCombo()
+    {
+        if (inputBuffered && comboStep < 3)
         {
-            case 1:
-                animator.SetTrigger("Punch1");
-                break;
-            case 2:
-                animator.SetTrigger("Punch2");
-                break;
-            case 3:
-                animator.SetTrigger("Punch3");
-                break;
-        }
+            comboStep++;
+            lastComboTime = Time.time;
+            inputBuffered = false;
 
-        // Detect enemies in range
+            animator.CrossFade("PunchCombo", 0.1f);
+            animator.SetFloat("PunchIndex", comboStep - 1);
+
+            DealDamage();
+        }
+        else
+        {
+            ResetCombo();
+        }
+    }
+
+    private void DealDamage()
+    {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, range, enemyLayers);
         foreach (Collider enemy in hitEnemies)
         {
@@ -64,11 +80,18 @@ public class BrawlerAttack : PlayerAttackBase
             }
         }
 
-        // Spawn impact effect
         if (impactEffect != null)
         {
             Instantiate(impactEffect, attackPoint.position, Quaternion.identity);
         }
+    }
+
+    private void ResetCombo()
+    {
+        comboStep = 0;
+        inputBuffered = false;
+        isAttacking = false;
+        animator.SetFloat("PunchIndex", -1);
     }
 
     private void OnDrawGizmosSelected()

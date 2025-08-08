@@ -15,17 +15,32 @@ public class PauseMenu : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Set user input for pause menu
-        _pause = player.GetComponent<PlayerInput>().actions["Pause"];
+        player = GameObject.Find("Player");
+        if (player != null)
+        {
+            _pause = player.GetComponent<PlayerInput>().actions["Pause"];
+        }
+        else
+        {
+            Debug.LogWarning("PauseMenu: Player not found at Start. Will retry in Update.");
+        }
     }
 
     void Update()
     {
+        // Retry finding player if not assigned
+        if (player == null)
+        {
+            player = GameObject.Find("Player");
+            if (player != null)
+            {
+                _pause = player.GetComponent<PlayerInput>().actions["Pause"];
+                Debug.Log("PauseMenu: Player found and input assigned.");
+            }
+        }
+
         // Toggle pause menu when Escape is pressed
-        if (_pause.WasPressedThisFrame())
+        if (_pause != null && _pause.WasPressedThisFrame())
         {
             if (isPaused)
                 ResumeGame();
@@ -33,6 +48,7 @@ public class PauseMenu : MonoBehaviour
                 PauseGame();
         }
     }
+
 
     void PauseGame()
     {

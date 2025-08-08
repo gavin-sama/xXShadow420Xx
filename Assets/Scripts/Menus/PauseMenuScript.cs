@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // The pause menu panel
+    public GameObject controlsPanel;
     public Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
@@ -20,11 +21,13 @@ public class PauseMenu : MonoBehaviour
         {
             _pause = player.GetComponent<PlayerInput>().actions["Pause"];
         }
-        else
-        {
-            Debug.LogWarning("PauseMenu: Player not found at Start. Will retry in Update.");
-        }
+
+        Time.timeScale = 1f; // Always ensure time is running
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        isPaused = false;
     }
+
 
     void Update()
     {
@@ -49,7 +52,11 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     void PauseGame()
     {
         pauseMenuUI.SetActive(true); // Show the pause menu
@@ -102,5 +109,16 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit(); // Close the application
     }
+
+    public void OpenControlsPanel()
+    {
+        controlsPanel.SetActive(true);
+    }
+
+    public void CloseControlsPanel()
+    {
+        controlsPanel.SetActive(false);
+    }
+
 }
 

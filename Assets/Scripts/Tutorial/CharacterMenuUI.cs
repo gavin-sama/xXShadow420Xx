@@ -21,9 +21,13 @@ public class CharacterMenuUI : MonoBehaviour
     {
         if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
             SceneManager.UnloadSceneAsync(2);
+
         characterSelectCanvas.SetActive(true);
-        Time.timeScale = 0f; // Freeze game until selection
+        Time.timeScale = 0f; // Freeze for selection
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
+
 
     void Update()
     {

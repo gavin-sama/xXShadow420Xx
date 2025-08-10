@@ -10,6 +10,8 @@ public class ClassMenuController : MonoBehaviour
     public TextMeshProUGUI outfitNameText;
     public Sprite[] outfitSprites;
     public string[] outfitNames; 
+    public GameObject upgradeMenuUI; // Assign in Inspector
+
 
     private int currentIndex = 0;
 
@@ -27,6 +29,12 @@ public class ClassMenuController : MonoBehaviour
         Debug.Log($"Before open, activeSelf: {classMenuUI.activeSelf}");
         classMenuUI.SetActive(true);
 
+        // Close upgrade menu if open
+        if (upgradeMenuUI != null && upgradeMenuUI.activeSelf)
+        {
+            upgradeMenuUI.SetActive(false);
+        }
+
         // Show & unlock cursor so UI can be clicked
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -40,11 +48,14 @@ public class ClassMenuController : MonoBehaviour
         Debug.Log("CloseMenu called");
         classMenuUI.SetActive(false);
 
-        // Lock & hide cursor again to resume gameplay
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+            // Lock & hide cursor only if Upgrade menu is not open
+        if (upgradeMenuUI == null || !upgradeMenuUI.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
-        Time.timeScale = 1f;
+            Time.timeScale = 1f;
+        }
     }
 
     public void ShowNext()

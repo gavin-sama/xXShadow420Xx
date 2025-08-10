@@ -2,28 +2,24 @@ using UnityEngine;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    public static PlayerDataManager Instance;
+     //public PlayerData playerData = new PlayerData();
 
-    public PlayerData playerData = new PlayerData();
+    static public int killsLastRun;
+    static public int totalKills;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else Destroy(gameObject);
+        
     }
 
     public void AddKill()
     {
-        playerData.killsLastRun++;
-        playerData.totalKills++;
+        killsLastRun++;
+        totalKills++;
     }
 
     public void ResetLastRunKills()
     {
-        playerData.killsLastRun = 0;
+        killsLastRun = 0;
     }
 }

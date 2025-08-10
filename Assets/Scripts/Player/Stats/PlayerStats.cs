@@ -27,7 +27,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Image fadeOverlay;
     [SerializeField] private float fadeSpeed = 1f;
 
-    public static int teethCurrency;
+    public static int teethCurrency = 100;
     public static int attackUpgrades = 0;
     public static int healthUpgrades = 0;
     public static int speedUpgrades = 0;

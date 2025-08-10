@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public class FishPrompt : MonoBehaviour
 {
@@ -26,6 +25,22 @@ public class FishPrompt : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        {
+            var menu = FindFirstObjectByType<PermUpMenu>();
+            if(menu == null)
+                Debug.LogWarning("No PermUpMenu found!");
+            else
+            {
+                Debug.Log("Opening PermUpMenu");
+                menu.OpenMenu();
+                StartCoroutine(FadeCanvasGroup(promptGroup, false));
+            }
+        }
+    }
+
     System.Collections.IEnumerator FadeCanvasGroup(CanvasGroup cg, bool fadeIn)
     {
         if (isFading) yield break;
@@ -45,4 +60,6 @@ public class FishPrompt : MonoBehaviour
         cg.alpha = end;
         isFading = false;
     }
+
+    
 }

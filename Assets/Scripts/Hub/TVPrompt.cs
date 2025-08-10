@@ -60,8 +60,8 @@ public class TVPrompt : MonoBehaviour
 
     IEnumerator DialogueSequence()
     {
-        var killsLastRun = PlayerDataManager.Instance.playerData.killsLastRun;
-        var totalKills = PlayerDataManager.Instance.playerData.totalKills;
+        var killsLastRun = PlayerDataManager.killsLastRun;
+        var totalKills = PlayerDataManager.totalKills;
 
         dialogueText.text = "Welcome to the nightly report...";
         yield return new WaitForSeconds((float)videoPlayer.clip.length);

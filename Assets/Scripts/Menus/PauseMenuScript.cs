@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro; // for TextMeshPro
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.InputSystem;
@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // The pause menu panel
     public GameObject controlsContent; // assign in inspector
-    public Text saveDataText; // Text to show save/load data
+    public TMP_Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
     public GameObject player;
@@ -28,7 +28,6 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
-
     void Update()
     {
         // Retry finding player if not assigned
@@ -42,7 +41,7 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        // Toggle pause menu when Escape is pressed
+        // Toggle pause menu when Pause key is pressed
         if (_pause != null && _pause.WasPressedThisFrame())
         {
             if (isPaused)
@@ -57,6 +56,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
     void PauseGame()
     {
         pauseMenuUI.SetActive(true); // Show the pause menu
@@ -77,24 +77,19 @@ public class PauseMenu : MonoBehaviour
 
     public void SaveData()
     {
-        // Save a random number to PlayerPrefs (for example purposes)
         int randomNumber = UnityEngine.Random.Range(1, 100);
         PlayerPrefs.SetInt("SavedNumber", randomNumber);
         PlayerPrefs.Save();
 
-        // Update UI with the saved data
         if (saveDataText)
             saveDataText.text = "Saved: " + randomNumber;
     }
 
     public void LoadData()
     {
-        // Load the saved number from PlayerPrefs
         if (PlayerPrefs.HasKey("SavedNumber"))
         {
             int loadedNumber = PlayerPrefs.GetInt("SavedNumber");
-
-            // Update UI with loaded data
             if (saveDataText)
                 saveDataText.text = "Loaded: " + loadedNumber;
         }
@@ -107,7 +102,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit(); // Close the application
+        Application.Quit();
     }
 
     public void ToggleControls()
@@ -118,6 +113,4 @@ public class PauseMenu : MonoBehaviour
             controlsContent.SetActive(!isActive);
         }
     }
-
 }
-

@@ -1,18 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro; // for TextMeshPro
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.UI; // <-- Needed for Button
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // The pause menu panel
     public GameObject controlsContent; // assign in inspector
-    public Text saveDataText; // Text to show save/load data
+    public TMP_Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
     public GameObject player;
     private InputAction _pause;
+
+    [Header("Return to Hub")]
+    public Button returnButton; // Assign your Return to Hub button in the Inspector
+    public string hubSceneName = "Hub";
 
     void Start()
     {
@@ -22,12 +27,17 @@ public class PauseMenu : MonoBehaviour
             _pause = player.GetComponent<PlayerInput>().actions["Pause"];
         }
 
+        // Hide the button if we're already in the hub
+        if (SceneManager.GetActiveScene().name == hubSceneName && returnButton != null)
+        {
+            returnButton.gameObject.SetActive(false);
+        }
+
         Time.timeScale = 1f; // Always ensure time is running
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         isPaused = false;
     }
-
 
     void Update()
     {
@@ -42,7 +52,7 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        // Toggle pause menu when Escape is pressed
+        // Toggle pause menu when Pause key is pressed
         if (_pause != null && _pause.WasPressedThisFrame())
         {
             if (isPaused)
@@ -57,6 +67,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
     void PauseGame()
     {
         pauseMenuUI.SetActive(true); // Show the pause menu
@@ -77,24 +88,19 @@ public class PauseMenu : MonoBehaviour
 
     public void SaveData()
     {
-        // Save a random number to PlayerPrefs (for example purposes)
         int randomNumber = UnityEngine.Random.Range(1, 100);
         PlayerPrefs.SetInt("SavedNumber", randomNumber);
         PlayerPrefs.Save();
 
-        // Update UI with the saved data
         if (saveDataText)
             saveDataText.text = "Saved: " + randomNumber;
     }
 
     public void LoadData()
     {
-        // Load the saved number from PlayerPrefs
         if (PlayerPrefs.HasKey("SavedNumber"))
         {
             int loadedNumber = PlayerPrefs.GetInt("SavedNumber");
-
-            // Update UI with loaded data
             if (saveDataText)
                 saveDataText.text = "Loaded: " + loadedNumber;
         }
@@ -105,9 +111,22 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void ReturnToHub()
+    {
+        // Safety check — shouldn't be possible if button is hidden
+        if (SceneManager.GetActiveScene().name == hubSceneName)
+        {
+            Debug.LogWarning("Already in the hub — can't return to hub again!");
+            return;
+        }
+
+        // Load the hub scene
+        SceneManager.LoadScene(hubSceneName);
+    }
+
     public void QuitGame()
     {
-        Application.Quit(); // Close the application
+        Application.Quit();
     }
 
     public void ToggleControls()
@@ -118,6 +137,4 @@ public class PauseMenu : MonoBehaviour
             controlsContent.SetActive(!isActive);
         }
     }
-
 }
-

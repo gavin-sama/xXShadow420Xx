@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 
 public class BeastAttack : PlayerAttackBase
 {
@@ -12,9 +13,9 @@ public class BeastAttack : PlayerAttackBase
     public GameObject impactEffect;
 
     [Header("Ultimate Settings")]
-    public float ultimateDuration = 10f;
+    public float ultimateDuration = 80f;
     public float damageMultiplierDuringUltimate = 2f;
-    public float damageReductionFactor = 0.5f; // 50% damage taken
+    public float damageReductionFactor = 0.5f;
     public AudioClip ultimateSound;
     private AudioSource audioSource;
 
@@ -32,8 +33,38 @@ public class BeastAttack : PlayerAttackBase
     private bool isCharging;
     private HashSet<Collider> hitEnemiesDuringCharge = new HashSet<Collider>();
 
+    private CinemachineOrbitalFollow cameraOrbital;
+    private GameObject freeLookCameraObject;
+
+    private struct OrbitSettings
+    {
+        public float TopHeight, TopRadius;
+        public float CenterHeight, CenterRadius;
+        public float BottomHeight, BottomRadius;
+    }
+
+    private OrbitSettings originalOrbits;
+
     private void Start()
     {
+        freeLookCameraObject = GameObject.Find("FreeLook Camera");
+        if (freeLookCameraObject != null)
+        {
+            cameraOrbital = freeLookCameraObject.GetComponent<CinemachineOrbitalFollow>();
+
+            if (cameraOrbital != null)
+            {
+                originalOrbits.TopHeight = cameraOrbital.Orbits.Top.Height;
+                originalOrbits.TopRadius = cameraOrbital.Orbits.Top.Radius;
+
+                originalOrbits.CenterHeight = cameraOrbital.Orbits.Center.Height;
+                originalOrbits.CenterRadius = cameraOrbital.Orbits.Center.Radius;
+
+                originalOrbits.BottomHeight = cameraOrbital.Orbits.Bottom.Height;
+                originalOrbits.BottomRadius = cameraOrbital.Orbits.Bottom.Radius;
+            }
+        }
+
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -112,6 +143,21 @@ public class BeastAttack : PlayerAttackBase
         {
             transform.localScale = originalScale;
             isInUltimate = false;
+
+            if (cameraOrbital != null)
+            {
+                cameraOrbital.Orbits.Top.Height = originalOrbits.TopHeight;
+                cameraOrbital.Orbits.Top.Radius = originalOrbits.TopRadius;
+
+                cameraOrbital.Orbits.Center.Height = originalOrbits.CenterHeight;
+                cameraOrbital.Orbits.Center.Radius = originalOrbits.CenterRadius;
+
+                cameraOrbital.Orbits.Bottom.Height = originalOrbits.BottomHeight;
+                cameraOrbital.Orbits.Bottom.Radius = originalOrbits.BottomRadius;
+
+                Debug.Log("Camera reverted to original settings after Beast Ultimate.");
+            }
+
             Debug.Log("Beast Ultimate ended, reverting to normal.");
         }
     }
@@ -170,9 +216,23 @@ public class BeastAttack : PlayerAttackBase
 
         lastAttackTime = Time.time;
 
-        transform.localScale = originalScale * 2f;
+        transform.localScale = originalScale * 3.2f;
         isInUltimate = true;
         ultimateEndTime = Time.time + ultimateDuration;
+
+        if (cameraOrbital != null)
+        {
+            cameraOrbital.Orbits.Top.Height = originalOrbits.TopHeight + 10f;
+            cameraOrbital.Orbits.Top.Radius = originalOrbits.TopRadius + 5f;
+
+            cameraOrbital.Orbits.Center.Height = originalOrbits.CenterHeight + 6f;
+            cameraOrbital.Orbits.Center.Radius = originalOrbits.CenterRadius + 4f;
+
+            cameraOrbital.Orbits.Bottom.Height = originalOrbits.BottomHeight + 3f;
+            cameraOrbital.Orbits.Bottom.Radius = originalOrbits.BottomRadius + 3f;
+
+            Debug.Log("Camera zoomed out and elevated for Beast Ultimate.");
+        }
 
         Debug.Log("Beast has entered Ultimate state!");
     }
@@ -186,7 +246,6 @@ public class BeastAttack : PlayerAttackBase
         }
     }
 
-    // Public getter for damage reduction status
     public bool IsInUltimate => isInUltimate;
     public float DamageReductionFactor => damageReductionFactor;
 }

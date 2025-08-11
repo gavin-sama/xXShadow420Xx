@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // The pause menu panel
-    public GameObject controlsPanel;
+    public GameObject controlsContent; // assign in inspector
     public Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
@@ -110,14 +110,13 @@ public class PauseMenu : MonoBehaviour
         Application.Quit(); // Close the application
     }
 
-    public void OpenControlsPanel()
+    public void ToggleControls()
     {
-        controlsPanel.SetActive(true);
-    }
-
-    public void CloseControlsPanel()
-    {
-        controlsPanel.SetActive(false);
+        if (controlsContent != null)
+        {
+            bool isActive = controlsContent.activeSelf;
+            controlsContent.SetActive(!isActive);
+        }
     }
 
 }

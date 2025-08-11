@@ -51,13 +51,6 @@ public class RangedAttack : PlayerAttackBase
 
     private void Update()
     {
-        // Handle ultimate (CTRL key)
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-        {
-            Debug.Log("CTRL key detected");
-            TriggerUltimate();
-        }
-
         // Handle normal attack (LMB)
         if (Input.GetMouseButtonDown(0) && canAttack)
         {
@@ -65,8 +58,6 @@ public class RangedAttack : PlayerAttackBase
             PerformAttack();  // This triggers the normal attack
         }
     }
-
-
 
     // Called via Animation Event for normal attack
     public void CastProjectile()
@@ -100,9 +91,6 @@ public class RangedAttack : PlayerAttackBase
         Debug.Log("Projectile fired!");
     }
 
-
-
-
     // Triggers the ultimate attack animation
     private void TriggerUltimate()
     {
@@ -125,8 +113,6 @@ public class RangedAttack : PlayerAttackBase
 
         lastAttackTime = Time.time;
     }
-
-
 
     // Called via Animation Event at the right moment
     public void CastUltimate()

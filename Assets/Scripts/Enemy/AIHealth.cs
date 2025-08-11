@@ -63,7 +63,7 @@ public class AIHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         BeastAttack beast = GetComponent<BeastAttack>();
-        if (beast != null && beast.isInUltimate)
+        if (beast != null && beast.IsInUltimate)
         {
             damage = Mathf.RoundToInt(damage * beast.damageReductionFactor);
         }

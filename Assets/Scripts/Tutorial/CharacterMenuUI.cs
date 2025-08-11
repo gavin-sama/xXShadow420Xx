@@ -3,12 +3,16 @@ using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CharacterMenuUI : MonoBehaviour
 {
     public TMP_Dropdown characterDropdown;
     public TMP_Dropdown evolutionDropdown;
     public GameObject characterSelectCanvas;
+
+
 
     // Prefabs
     public GameObject wizardEvo1, wizardEvo2, wizardEvo3;
@@ -97,6 +101,10 @@ public class CharacterMenuUI : MonoBehaviour
             enemy.AssignPlayer(currentCharacter.transform);
         }
         foreach (ShortRangeEnemy enemy in FindObjectsByType<ShortRangeEnemy>(FindObjectsSortMode.None))
+        {
+            enemy.AssignPlayer(currentCharacter.transform);
+        }
+        foreach (GnarpyAI enemy in FindObjectsByType<GnarpyAI>(FindObjectsSortMode.None))
         {
             enemy.AssignPlayer(currentCharacter.transform);
         }

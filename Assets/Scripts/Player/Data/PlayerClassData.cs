@@ -12,10 +12,6 @@ public class PlayerClassData : ScriptableObject
 
     // Animation Clips
     public RuntimeAnimatorController baseAnimatorController;
-    public AnimationClip runAnim;
-    public AnimationClip idleAnim;
-    public AnimationClip attackAnim;
-    public AnimationClip walkAnim;
 
     // Abilities
     public GameObject specialAbilityPrefab;

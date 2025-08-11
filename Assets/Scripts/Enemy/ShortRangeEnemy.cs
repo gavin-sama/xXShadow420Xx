@@ -19,20 +19,20 @@ public class ShortRangeEnemy : BaseAIController
 
     protected override void Awake()
     {
-
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (PlayerStats.isUndetectable)
+        if (player != null)
         {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.velocity = Vector3.zero;
-            animator.SetBool("isWalking", false);
-            return;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            if (PlayerStats.isUndetectable)
+            {
+                navMeshAgent.isStopped = true;
+                navMeshAgent.velocity = Vector3.zero;
+                animator.SetBool("isWalking", false);
+                return;
+            }
         }
 
-        bool inAttackRange = distanceToPlayer <= attackRange;
         base.Awake();
         navMeshAgent.stoppingDistance = attackRange;
-
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;

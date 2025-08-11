@@ -3,6 +3,7 @@ using TMPro; // for TextMeshPro
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.UI; // <-- Needed for Button
 
 public class PauseMenu : MonoBehaviour
 {
@@ -14,12 +15,22 @@ public class PauseMenu : MonoBehaviour
     public GameObject player;
     private InputAction _pause;
 
+    [Header("Return to Hub")]
+    public Button returnButton; // Assign your Return to Hub button in the Inspector
+    public string hubSceneName = "Hub";
+
     void Start()
     {
         player = GameObject.Find("Player");
         if (player != null)
         {
             _pause = player.GetComponent<PlayerInput>().actions["Pause"];
+        }
+
+        // Hide the button if we're already in the hub
+        if (SceneManager.GetActiveScene().name == hubSceneName && returnButton != null)
+        {
+            returnButton.gameObject.SetActive(false);
         }
 
         Time.timeScale = 1f; // Always ensure time is running
@@ -98,6 +109,19 @@ public class PauseMenu : MonoBehaviour
             if (saveDataText)
                 saveDataText.text = "No Data Saved!";
         }
+    }
+
+    public void ReturnToHub()
+    {
+        // Safety check — shouldn't be possible if button is hidden
+        if (SceneManager.GetActiveScene().name == hubSceneName)
+        {
+            Debug.LogWarning("Already in the hub — can't return to hub again!");
+            return;
+        }
+
+        // Load the hub scene
+        SceneManager.LoadScene(hubSceneName);
     }
 
     public void QuitGame()

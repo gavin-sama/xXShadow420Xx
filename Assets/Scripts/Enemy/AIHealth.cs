@@ -102,6 +102,8 @@ public class AIHealth : MonoBehaviour
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
 
+        FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
+
         //Instantiate coin 
         int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
         for (int i = 0; i < coinDropCount; i++)

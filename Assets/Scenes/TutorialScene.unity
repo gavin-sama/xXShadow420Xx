@@ -8129,7 +8129,6 @@ GameObject:
   - component: {fileID: 1037477422}
   - component: {fileID: 1037477421}
   - component: {fileID: 1037477423}
-  - component: {fileID: 1037477424}
   - component: {fileID: 1037477425}
   m_Layer: 0
   m_Name: MenuManager
@@ -8187,29 +8186,15 @@ MonoBehaviour:
   characterDropdown: {fileID: 1306009842}
   evolutionDropdown: {fileID: 1315314296}
   characterSelectCanvas: {fileID: 1749996292}
-  wizardEvo1: {fileID: 233187249011812033, guid: 4a7763cd8b58c744eb22320bdb66cf83, type: 3}
-  wizardEvo2: {fileID: 6195472245415157864, guid: c2da116b0ac446148bd7c4bd224515b5, type: 3}
-  wizardEvo3: {fileID: 2088091235307930680, guid: ebe6dc961da865f4ab7dde2bc4d2287a, type: 3}
+  wizardEvo1: {fileID: 2280492511881140450, guid: f3e9a59785506004fae9267695afb125, type: 3}
+  wizardEvo2: {fileID: 5594092343972436778, guid: 171cf901289615f44be9fe5ae1fd388a, type: 3}
+  wizardEvo3: {fileID: 6653359569425561020, guid: 5ae8fed11d6ad0042bba4c41ceee1b5f, type: 3}
   brawlerEvo1: {fileID: 0}
   brawlerEvo2: {fileID: 6333771953747608063, guid: eca3412deb0719a479cc73bc8f6589ec, type: 3}
   brawlerEvo3: {fileID: 2468113515327222189, guid: 5979ecb4793624040b9134a6271c2a95, type: 3}
-  dinoEvo1: {fileID: 5724878367865881594, guid: e86f424b624ba504f9e507c4a560c4e1, type: 3}
+  dinoEvo1: {fileID: 7672669675511070748, guid: 639f03b4f5f3da047bdde9512497b1bb, type: 3}
   dinoEvo2: {fileID: 0}
   dinoEvo3: {fileID: 3105389554847331861, guid: 28643f4273de47a43949bb43992319de, type: 3}
---- !u!114 &1037477424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1037477420}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 609f118bbc2fc294bba02e63c4141a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldownImage: {fileID: 1660989288}
-  playerMovement: {fileID: 0}
 --- !u!114 &1037477425
 MonoBehaviour:
   m_ObjectHideFlags: 0

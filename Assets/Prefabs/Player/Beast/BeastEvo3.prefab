@@ -162,7 +162,7 @@ MonoBehaviour:
   xpCap: 100
   currentXp: 0
   xpLerpSpeed: 3
-  healthBar: {fileID: 7572527426006210663, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
+  healthBar: {fileID: 9015985043393128271}
   xpBar: {fileID: 2768950373710052169, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
   damageIndicator: {fileID: 1208809110383672548, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
   audioSource: {fileID: 3574938190314551386, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
@@ -234,8 +234,12 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
-  animator: {fileID: 6515064505407567233, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
+  animator: {fileID: -4186424168392328931}
   impactEffect: {fileID: 0}
+  ultimateDuration: 5
+  damageMultiplierDuringUltimate: 2
+  damageReductionFactor: 0.5
+  ultimateSound: {fileID: 0}
   chargeSpeed: 3
   chargeDamageMultiplier: 1.5
   groundBreakEffect: {fileID: 0}
@@ -253,17 +257,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerClassData: {fileID: 11400000, guid: d90747e633fc5de46b4e1556c2200462, type: 2}
-  animator: {fileID: 6515064505407567233, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
+  animator: {fileID: -4186424168392328931}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
   runClip: {fileID: 0}
   idleClip: {fileID: 0}
-  playerStats: {fileID: 4568567943237302373, guid: 63a50536830ba354fb8514c8cbf10fef, type: 3}
+  playerStats: {fileID: -3234173334732911925}
   walkSpeed: 2
   runSpeed: 5
   lookSpeed: 150
   lookXLimit: 45
   gravity: 25
   defaultHeight: 2
+  dodgeCooldown: 3
+  lastDodgeTime: -Infinity
+  dodgeDistance: 5
+  dodgeDuration: 0.3
+  isInvincible: 0
+  dodgeEffectPrefab: {fileID: 0}
   inputSmoothTime: 0.1
 --- !u!95 &-4186424168392328931
 Animator:

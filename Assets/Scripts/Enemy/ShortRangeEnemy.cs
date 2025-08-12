@@ -101,15 +101,26 @@ public class ShortRangeEnemy : BaseAIController
             return;
         }
 
+        GameObject playerGO = player.gameObject;
+
+        PlayerStats playerStats = playerGO.GetComponent<PlayerStats>();
+        PlayerMovement playerMovement = playerGO.GetComponent<PlayerMovement>();
+
+        if (playerStats == null || playerMovement == null)
+        {
+            Debug.LogWarning("ShortRangeEnemy: PlayerStats or PlayerMovement component missing on player GameObject.");
+            return;
+        }
+
         float distance = Vector3.Distance(transform.position, player.position);
+
         if (distance <= attackRange + 0.5f && !playerMovement.isInvincible)
         {
-            player.GetComponent<PlayerStats>()?.TakeDamage(20);
-            Debug.Log("ShortRangeEnemy: Melee attack hit the player.");
+            playerStats.TakeDamage(20);
         }
         else
         {
-            Debug.Log("ShortRangeEnemy: Player out of melee range — attack missed.");
+            Debug.Log("ShortRangeEnemy: Player out of melee range or invincible — attack missed.");
         }
     }
 

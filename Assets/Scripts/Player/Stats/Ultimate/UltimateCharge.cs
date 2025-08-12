@@ -21,15 +21,12 @@ public class UltimateChargeUI : MonoBehaviour
     public BrawlerAttack brawlerAttack;
 
 
-
     private float currentCharge = 0f;
     private bool isReady = false;
-
 
     void Awake()
     {
     }
-
 
     void Start()
     {
@@ -96,7 +93,6 @@ public class UltimateChargeUI : MonoBehaviour
         chargeText.gameObject.SetActive(true);
         UpdateUI();
     }
-
 
     private void UpdateUI()
     {

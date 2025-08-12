@@ -120,9 +120,10 @@ public class RoadGenerator : MonoBehaviour
 
         for (int i = 0; i < cellsToGenerate.Count; i++)
         {
+            Debug.Log($"cellsToGenerate index: {i}");
             List<RoadTypeDirection> options = cellsToGenerate[i].tileOptions;
-            Debug.Log(cellsToGenerate[i].tileOptions.Count);
 
+            int optionsNumOfUpdatedTimes = 0;
             for (int x = 0; x < groundComponents.Count; x++)
             {
                 GroundBase groundScript = groundComponents[x].GetComponentAtIndex(1) as GroundBase;
@@ -142,48 +143,188 @@ public class RoadGenerator : MonoBehaviour
                         // Is current groundComponent the cell's South object
                         if (groundScript.GetNextPosition(Direction.North) == cellsToGenerate[i].transform.position)
                         {
-                            validOptions = new List<RoadTypeDirection>(groundScript.NorthRoadPrefabs);
-                            foreach (RoadTypeDirection prefab in validOptions)
+                            string s = "North";
+                            validOptions = groundScript.NorthRoadPrefabs.Select(original => original.Clone()).ToList();
+                            for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                for (int r = 0; r < prefab.rotations.Count; r++)
-                                    prefab.rotations[r] = (int)(1 * (prefab.rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                if (optionsNumOfUpdatedTimes > 0)
+                                {
+                                    List<Type> optionsPrefabsTypes = new List<Type>();
+                                    foreach (RoadTypeDirection obj in options)
+                                    {
+                                        if (obj.prefab.GetComponentAtIndex(1).GetType() == validOptions[p].prefab.GetComponentAtIndex(1).GetType())
+                                        {
+                                            for (int r = validOptions[p].rotations.Count - 1; r >= 0; r--)
+                                            {
+                                                validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+
+                                                if (!obj.rotations.Contains(validOptions[p].rotations[r]))
+                                                {
+                                                    s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Removed Rotation: {validOptions[p].rotations[r].ToString()}";
+                                                    validOptions[p].rotations.RemoveAt(r);
+                                                }
+                                            }
+                                        }
+
+                                        optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
+                                    }
+                                    if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                }
+                                else
+                                {
+                                    for (int r = 0; r < validOptions[p].rotations.Count; r++)
+                                    {
+                                        s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Old Rotation: {validOptions[p].rotations[r].ToString()} + Ground Rotation: {groundComponents[x].transform.rotation.eulerAngles.y}";
+                                        validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                        s += $" -- New Rotation: {validOptions[p].rotations[r].ToString()}";
+                                    }
+                                }
                             }
+                            optionsNumOfUpdatedTimes++;
+                            Debug.Log(s);
                             CheckValidity(ref options, validOptions);
                         }
 
                         // Is current groundComponent the cell's West object
                         else if (groundScript.GetNextPosition(Direction.East) == cellsToGenerate[i].transform.position)
                         {
-                            validOptions = new List<RoadTypeDirection>(groundScript.EastRoadPrefabs);
-                            foreach (RoadTypeDirection prefab in validOptions)
+                            string s = "East";
+                            validOptions = groundScript.EastRoadPrefabs.Select(original => original.Clone()).ToList();
+                            for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                for (int r = 0; r < prefab.rotations.Count; r++)
-                                    prefab.rotations[r] = (int)(1 * (prefab.rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                if (optionsNumOfUpdatedTimes > 0)
+                                {
+                                    List<Type> optionsPrefabsTypes = new List<Type>();
+                                    foreach (RoadTypeDirection obj in options)
+                                    {
+                                        if (obj.prefab.GetComponentAtIndex(1).GetType() == validOptions[p].prefab.GetComponentAtIndex(1).GetType())
+                                        {
+                                            for (int r = validOptions[p].rotations.Count - 1; r >= 0; r--)
+                                            {
+                                                validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+
+                                                if (!obj.rotations.Contains(validOptions[p].rotations[r]))
+                                                {
+                                                    s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Removed Rotation: {validOptions[p].rotations[r].ToString()}";
+                                                    validOptions[p].rotations.RemoveAt(r);
+                                                }
+                                            }
+                                        }
+
+                                        optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
+                                    }
+                                    if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                }
+                                else
+                                {
+                                    for (int r = 0; r < validOptions[p].rotations.Count; r++)
+                                    {
+                                        s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Old Rotation: {validOptions[p].rotations[r].ToString()} + Ground Rotation: {groundComponents[x].transform.rotation.eulerAngles.y}";
+                                        validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                        s += $" -- New Rotation: {validOptions[p].rotations[r].ToString()}";
+                                    }
+                                }
                             }
+                            optionsNumOfUpdatedTimes++;
+                            Debug.Log(s);
                             CheckValidity(ref options, validOptions);
                         }
 
                         // Is current groundComponent the cell's North object
                         else if (groundScript.GetNextPosition(Direction.South) == cellsToGenerate[i].transform.position)
                         {
-                            validOptions = new List<RoadTypeDirection>(groundScript.SouthRoadPrefabs);
-                            foreach (RoadTypeDirection prefab in validOptions)
+                            string s = "South";
+                            validOptions = groundScript.SouthRoadPrefabs.Select(original => original.Clone()).ToList();
+                            for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                for (int r = 0; r < prefab.rotations.Count; r++)
-                                    prefab.rotations[r] = (int)(1 * (prefab.rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                if (optionsNumOfUpdatedTimes > 0)
+                                {
+                                    List<Type> optionsPrefabsTypes = new List<Type>();
+                                    foreach (RoadTypeDirection obj in options)
+                                    {
+                                        if (obj.prefab.GetComponentAtIndex(1).GetType() == validOptions[p].prefab.GetComponentAtIndex(1).GetType())
+                                        {
+                                            for (int r = validOptions[p].rotations.Count - 1; r >= 0; r--)
+                                            {
+                                                validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+
+                                                if (!obj.rotations.Contains(validOptions[p].rotations[r]))
+                                                {
+                                                    s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Removed Rotation: {validOptions[p].rotations[r].ToString()}";
+                                                    validOptions[p].rotations.RemoveAt(r);
+                                                }
+                                            }
+                                        }
+
+                                        optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
+                                    }
+                                    if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                }
+                                else
+                                {
+                                    for (int r = 0; r < validOptions[p].rotations.Count; r++)
+                                    {
+                                        s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Old Rotation: {validOptions[p].rotations[r].ToString()} + Ground Rotation: {groundComponents[x].transform.rotation.eulerAngles.y}";
+                                        validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                        s += $" -- New Rotation: {validOptions[p].rotations[r].ToString()}";
+                                    }
+                                }
                             }
+                            optionsNumOfUpdatedTimes++;
+                            Debug.Log(s);
                             CheckValidity(ref options, validOptions);
                         }
 
                         //Current groundComponent is the cell's East object
                         else
                         {
-                            validOptions = new List<RoadTypeDirection>(groundScript.WestRoadPrefabs);
-                            foreach (RoadTypeDirection prefab in validOptions)
+                            string s = "West";
+                            validOptions = groundScript.WestRoadPrefabs.Select(original => original.Clone()).ToList();
+                            for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                for (int r = 0; r < prefab.rotations.Count; r++)
-                                    prefab.rotations[r] = (int)(1 * (prefab.rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                if (optionsNumOfUpdatedTimes > 0)
+                                {
+                                    List<Type> optionsPrefabsTypes = new List<Type>();
+                                    foreach (RoadTypeDirection obj in options)
+                                    {
+                                        if (obj.prefab.GetComponentAtIndex(1).GetType() == validOptions[p].prefab.GetComponentAtIndex(1).GetType())
+                                        {
+                                            for (int r = validOptions[p].rotations.Count - 1; r >= 0; r--)
+                                            {
+                                                validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+
+                                                if (!obj.rotations.Contains(validOptions[p].rotations[r]))
+                                                {
+                                                    s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Removed Rotation: {validOptions[p].rotations[r].ToString()}";
+                                                    validOptions[p].rotations.RemoveAt(r);
+                                                }
+                                            }
+                                        }
+
+                                        optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
+                                    }
+                                    if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                }
+                                else
+                                {
+                                    for (int r = 0; r < validOptions[p].rotations.Count; r++)
+                                    {
+                                        s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Old Rotation: {validOptions[p].rotations[r].ToString()} + Ground Rotation: {groundComponents[x].transform.rotation.eulerAngles.y}";
+                                        validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
+                                        s += $" -- New Rotation: {validOptions[p].rotations[r].ToString()}";
+                                    }
+                                }
                             }
+                            optionsNumOfUpdatedTimes++;
+                            Debug.Log(s);
                             CheckValidity(ref options, validOptions);
                         }
                     }
@@ -245,7 +386,7 @@ public class RoadGenerator : MonoBehaviour
         tempGrid1.RemoveAll(a => ((Cell)a.GetComponentAtIndex(a.GetComponentCount() - 1)).tileOptions.Count != ((Cell)tempGrid1[0].GetComponentAtIndex(tempGrid1[0].GetComponentCount() - 1)).tileOptions.Count);
         tempGrid = tempGrid1;
 
-        yield return new WaitForSeconds(0.125f);
+        yield return new WaitForSeconds(0.625f);
 
         isReady = true;
     }

@@ -87,6 +87,15 @@ public class RoadTypeDirection
 {
     public GameObject prefab;
     public List<int> rotations;
+
+    public RoadTypeDirection Clone()
+    {
+        return new RoadTypeDirection
+        {
+            prefab = this.prefab,
+            rotations = this.rotations
+        };
+    }
 }
 
 public enum Direction

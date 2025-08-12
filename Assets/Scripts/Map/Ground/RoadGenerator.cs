@@ -140,6 +140,7 @@ public class RoadGenerator : MonoBehaviour
                 {
                     if (componentAvailablePositions.Contains(cellsToGenerate[i].transform.position))
                     {
+                        Debug.Log(groundComponents[x].GetComponentAtIndex(1).GetType());
                         // Is current groundComponent the cell's South object
                         if (groundScript.GetNextPosition(Direction.North) == cellsToGenerate[i].transform.position)
                         {
@@ -147,7 +148,7 @@ public class RoadGenerator : MonoBehaviour
                             validOptions = groundScript.NorthRoadPrefabs.Select(original => original.Clone()).ToList();
                             for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                Debug.Log($"ValidOptions.Count: {validOptions.Count} & p: {p}");
                                 if (optionsNumOfUpdatedTimes > 0)
                                 {
                                     List<Type> optionsPrefabsTypes = new List<Type>();
@@ -170,6 +171,8 @@ public class RoadGenerator : MonoBehaviour
                                         optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
                                     }
                                     if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                    else if (validOptions[p].rotations.Count == 0)
                                         validOptions.RemoveAt(p);
                                 }
                                 else
@@ -194,7 +197,7 @@ public class RoadGenerator : MonoBehaviour
                             validOptions = groundScript.EastRoadPrefabs.Select(original => original.Clone()).ToList();
                             for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                Debug.Log($"ValidOptions.Count: {validOptions.Count} & p: {p}");
                                 if (optionsNumOfUpdatedTimes > 0)
                                 {
                                     List<Type> optionsPrefabsTypes = new List<Type>();
@@ -217,6 +220,8 @@ public class RoadGenerator : MonoBehaviour
                                         optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
                                     }
                                     if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                    else if (validOptions[p].rotations.Count == 0)
                                         validOptions.RemoveAt(p);
                                 }
                                 else
@@ -241,7 +246,7 @@ public class RoadGenerator : MonoBehaviour
                             validOptions = groundScript.SouthRoadPrefabs.Select(original => original.Clone()).ToList();
                             for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                Debug.Log($"ValidOptions.Count: {validOptions.Count} & p: {p}");
                                 if (optionsNumOfUpdatedTimes > 0)
                                 {
                                     List<Type> optionsPrefabsTypes = new List<Type>();
@@ -264,6 +269,8 @@ public class RoadGenerator : MonoBehaviour
                                         optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
                                     }
                                     if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                    else if (validOptions[p].rotations.Count == 0)
                                         validOptions.RemoveAt(p);
                                 }
                                 else
@@ -288,7 +295,7 @@ public class RoadGenerator : MonoBehaviour
                             validOptions = groundScript.WestRoadPrefabs.Select(original => original.Clone()).ToList();
                             for (int p = validOptions.Count - 1; p >= 0; p--)
                             {
-                                Debug.Log($"validOptions: {validOptions.Count} + index: {p}");
+                                Debug.Log($"ValidOptions.Count: {validOptions.Count} & p: {p}");
                                 if (optionsNumOfUpdatedTimes > 0)
                                 {
                                     List<Type> optionsPrefabsTypes = new List<Type>();
@@ -311,6 +318,8 @@ public class RoadGenerator : MonoBehaviour
                                         optionsPrefabsTypes.Add(obj.prefab.GetComponentAtIndex(1).GetType());
                                     }
                                     if (!optionsPrefabsTypes.Contains(validOptions[p].prefab.GetComponentAtIndex(1).GetType()))
+                                        validOptions.RemoveAt(p);
+                                    else if (validOptions[p].rotations.Count == 0)
                                         validOptions.RemoveAt(p);
                                 }
                                 else
@@ -372,7 +381,13 @@ public class RoadGenerator : MonoBehaviour
                     foreach (RoadTypeDirection prefab in validOptions)
                     {
                         if (prefab.prefab.GetComponentAtIndex(1).GetType() == optionList[x].prefab.GetComponentAtIndex(1).GetType())
-                            optionList[x].rotations = new List<int>(prefab.rotations);
+                        {
+
+                            if (allowedEnds <= 1 && (prefab.prefab.GetComponent<RoadCulDeSac>() != null || prefab.prefab.GetComponent<RoadCulDeSacRail>() != null))
+                                optionList.RemoveAt(x);
+                            else
+                                optionList[x].rotations = new List<int>(prefab.rotations);
+                        }
                     }
                 }
             }
@@ -415,9 +430,9 @@ public class RoadGenerator : MonoBehaviour
 
         //if (obj.TryGetComponent<RoadRamp>(out RoadRamp script))                                               Needs to be flushed in order to only account for pieces after ramps...
         //    GroundBase.currentHeightChange += 1;
-
+        Debug.Log($"allowedEnds: {allowedEnds}");
         allowedEnds += ((GroundBase)foundRoad.prefab.GetComponentAtIndex(1)).extraEnds;
-
+        Debug.Log($"New allowedEnds: {allowedEnds}");
         gridComponents.Remove(cell);
         GameObject cellActual = cells[Array.FindIndex(cells.ToArray(), go => go == cell)];
         cells.Remove(cellActual);

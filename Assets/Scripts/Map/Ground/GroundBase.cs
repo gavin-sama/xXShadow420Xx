@@ -88,12 +88,17 @@ public class RoadTypeDirection
     public GameObject prefab;
     public List<int> rotations;
 
+    public List<int> originalRotations;
+    public bool? rotationsChanged;
+
     public RoadTypeDirection Clone()
     {
         return new RoadTypeDirection
         {
             prefab = this.prefab,
-            rotations = this.rotations
+            rotations = new List<int>(this.rotations),
+            originalRotations = this.rotations,
+            rotationsChanged = false
         };
     }
 }

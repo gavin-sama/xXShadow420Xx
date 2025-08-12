@@ -11,10 +11,11 @@ public class PlayerStats : MonoBehaviour
     public static float maxHealth = 100;
     [SerializeField] private float xpCap;
     [SerializeField] public float currentXp;
+    private float baseXpCap;
 
     private float targetXp;
     [SerializeField] private float xpLerpSpeed = 3f;
-
+    
     public HealthBar healthBar;
     public XPBar xpBar;
     public DamageIndicator damageIndicator;
@@ -54,6 +55,8 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
+        baseXpCap = xpCap;
+
         maxHealth = 100 + (permHealthUpgrades * 10);
         currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
@@ -64,10 +67,10 @@ public class PlayerStats : MonoBehaviour
         currentXp = 0;
         xpBar.SetSliderCap(xpCap);
 
-        // Ensure fade overlay starts transparent
         if (fadeOverlay != null)
             fadeOverlay.color = new Color(0, 0, 0, 0);
     }
+
 
 
     private void Update()
@@ -119,12 +122,17 @@ public class PlayerStats : MonoBehaviour
         if (isDead) return;
 
         targetXp += amount;
-        if (targetXp > xpCap)
+
+        if (targetXp >= xpCap)
         {
-            targetXp = xpCap;
+            targetXp = 0;
+            xpCap *= 1.2f;
+            xpBar.SetSliderCap(xpCap);
+
             OpenUpgradeMenu();
         }
     }
+
 
     private void OpenUpgradeMenu()
     {
@@ -233,6 +241,11 @@ public class PlayerStats : MonoBehaviour
         PlayerAttack.attackDamage = 20;
         PlayerAttack.attackSpeed = 0.6f;
         maxHealth = 100;
+
+        xpCap = baseXpCap;
+        currentXp = 0;
+        targetXp = 0;
+        xpBar.SetSliderCap(xpCap);
 
         // Load scene
         SceneManager.LoadScene("Hub");

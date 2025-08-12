@@ -69,6 +69,14 @@ public class AIHealth : MonoBehaviour
         }
 
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // avoid negatives
+
+        // Update slider here
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+
         Debug.Log($"{gameObject.name} took {damage} damage. Remaining: {currentHealth}");
 
         if (currentHealth <= 0)

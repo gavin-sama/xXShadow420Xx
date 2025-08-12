@@ -21,85 +21,75 @@ public class DamageIndicator : MonoBehaviour
     private Coroutine _currentFadeRoutine;
     private float _currentShakeDuration;
     private CinemachineCamera _cinemachineCamera;
-    private Vector3 _originalCameraOffset;
+    private Vector3 _originalCameraPosition;
 
-    private void Awake()
+    void Awake()
     {
-        // Initialize flash effect
-        if (damageImage != null)
+        if (damageImage == null)
         {
-            damageImage.enabled = false;
-            damageImage.color = flashColor;
+            Debug.LogError("DamageIndicator: damageImage not assigned!", this);
         }
         else
         {
-            Debug.LogError("DamageIndicator: No Image assigned!", this);
-        }
-
-        // Find the Cinemachine Camera
-        _cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
-        if (_cinemachineCamera == null)
-        {
-            Debug.LogError("DamageIndicator: No CinemachineCamera found in scene!", this);
-        }
-        else
-        {
-            // Store the original offset
-            _originalCameraOffset = _cinemachineCamera.transform.localPosition;
+            // Make sure the image is hidden at start
+            damageImage.gameObject.SetActive(false);
+            damageImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, 1f);
         }
     }
 
-    private void Update()
+    void Update()
     {
-        // Handle shake effect in Update
-        if (_currentShakeDuration > 0 && _cinemachineCamera != null && Camera.main != null)
+        if (_currentShakeDuration > 0)
         {
-            // Apply shake to the camera's position
-            Vector3 shakeOffset = Random.insideUnitSphere * shakeAmount;
+            if (_cinemachineCamera != null)
+            {
+                // Apply shake by modifying the virtual camera's local position
+                Vector3 shakeOffset = Random.insideUnitSphere * shakeAmount;
+                shakeOffset.z = 0f; // Optional: avoid shaking forward/backward
+                _cinemachineCamera.transform.localPosition = _originalCameraPosition + shakeOffset;
 
-            // Only apply shake to main camera, not the virtual camera
-            Camera.main.transform.position += shakeOffset;
+                _currentShakeDuration -= Time.deltaTime * shakeDecreaseFactor;
 
-            // Decrease shake duration
-            _currentShakeDuration -= Time.deltaTime * shakeDecreaseFactor;
-        }
-        else if (_currentShakeDuration <= 0)
-        {
-            // Reset shake
-            _currentShakeDuration = 0f;
-
-            // We don't need to reset the camera position as we're only temporarily
-            // offsetting it each frame rather than permanently changing its position
+                if (_currentShakeDuration <= 0)
+                {
+                    // Reset position once shake ends
+                    _currentShakeDuration = 0f;
+                    _cinemachineCamera.transform.localPosition = _originalCameraPosition;
+                }
+            }
         }
     }
-
+     
     public void Flash()
     {
-        // Flash effect
+        if (damageImage == null) return;
+
+        if (!damageImage.gameObject.activeSelf)
+            damageImage.gameObject.SetActive(true);
+
         if (_currentFadeRoutine != null)
-        {
             StopCoroutine(_currentFadeRoutine);
-        }
 
         damageImage.color = flashColor;
         damageImage.enabled = true;
+
         _currentFadeRoutine = StartCoroutine(FadeRoutine());
 
-        // Shake effect
         _currentShakeDuration = shakeDuration;
     }
 
     private IEnumerator FadeRoutine()
     {
-        float currentAlpha = 1.0f;
+        float currentAlpha = 1f;
         while (currentAlpha > 0f)
         {
             currentAlpha -= Time.deltaTime / flashSpeed;
-            damageImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, currentAlpha);
+            damageImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, Mathf.Clamp01(currentAlpha));
             yield return null;
         }
 
         damageImage.enabled = false;
+        damageImage.gameObject.SetActive(false);
         _currentFadeRoutine = null;
     }
 }

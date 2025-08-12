@@ -142,8 +142,7 @@ public class PlayerStats : MonoBehaviour
         if (hurtClip != null && !audioSource.isPlaying)
             audioSource.PlayOneShot(hurtClip);
 
-        if (damageIndicator != null)
-            damageIndicator.Flash();
+        FindFirstObjectByType<DamageIndicator>()?.Flash();
 
         if (currentHealth <= 0)
             Die();

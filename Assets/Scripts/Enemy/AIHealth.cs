@@ -134,7 +134,7 @@ public class AIHealth : MonoBehaviour
     else
         Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
 
-    FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
+    FindFirstObjectByType<UltimateCharge>()?.AddChargeFromKill();
 
     Destroy(gameObject); // Immediate removal
     yield break;

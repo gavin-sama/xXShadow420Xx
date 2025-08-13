@@ -96,8 +96,6 @@ public class PlayerStats : MonoBehaviour
                 currentXp = targetXp;
 
             xpBar.SetSlider(currentXp);
-
-            CheckForEvolution();
         }
 
         if (lowHealthStealth)

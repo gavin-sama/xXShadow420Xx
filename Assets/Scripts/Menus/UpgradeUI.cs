@@ -10,10 +10,6 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private Button healthButton;
     [SerializeField] private Button speedButton;
 
-    [SerializeField] private PlayerClassData playerClassData;
-
-    [SerializeField] private float speedIncreaseAmount = 1f;
-
     private void Awake()
     {
         instance = this;
@@ -47,12 +43,9 @@ public class UpgradeUI : MonoBehaviour
 
     public void UpgradeSpeed()
     {
-        playerClassData.walkSpeed += speedIncreaseAmount;
-        playerClassData.runSpeed += speedIncreaseAmount;
-
+        PlayerAttack.attackSpeed *= 0.9f;
         PlayerStats.speedUpgrades++;
         Hide();
     }
 }
-
 

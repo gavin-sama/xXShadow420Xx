@@ -67,11 +67,27 @@ public class RoadGenerator : MonoBehaviour
             foreach (Direction direction in groundScript.PlaceableDirections)
             {
                 GameObject newCell = Instantiate(cellObj, groundScript.GetNextPosition(direction), new Quaternion(0, 0, 0, 0));
-                newCell.transform.position = new Vector3(
+
+                if (groundToGenerateAround.GetComponent<RoadRamp>() != null &&
+                    groundScript.GetNextPosition(Direction.North) == newCell.transform.position)
+                {
+                    newCell.transform.position = new Vector3(
+                        Mathf.Round(newCell.transform.position.x / 45f) * 45f,
+                        newCell.transform.position.y + GroundBase.heightAdjustment,
+                        Mathf.Round(newCell.transform.position.z / 45f) * 45f
+                    );
+                }
+                else
+                {
+                    newCell.transform.position = new Vector3(
                         Mathf.Round(newCell.transform.position.x / 45f) * 45f,
                         newCell.transform.position.y,
                         Mathf.Round(newCell.transform.position.z / 45f) * 45f
                     );
+                }
+
+
+
                 Cell cellScript = newCell.GetComponentAtIndex(newCell.GetComponentCount() - 1) as Cell;
                 cellScript.CreateCell(false, roadPrefabs);
                 ValidateCellPosition(ref newCell);
@@ -101,7 +117,10 @@ public class RoadGenerator : MonoBehaviour
     {
         for (int i = 0; i < gridComponents.Count; i++)
         {
-            if (cell.transform.position == gridComponents[i].transform.position)
+            if (cell.transform.position.x == gridComponents[i].transform.position.x &&
+                cell.transform.position.z == gridComponents[i].transform.position.z &&
+                cell.transform.position.y > gridComponents[i].transform.position.y - GroundBase.heightAdjustment * 4 &&
+                cell.transform.position.y < gridComponents[i].transform.position.y + GroundBase.heightAdjustment * 4)
             {
                 gridComponents.Remove(cell);
                 cells.Remove(cell);
@@ -115,9 +134,9 @@ public class RoadGenerator : MonoBehaviour
     void UpdateGeneration()
     {
         List<RoadTypeDirection> validOptions;
-        List<Vector3> groundTransforms = new List<Vector3>();
+        List<float[]> groundTransforms = new List<float[]>();
         foreach (GameObject component in groundComponents)
-            groundTransforms.Add(component.transform.position);
+            groundTransforms.Add(new float[] { component.transform.position.x, component.transform.position.z });
 
         for (int i = 0; i < cellsToGenerate.Count; i++)
         {
@@ -128,28 +147,28 @@ public class RoadGenerator : MonoBehaviour
             for (int x = 0; x < groundComponents.Count; x++)
             {
                 GroundBase groundScript = groundComponents[x].GetComponentAtIndex(1) as GroundBase;
-                List<Vector3> componentAvailablePositions = new List<Vector3>();
+                List<float[]> componentAvailablePositions = new List<float[]>();
                 foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-                    componentAvailablePositions.Add(groundScript.GetNextPosition(direction));
+                    componentAvailablePositions.Add(new float[] { groundScript.GetNextPosition(direction).x, groundScript.GetNextPosition(direction).z });
                 int n = 0;
-                foreach (Vector3 transform in componentAvailablePositions)
+                foreach (float[] transform in componentAvailablePositions)
                     if (groundTransforms.Contains(transform))
                         n++;
                 if (n == 4)
                     groundComponents.Remove(groundComponents[x]);
                 else
                 {
-                    if (componentAvailablePositions.Contains(cellsToGenerate[i].transform.position))
+                    if (componentAvailablePositions.Contains(new float[] { cellsToGenerate[i].transform.position.x, cellsToGenerate[i].transform.position.z }))
                     {
                         Debug.Log(groundComponents[x].GetComponentAtIndex(1).GetType());
                         // Is current groundComponent the cell's South object
-                        if (groundScript.GetNextPosition(Direction.North) == cellsToGenerate[i].transform.position)
+                        if (groundScript.GetNextPosition(Direction.North) == cellsToGenerate[i].transform.position)             // These need to be adjusted for the x,z positions only
                         {
                             string s = "North";
                             validOptions = groundScript.NorthRoadPrefabs.Select(original => original.Clone()).ToList();
                             UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x, s);
                         }
-
+                        
                         // Is current groundComponent the cell's West object
                         else if (groundScript.GetNextPosition(Direction.East) == cellsToGenerate[i].transform.position)
                         {
@@ -261,7 +280,7 @@ public class RoadGenerator : MonoBehaviour
                     optionList.Add(validOptions[x]);
                     if (validOptions[x].prefab.GetComponent<RoadCulDeSac>() != null || validOptions[x].prefab.GetComponent<RoadCulDeSacRail>() != null)
                         allowedEnds--;
-                }   
+                }
             }
         }
         else
@@ -309,7 +328,7 @@ public class RoadGenerator : MonoBehaviour
     void FillRandomCell()
     {
         int randIndex = UnityEngine.Random.Range(0, tempGrid.Count);
-        
+
         GameObject cell = tempGrid[randIndex];
         Cell cellToFill = (Cell)tempGrid[randIndex].GetComponentAtIndex(tempGrid[randIndex].GetComponentCount() - 1);
 
@@ -328,8 +347,6 @@ public class RoadGenerator : MonoBehaviour
         obj.transform.rotation = Quaternion.Euler(0, y, 0);
         GroundBase.lastTransform = obj.transform;
 
-        //if (obj.TryGetComponent<RoadRamp>(out RoadRamp script))                                               Needs to be flushed in order to only account for pieces after ramps...
-        //    GroundBase.currentHeightChange += 1;
         Debug.Log($"allowedEnds: {allowedEnds}");
         allowedEnds += ((GroundBase)foundRoad.prefab.GetComponentAtIndex(1)).extraEnds;
         Debug.Log($"New allowedEnds: {allowedEnds}");

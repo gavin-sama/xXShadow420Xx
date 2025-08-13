@@ -13,10 +13,5 @@ public class RoadStraight : GroundBase
 
     public override int extraEnds { get { return 0; } }
 
-    [field: SerializeField] public override List<GameObject> HousePrefabs { get; set; }
-    [field: SerializeField] public override List<GameObject> GrassPrefabs { get; set; }
-    [field: SerializeField] public override List<GameObject> StonePrefabs { get; set; }
-    [field: SerializeField] public override List<GameObject> TreePrefabs { get; set; }
-
     [field: SerializeField] public override float RailLikelihood { get; set; } = 0.35f;
 }

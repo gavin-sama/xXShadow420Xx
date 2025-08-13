@@ -13,16 +13,11 @@ public abstract class GroundBase : MonoBehaviour
     public abstract Direction[] PlaceableDirections { get; }
     public abstract int extraEnds { get; }
 
-    public virtual List<GameObject> HousePrefabs { get; set; }
-    public virtual List<GameObject> GrassPrefabs { get; set; }
-    public virtual List<GameObject> StonePrefabs { get; set; }
-    public virtual List<GameObject> TreePrefabs { get; set; }
-
 
     public abstract float RailLikelihood { get; set; }
 
     public const float heightAdjustment = 2.418f;
-    public static int currentHeightChange = 0;
+    public float height = 0;
     public static Transform lastTransform;
 
     public int sizeX { get { return 45; } }

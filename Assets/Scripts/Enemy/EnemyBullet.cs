@@ -3,25 +3,48 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
     public float Damage = 10f;
+    private GameObject shooter;
 
-    private void OnTriggerEnter(Collider other)
+    public void InitializeShooter(GameObject shooterObj)
     {
-        Debug.Log("Bullet hit something: " + other.name);
+        shooter = shooterObj;
+    }
 
-        if (other.CompareTag("Player"))
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject hitObject = collision.gameObject;
+
+        // Prevent hitting the shooter
+        if (hitObject == shooter) return;
+
+        Debug.Log("Bullet hit something: " + hitObject.name);
+
+        if (hitObject.CompareTag("Player"))
         {
             Debug.Log("Bullet hit player");
 
-            PlayerStats player = other.GetComponent<PlayerStats>();
-            if (player != null)
+            PlayerStats playerStats = hitObject.GetComponent<PlayerStats>();
+            PlayerMovement playerMovement = hitObject.GetComponent<PlayerMovement>();
+
+            if (playerStats != null && playerMovement != null)
             {
-                Debug.Log("PlayerStats found");
-                player.TakeDamage(Damage);
+                if (!playerMovement.isInvincible)
+                {
+                    Debug.Log("Player is vulnerable. Applying damage.");
+                    playerStats.TakeDamage(Damage);
+                }
+                else
+                {
+                    Debug.Log("Player is invincible. No damage applied.");
+                }
             }
             else
             {
-                Debug.Log("PlayerStats not found");
+                Debug.Log("PlayerStats or PlayerMovement not found.");
             }
         }
+
+        // Destroy the bullet on any collision
+        Destroy(gameObject);
     }
 }

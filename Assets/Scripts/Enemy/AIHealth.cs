@@ -3,14 +3,11 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
 
-
-
 public class AIHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
-    //This will be different for every enemy so this will be deleted eventually
     private int Xp = 20;
 
     [Header("UI References")]
@@ -21,11 +18,17 @@ public class AIHealth : MonoBehaviour
     public AudioClip deathSound;
 
     [Header("Fade Settings")]
-    public float fadeDelay = 2f;         // Wait time before fading starts
-    public float fadeDuration = 3f;      // Duration of the fade out
+    public float fadeDelay = 0.5f;         // Wait before starting fade
+    public float fadeDuration = 2f;        // Duration of fade out
 
-    private Animator anim;
+    private NavMeshAgent navAgent;
+    private BaseAIController aiController;
+    private Collider enemyCollider;
     private SkinnedMeshRenderer meshRenderer;
+    private Material[] materials;
+    public GameObject coinPrefab; //need coin prefab so the enemy drops coin 
+    private bool isDead = false;
+    public bool skipXPOnDeath = false;
 
     void Start()
     {
@@ -38,21 +41,18 @@ public class AIHealth : MonoBehaviour
         }
         else
         {
-            Debug.LogError(gameObject.name + ": Health slider reference is missing!");
+            Debug.LogWarning(gameObject.name + ": Health slider reference is missing!");
         }
 
-        anim = GetComponent<Animator>();
+        navAgent = GetComponent<NavMeshAgent>();
+        aiController = GetComponent<BaseAIController>();
+        enemyCollider = GetComponent<Collider>();
         meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-    }
 
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        if (healthSlider != null) healthSlider.value = currentHealth;
-
-        if (currentHealth <= 0)
+        if (meshRenderer != null)
         {
-            Die();
+            // Cache all materials to fade them later
+            materials = meshRenderer.materials;
         }
     }
 
@@ -61,30 +61,93 @@ public class AIHealth : MonoBehaviour
         return currentHealth;
     }
 
-    void Die()
+    public void TakeDamage(int damage)
     {
-        Debug.Log(gameObject.name + " died.");
-
-        // Disable AI logic
-        GetComponent<NavMeshAgent>().enabled = false;
-        GetComponent<BaseAIController>().enabled = false;
-
-        // Set animation bool
-        if (anim != null)
+        BeastAttack beast = GetComponent<BeastAttack>();
+        if (beast != null && beast.IsInUltimate)
         {
-            anim.SetBool("isDead", true);
+            damage = Mathf.RoundToInt(damage * beast.damageReductionFactor);
         }
 
-        // Disable collider
-        Collider col = GetComponent<Collider>();
-        if (col != null) col.enabled = false;
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // avoid negatives
 
-        // Start death coroutine
-        StartCoroutine(DeathRoutine());
+        // Update slider here
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
 
-        
-        // Giving XP to the player (CHANGE WHEN MULTIPLE ENEMIES AND ENEMY CLASS)
+        Debug.Log($"{gameObject.name} took {damage} damage. Remaining: {currentHealth}");
 
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+
+    public void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        Debug.Log(gameObject.name + " died.");
+
+        // Disable AI logic and collider immediately
+        if (navAgent != null) navAgent.enabled = false;
+        if (aiController != null) aiController.enabled = false;
+        if (enemyCollider != null) enemyCollider.enabled = false;
+
+        // Play death sound
+        if (deathSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        }
+
+        // Spawn death particles immediately
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (!skipXPOnDeath)
+        {
+            GiveXPToPlayer();
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
+        }
+
+        FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
+
+        // Instantiate coin
+        int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
+        for (int i = 0; i < coinDropCount; i++)
+        {
+            if (coinPrefab != null) // <-- add this check
+            {
+                Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
+                dropPosition.y = transform.position.y;
+                Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning("Coin prefab is missing on " + gameObject.name);
+            }
+        }
+
+        // Give XP to player
+        GiveXPToPlayer();
+
+        // Destroy the enemy immediately — no fade delay or coroutine
+        Destroy(gameObject);
+    }
+
+
+    void GiveXPToPlayer()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -95,29 +158,5 @@ public class AIHealth : MonoBehaviour
                 Debug.Log("Granting XP: " + Xp);
             }
         }
-
     }
-
-
-    IEnumerator DeathRoutine()
-    {
-        // Play death sound even after object is destroyed
-        if (deathSound != null)
-        {
-            AudioSource.PlayClipAtPoint(deathSound, transform.position);
-        }
-
-        // Play particle effect
-        if (deathEffectPrefab != null)
-        {
-            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
-
-        // Wait before fade starts
-        yield return new WaitForSeconds(fadeDelay);
-
-        // Destroy the object
-        Destroy(gameObject);
-    }
-
 }

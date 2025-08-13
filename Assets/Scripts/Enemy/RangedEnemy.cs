@@ -13,9 +13,23 @@ public class RangedEnemy : BaseAIController
 
     private bool isAttacking;
 
+    public void AssignPlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+    }
+
+
+
     protected override void HandleAI()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (PlayerStats.isUndetectable)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            animator.SetBool("isWalking", false);
+            return;
+        }
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Throwing"))
         {
@@ -52,8 +66,6 @@ public class RangedEnemy : BaseAIController
         }
     }
 
-
-
     public void ShootAtPlayer()
     {
         if (player == null) return;
@@ -62,7 +74,8 @@ public class RangedEnemy : BaseAIController
         Vector3 direction = (aimPoint - shootPoint.position).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.LookRotation(direction));
-        bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
+        bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed; // slight correction from 'linearVelocity'
+        bullet.GetComponent<EnemyBullet>().InitializeShooter(gameObject); // pass the shooter
 
         Debug.Log(" Bullet fired by animation event");
     }

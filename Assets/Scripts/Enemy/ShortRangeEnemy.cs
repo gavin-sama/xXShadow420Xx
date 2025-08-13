@@ -1,73 +1,132 @@
-using UnityEngine.AI;
 using UnityEngine;
 
 public class ShortRangeEnemy : BaseAIController
 {
-    [Header("Short Range Attack")]
-    public float attackRange = 1f;
+    public float attackRange = 0.6f;
     public float attackCooldown = 1.5f;
-    public int attackDamage = 10;
-    public float attackAnimationDuration = 0.9f;
-    public AudioClip attackClip;
-
     private float lastAttackTime;
     private bool isAttacking;
-    private float attackStartTime;
+
+    PlayerMovement playerMovement;
+
+    public void AssignPlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+        playerMovement = player.GetComponent<PlayerMovement>();
+    }
+
+
+
+    protected override void Awake()
+    {
+        if (player != null)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            if (PlayerStats.isUndetectable)
+            {
+                navMeshAgent.isStopped = true;
+                navMeshAgent.velocity = Vector3.zero;
+                animator.SetBool("isWalking", false);
+                return;
+            }
+        }
+
+        base.Awake();
+        navMeshAgent.stoppingDistance = attackRange;
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb) rb.isKinematic = true;
+    }
 
     protected override void HandleAI()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        bool inAttackRange = distanceToPlayer <= attackRange;
-
-        if (!isAttacking || Time.time > attackStartTime + attackAnimationDuration)
+        if (player == null)
         {
-            if (inAttackRange)
-                TryAttack();
-            else
-                ChasePlayer();
+            Debug.LogWarning("ShortRangeEnemy: No player found.");
+            return;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        isAttacking = currentState.IsTag("Attack");
+
+        // Debug current animation state
+        Debug.Log($"ShortRangeEnemy: Current animation state is '{currentState.fullPathHash}', isAttacking={isAttacking}");
+
+        if (isAttacking)
+        {
+            StopMovement();
+            return;
+        }
+
+        if (distanceToPlayer > attackRange)
+        {
+            Debug.Log("ShortRangeEnemy: Chasing player...");
+            ChasePlayer();
+        }
+        else
+        {
+            Debug.Log("ShortRangeEnemy: Within attack range.");
+
+            StopMovement();
+            FacePlayer();
+
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                animator.ResetTrigger("Attack"); // Optional: prevent overlap
+                animator.SetTrigger("Attack");
+                lastAttackTime = Time.time;
+                Debug.Log("ShortRangeEnemy: Attack triggered.");
+            }
         }
     }
 
-    void TryAttack()
+    private void FacePlayer()
     {
-        if (Time.time - lastAttackTime >= attackCooldown)
+        Vector3 lookDir = player.position - transform.position;
+        lookDir.y = 0;
+        if (lookDir.sqrMagnitude > 0.01f)
         {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.velocity = Vector3.zero;
-
-            Vector3 lookDir = (player.position - transform.position).normalized;
-            lookDir.y = 0;
             transform.rotation = Quaternion.LookRotation(lookDir);
-
-            isAttacking = true;
-            attackStartTime = Time.time;
-            lastAttackTime = Time.time;
-
-            if (attackClip != null)
-                audioSource.PlayOneShot(attackClip);
-
-            animator.SetTrigger("Attack"); // Use Trigger for animation
+            Debug.Log("ShortRangeEnemy: Facing player.");
         }
     }
 
-    public void ApplyAttackDamage()
+    public void DealMeleeDamage()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= attackRange + 0.5f)
+        if (player == null)
         {
-            PlayerStats playerHealth = player.GetComponent<PlayerStats>();
-            playerHealth?.TakeDamage(attackDamage);
+            Debug.LogWarning("ShortRangeEnemy: No player to damage.");
+            return;
+        }
+
+        GameObject playerGO = player.gameObject;
+
+        PlayerStats playerStats = playerGO.GetComponent<PlayerStats>();
+        PlayerMovement playerMovement = playerGO.GetComponent<PlayerMovement>();
+
+        if (playerStats == null || playerMovement == null)
+        {
+            Debug.LogWarning("ShortRangeEnemy: PlayerStats or PlayerMovement component missing on player GameObject.");
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= attackRange + 0.5f && !playerMovement.isInvincible)
+        {
+            playerStats.TakeDamage(20);
+        }
+        else
+        {
+            Debug.Log("ShortRangeEnemy: Player out of melee range or invincible — attack missed.");
         }
     }
 
-    protected override void UpdateAnimations()
+    private void OnDrawGizmosSelected()
     {
-        base.UpdateAnimations();
-        animator.SetBool("isAttacking", isAttacking);
-
-        if (isAttacking && Time.time - attackStartTime < 0.1f)
-        {
-            animator.Play("Attack", 0, 0f);
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

@@ -17,7 +17,16 @@ public static class DataSave
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
                     attackSpeed = PlayerAttack.attackSpeed,
-                    teeth = PlayerStats.teethCurrency
+                    teeth = PlayerStats.teethCurrency,
+                    
+                    totalKills = PlayerDataManager.totalKills,
+
+                    hasResurrection = PlayerStats.hasResurrection,
+                    extraCoins = PlayerStats.extraCoins,
+                    lowHealthStealth = PlayerStats.lowHealthStealth,
+                    permHealthUpgrades = PlayerStats.permHealthUpgrades,
+                    permAttackUpgrades = PlayerStats.permAttackUpgrades,
+                    permSpeedUpgrades = PlayerStats.permSpeedUpgrades
                 };
                 break;
             case 2:
@@ -27,7 +36,16 @@ public static class DataSave
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
                     attackSpeed = PlayerAttack.attackSpeed,
-                    teeth = PlayerStats.teethCurrency
+                    teeth = PlayerStats.teethCurrency,
+                    
+                    totalKills = PlayerDataManager.totalKills,
+                    
+                    hasResurrection = PlayerStats.hasResurrection,
+                    extraCoins = PlayerStats.extraCoins,
+                    lowHealthStealth = PlayerStats.lowHealthStealth,
+                    permHealthUpgrades = PlayerStats.permHealthUpgrades,
+                    permAttackUpgrades = PlayerStats.permAttackUpgrades,
+                    permSpeedUpgrades = PlayerStats.permSpeedUpgrades
                 };
                 break;
             case 3:
@@ -37,7 +55,16 @@ public static class DataSave
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
                     attackSpeed = PlayerAttack.attackSpeed,
-                    teeth = PlayerStats.teethCurrency
+                    teeth = PlayerStats.teethCurrency,
+                    
+                    totalKills = PlayerDataManager.totalKills,
+                    
+                    hasResurrection = PlayerStats.hasResurrection,
+                    extraCoins = PlayerStats.extraCoins,
+                    lowHealthStealth = PlayerStats.lowHealthStealth,
+                    permHealthUpgrades = PlayerStats.permHealthUpgrades,
+                    permAttackUpgrades = PlayerStats.permAttackUpgrades,
+                    permSpeedUpgrades = PlayerStats.permSpeedUpgrades
                 };
                 break;
             case 4:
@@ -47,7 +74,16 @@ public static class DataSave
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
                     attackSpeed = PlayerAttack.attackSpeed,
-                    teeth = PlayerStats.teethCurrency
+                    teeth = PlayerStats.teethCurrency,
+                    
+                    totalKills = PlayerDataManager.totalKills,
+                    
+                    hasResurrection = PlayerStats.hasResurrection,
+                    extraCoins = PlayerStats.extraCoins,
+                    lowHealthStealth = PlayerStats.lowHealthStealth,
+                    permHealthUpgrades = PlayerStats.permHealthUpgrades,
+                    permAttackUpgrades = PlayerStats.permAttackUpgrades,
+                    permSpeedUpgrades = PlayerStats.permSpeedUpgrades
                 };
                 break;
         }
@@ -77,28 +113,82 @@ public static class DataSave
         switch (runningLoad)
         {
             case 1:
+                if (gameData.load1 == null)
+                {
+                    Debug.Log("Go TO Default Activated beepboop");
+                    goto default;
+                }
                 PlayerStats.maxHealth = gameData.load1.healthPoints;
                 PlayerAttack.attackDamage = gameData.load1.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load1.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load1.teeth;
+                PlayerDataManager.totalKills = gameData.load1.totalKills;
+                PlayerStats.hasResurrection = gameData.load1.hasResurrection;
+                PlayerStats.extraCoins = gameData.load1.extraCoins;
+                PlayerStats.lowHealthStealth = gameData.load1.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = gameData.load1.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = gameData.load1.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = gameData.load1.permSpeedUpgrades;
                 break;
             case 2:
+                if (gameData.load2 == null)
+                        goto default;
                 PlayerStats.maxHealth = gameData.load2.healthPoints;
                 PlayerAttack.attackDamage = gameData.load2.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load2.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load2.teeth;
+                PlayerDataManager.totalKills = gameData.load2.totalKills;
+                PlayerStats.hasResurrection = gameData.load2.hasResurrection;
+                PlayerStats.extraCoins = gameData.load2.extraCoins;
+                PlayerStats.lowHealthStealth = gameData.load2.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = gameData.load2.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = gameData.load2.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = gameData.load2.permSpeedUpgrades;
                 break;
             case 3:
+                if (gameData.load3 == null)
+                    goto default;
                 PlayerStats.maxHealth = gameData.load3.healthPoints;
                 PlayerAttack.attackDamage = gameData.load3.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load3.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load3.teeth;
+                PlayerDataManager.totalKills = gameData.load3.totalKills;
+                PlayerStats.hasResurrection = gameData.load3.hasResurrection;
+                PlayerStats.extraCoins = gameData.load3.extraCoins;
+                PlayerStats.lowHealthStealth = gameData.load3.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = gameData.load3.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = gameData.load3.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = gameData.load3.permSpeedUpgrades;
                 break;
             case 4:
+                if (gameData.load4 == null)
+                    goto default;
                 PlayerStats.maxHealth = gameData.load4.healthPoints;
                 PlayerAttack.attackDamage = gameData.load4.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load4.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load4.teeth;
+                PlayerDataManager.totalKills = gameData.load4.totalKills;
+                PlayerStats.hasResurrection = gameData.load4.hasResurrection;
+                PlayerStats.extraCoins = gameData.load4.extraCoins;
+                PlayerStats.lowHealthStealth = gameData.load4.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = gameData.load4.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = gameData.load4.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = gameData.load4.permSpeedUpgrades;
+                break;
+            default:
+                Debug.Log("Default Activated beepboop");
+                PlayerData tempData = new PlayerData();
+                PlayerStats.maxHealth = tempData.healthPoints;
+                PlayerAttack.attackDamage = tempData.attackDamage;
+                PlayerAttack.attackSpeed = tempData.attackSpeed;
+                PlayerStats.teethCurrency = tempData.teeth;
+                PlayerDataManager.totalKills = tempData.totalKills;
+                PlayerStats.hasResurrection = tempData.hasResurrection;
+                PlayerStats.extraCoins = tempData.extraCoins;
+                PlayerStats.lowHealthStealth = tempData.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = tempData.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = tempData.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = tempData.permSpeedUpgrades;
                 break;
         }
     }
@@ -108,6 +198,7 @@ public static class DataSave
         string path = Application.persistentDataPath + "/playerData.json";
         if (File.Exists(path))
         {
+            Debug.Log(path);
             string json = System.IO.File.ReadAllText(path);
             DataLoads loadedData = JsonUtility.FromJson<DataLoads>(json);
 
@@ -124,6 +215,7 @@ public static class DataSave
         }
         else
         {
+            Debug.Log("Yo this shit exists part 2");
             gameData = new DataLoads();
             SavesMenu.Saves = 0;
         }

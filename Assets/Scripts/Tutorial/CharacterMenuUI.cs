@@ -57,7 +57,22 @@ public class CharacterMenuUI : MonoBehaviour
         SelectedClass = character; // Store the class
         CurrentEvolution = evolutionDropdown.value + 1;
 
-        
+        // Set PlayerData.SelectedOutfitIndex based on dropdown selection
+        switch (character)
+        {
+            case "Wizard":
+                PlayerData.SelectedOutfitIndex = 0;
+                break;
+            case "Dino":
+                PlayerData.SelectedOutfitIndex = 1;
+                break;
+            case "Brawler":
+                PlayerData.SelectedOutfitIndex = 2;
+                break;
+            default:
+                PlayerData.SelectedOutfitIndex = 0; // fallback
+                break;
+        }
 
         GameObject prefabToSpawn = null;
         switch (character)

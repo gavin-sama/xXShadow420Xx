@@ -22,6 +22,9 @@ public class CharacterMenuUI : MonoBehaviour
 
     private GameObject currentCharacter;
 
+    public static string SelectedClass; // "Wizard", "Brawler", or "Dino"
+    public static int CurrentEvolution = 1;
+
     void Start()
     {
         if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
@@ -51,22 +54,31 @@ public class CharacterMenuUI : MonoBehaviour
     public void StartGame()
     {
         string character = characterDropdown.options[characterDropdown.value].text.Trim();
-        int evolution = evolutionDropdown.value + 1;
+        SelectedClass = character; // Store the class
+        CurrentEvolution = evolutionDropdown.value + 1;
+
+        
 
         GameObject prefabToSpawn = null;
         switch (character)
         {
             case "Wizard":
-                prefabToSpawn = evolution == 1 ? wizardEvo1 :
-                                evolution == 2 ? wizardEvo2 : wizardEvo3;
+                prefabToSpawn = CurrentEvolution == 1 ? wizardEvo1 :
+                                CurrentEvolution == 2 ? wizardEvo2 : wizardEvo3;
                 break;
             case "Brawler":
-                prefabToSpawn = evolution == 1 ? brawlerEvo1 :
-                                evolution == 2 ? brawlerEvo2 : brawlerEvo3;
+                prefabToSpawn = CurrentEvolution == 1 ? brawlerEvo1 :
+                                CurrentEvolution == 2 ? brawlerEvo2 : brawlerEvo3;
                 break;
+<<<<<<< Updated upstream
             case "Dino": 
                 prefabToSpawn = evolution == 1 ? dinoEvo1 :
                                 evolution == 2 ? dinoEvo2 : dinoEvo3;
+=======
+            case "Dino":
+                prefabToSpawn = CurrentEvolution == 1 ? dinoEvo1 :
+                                CurrentEvolution == 2 ? dinoEvo2 : dinoEvo3;
+>>>>>>> Stashed changes
                 break;
         }
 
@@ -90,6 +102,26 @@ public class CharacterMenuUI : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    public GameObject GetPrefabFor(string character, int CurrentEvolution)
+    {
+        switch (character)
+        {
+            case "Wizard":
+                return CurrentEvolution == 1 ? wizardEvo1 :
+                    CurrentEvolution == 2 ? wizardEvo2 : wizardEvo3;
+            case "Brawler":
+                return CurrentEvolution == 1 ? brawlerEvo1 :
+                    CurrentEvolution == 2 ? brawlerEvo2 : brawlerEvo3;
+            case "Dino":
+                return CurrentEvolution == 1 ? dinoEvo1 :
+                    CurrentEvolution == 2 ? dinoEvo2 : dinoEvo3;
+            default:
+                return null;
+        }
+    }
+>>>>>>> Stashed changes
 
     IEnumerator Spawn(GameObject prefab)
     {
@@ -118,4 +150,6 @@ public class CharacterMenuUI : MonoBehaviour
 
         yield return new WaitUntil(() => currentCharacter != null);
     }
+
+    
 }

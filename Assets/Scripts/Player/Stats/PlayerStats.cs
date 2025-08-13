@@ -53,6 +53,14 @@ public class PlayerStats : MonoBehaviour
     private float currentHealth;
     private bool isDead = false;
 
+    public int currentLevel = 1;
+
+    private bool evolvedTo2 = false;
+    private bool evolvedTo3 = false;
+
+    
+
+
     private void Start()
     {
         baseXpCap = xpCap;
@@ -88,6 +96,8 @@ public class PlayerStats : MonoBehaviour
                 currentXp = targetXp;
 
             xpBar.SetSlider(currentXp);
+
+            CheckForEvolution();
         }
 
         if (lowHealthStealth)
@@ -117,6 +127,20 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    private void CheckForEvolution()
+    {
+        if (currentLevel >= 5 && !evolvedTo2 && CharacterMenuUI.CurrentEvolution == 1)
+        {
+            evolvedTo2 = true;
+            EvolvePlayer(2);
+        }
+        else if (currentLevel >= 10 && !evolvedTo3 && CharacterMenuUI.CurrentEvolution == 2)
+        {
+            evolvedTo3 = true;
+            EvolvePlayer(3);
+        }
+    }
+
     public void GainXP(float amount)
     {
         if (isDead) return;
@@ -129,8 +153,65 @@ public class PlayerStats : MonoBehaviour
             xpCap *= 1.2f;
             xpBar.SetSliderCap(xpCap);
 
+            currentLevel++; // Increase level
+
+            Debug.Log("Leveled up! Current level: " + currentLevel);
+
             OpenUpgradeMenu();
+
+            CheckForEvolution();    
+
         }
+    }
+
+    private void OnLevelUp()
+    {
+        if (currentLevel == 5 && CharacterMenuUI.CurrentEvolution == 1)
+        {
+            EvolvePlayer(2);
+        }
+        else if (currentLevel == 10 && CharacterMenuUI.CurrentEvolution == 2)
+        {
+            EvolvePlayer(3);
+        }
+    }
+
+    private void EvolvePlayer(int newEvolutionStage)
+    {
+        GameObject nextPrefab = FindObjectOfType<CharacterMenuUI>()
+            .GetPrefabFor(CharacterMenuUI.SelectedClass, newEvolutionStage);
+
+        if (nextPrefab == null) return;
+
+        Vector3 pos = transform.position;
+        Quaternion rot = transform.rotation;
+
+        Destroy(gameObject);
+
+        GameObject newPlayer = Instantiate(nextPrefab, pos, rot);
+        newPlayer.name = "Player";
+
+        // Update all enemy targets to the new player
+        foreach (var enemy in FindObjectsOfType<BaseAIController>())
+        {
+            enemy.player = newPlayer.transform;
+        }
+        
+
+        // Transfer stats
+        PlayerStats newStats = newPlayer.GetComponent<PlayerStats>();
+        if (newStats != null)
+        {
+            newStats.currentLevel = this.currentLevel;
+            newStats.currentXp = this.currentXp;
+            PlayerStats.maxHealth = PlayerStats.maxHealth;
+            newStats.currentHealth = this.currentHealth;
+        }
+
+        // Camera follow fix (if needed)
+        Camera.main.GetComponent<CameraFollow>().target = newPlayer.transform;
+
+        CharacterMenuUI.CurrentEvolution = newEvolutionStage;
     }
 
 
@@ -285,6 +366,17 @@ public class PlayerStats : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    // ===== New helper methods =====
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void SetCurrentHealth(float value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
     }
 
 }

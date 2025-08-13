@@ -28,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
 
     private Vector3 moveDirection = Vector3.zero;
-    private float rotationY = 0;
     private CharacterController characterController;
 
     private bool canMove = true;
@@ -245,8 +244,10 @@ public class PlayerMovement : MonoBehaviour
         // Spawn dodge effect
         if (dodgeEffectPrefab != null)
         {
-            Instantiate(dodgeEffectPrefab, transform.position, Quaternion.identity);
+            GameObject dodgeEffect = Instantiate(dodgeEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(dodgeEffect, 1f); // Auto-destroy after 1 second
         }
+
 
         float elapsed = 0f;
         while (elapsed < dodgeDuration)
@@ -259,8 +260,6 @@ public class PlayerMovement : MonoBehaviour
         isInvincible = false;
         canMove = true;
     }
-
-
     private void SetInputActions()
     {
         var actions = _playerInput.actions;

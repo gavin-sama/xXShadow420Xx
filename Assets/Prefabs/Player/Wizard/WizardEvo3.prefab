@@ -2654,7 +2654,7 @@ MonoBehaviour:
   defaultHeight: 2
   dodgeCooldown: 3
   lastDodgeTime: -Infinity
-  dodgeDistance: 5
+  dodgeDistance: 2
   dodgeDuration: 0.3
   isInvincible: 0
   dodgeEffectPrefab: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
@@ -2735,6 +2735,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 5283364862303235176}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
+  currentLevel: 1
 --- !u!114 &2496036452727334297
 MonoBehaviour:
   m_ObjectHideFlags: 0

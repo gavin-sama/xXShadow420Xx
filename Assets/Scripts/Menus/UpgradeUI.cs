@@ -41,10 +41,34 @@ public class UpgradeUI : MonoBehaviour
 
     public void UpgradeAttack()
     {
-        Debug.Log($"[UpgradeAttack] Before: Damage={PlayerAttack.attackDamage}, AttackUpgrades={PlayerStats.attackUpgrades}");
-        PlayerAttack.attackDamage += 5;
+        Debug.Log("[UpgradeAttack] Applying +20 damage upgrade to all active attacks");
+
+        // Beast Attack
+        BeastAttack beast = FindObjectOfType<BeastAttack>();
+        if (beast != null)
+        {
+            beast.damage += 20;
+            Debug.Log($"BeastAttack damage now: {beast.damage}");
+        }
+
+        // Brawler Attack
+        BrawlerAttack brawler = FindObjectOfType<BrawlerAttack>();
+        if (brawler != null)
+        {
+            brawler.damage += 20;
+            Debug.Log($"BrawlerAttack damage now: {brawler.damage}");
+        }
+
+        RangedAttack ranged = FindFirstObjectByType<RangedAttack>();
+        if (ranged != null)
+        {
+            ranged.bonusDamage += 20; // Store upgrade in instance
+            Debug.Log($"Ranged bonus damage is now {ranged.bonusDamage}");
+        }
+
         PlayerStats.attackUpgrades++;
-        Debug.Log($"[UpgradeAttack] After: Damage={PlayerAttack.attackDamage}, AttackUpgrades={PlayerStats.attackUpgrades}");
+        Debug.Log($"AttackUpgrades count: {PlayerStats.attackUpgrades}");
+
         Hide();
     }
 

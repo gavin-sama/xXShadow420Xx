@@ -58,6 +58,11 @@ public class PlayerStats : MonoBehaviour
     private bool evolvedTo2 = false;
     private bool evolvedTo3 = false;
 
+    [SerializeField] private GameObject[] class0Evolutions; // Assign in Inspector
+    [SerializeField] private GameObject[] class1Evolutions; // Assign in Inspector
+    [SerializeField] private GameObject[] class2Evolutions; // etc...
+
+    [SerializeField] private int currentEvolutionStage = 1; // start at stage 1
     
 
 
@@ -127,18 +132,19 @@ public class PlayerStats : MonoBehaviour
 
     private void CheckForEvolution()
     {
-        if (currentLevel >= 5 && !evolvedTo2 && CharacterMenuUI.CurrentEvolution == 1)
+        // Example thresholds — adjust these to your game’s logic
+        if (currentEvolutionStage == 1 && currentLevel >= 5)
         {
-            evolvedTo2 = true;
-            EvolvePlayer(2);
+            currentEvolutionStage = 2;
+            EvolvePlayer(currentEvolutionStage);
         }
-        else if (currentLevel >= 10 && !evolvedTo3 && CharacterMenuUI.CurrentEvolution == 2)
+        else if (currentEvolutionStage == 2 && currentLevel >= 10)
         {
-            evolvedTo3 = true;
-            EvolvePlayer(3);
+            currentEvolutionStage = 3;
+            EvolvePlayer(currentEvolutionStage);
         }
     }
-
+    
     public void GainXP(float amount)
     {
         if (isDead) return;
@@ -176,13 +182,41 @@ public class PlayerStats : MonoBehaviour
 
     private void EvolvePlayer(int newEvolutionStage)
     {
-        GameObject nextPrefab = FindObjectOfType<CharacterMenuUI>()
-            .GetPrefabFor(CharacterMenuUI.SelectedClass, newEvolutionStage);
+        int classIndex = PlayerData.SelectedOutfitIndex; // 0 = Wizard, 1 = Dino, 2 = Brawler
+        GameObject nextPrefab = null;
 
-        if (nextPrefab == null) return;
+        switch (classIndex)
+        {
+            case 0: // Wizard
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class0Evolutions.Length)
+                    nextPrefab = class0Evolutions[newEvolutionStage - 1];
+                break;
+
+            case 1: // Dino
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class1Evolutions.Length)
+                    nextPrefab = class1Evolutions[newEvolutionStage - 1];
+                break;
+
+            case 2: // Brawler
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class2Evolutions.Length)
+                    nextPrefab = class2Evolutions[newEvolutionStage - 1];
+                break;
+
+            default:
+                Debug.LogWarning($"Unknown class index: {classIndex}");
+                return;
+        }
+
+        if (nextPrefab == null)
+        {
+            Debug.LogWarning($"No prefab found for class {classIndex} at stage {newEvolutionStage}");
+            return;
+        }
 
         Vector3 pos = transform.position;
         Quaternion rot = transform.rotation;
+
+        CameraFollow camFollow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
 
         Destroy(gameObject);
 
@@ -205,11 +239,8 @@ public class PlayerStats : MonoBehaviour
             PlayerStats.maxHealth = PlayerStats.maxHealth;
             newStats.currentHealth = this.currentHealth;
         }
-
-        // Camera follow fix (if needed)
-        Camera.main.GetComponent<CameraFollow>().target = newPlayer.transform;
-
-        CharacterMenuUI.CurrentEvolution = newEvolutionStage;
+        
+                
     }
 
 

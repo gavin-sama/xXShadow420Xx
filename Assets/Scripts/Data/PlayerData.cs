@@ -14,8 +14,8 @@ public class PlayerData
     
     public int totalKills = 100;
 
-    public bool hasResurrection = true;
-    public bool extraCoins = true;
+    public bool hasResurrection = false;
+    public bool extraCoins = false;
     public bool lowHealthStealth = false;
 
     public int permHealthUpgrades = 0;

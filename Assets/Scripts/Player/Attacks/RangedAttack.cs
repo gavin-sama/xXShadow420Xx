@@ -10,6 +10,8 @@ public class RangedAttack : PlayerAttackBase
     public Transform shootPoint;
     public float projectileSpeed = 30f;
     public LayerMask aimLayerMask;
+    public int bonusDamage = 0;
+
 
     [Header("Ultimate Settings")]
     public float ultimateRange = 6f;
@@ -24,6 +26,8 @@ public class RangedAttack : PlayerAttackBase
     [Header("Audio Feedback")]
     public AudioClip castSound;
     public AudioClip ultimateSound;
+
+    
 
     private static readonly int AttackTrigger = Animator.StringToHash("Attack");
 
@@ -77,6 +81,11 @@ public class RangedAttack : PlayerAttackBase
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.LookRotation(direction));
         projectile.SetActive(true);
+
+        if (projectile.TryGetComponent(out Fireball fb))
+        {
+            fb.damage += bonusDamage; // Apply upgrade here
+        }
 
         if (projectile.TryGetComponent(out Rigidbody rb))
         {

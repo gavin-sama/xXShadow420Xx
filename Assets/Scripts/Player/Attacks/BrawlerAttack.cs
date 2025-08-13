@@ -9,69 +9,64 @@ public class BrawlerAttack : PlayerAttackBase
     public LayerMask enemyLayers;
     public GameObject impactEffect;
 
-    [Header("Knockback Settings (Punch 2 Only)")]
-    [Range(0f, 50f)]
-    public float knockbackForce = 10f; // Adjustable force
-
-    [Header("Combo Settings")]
+    [Header("Animation")]
     public Animator animator;
-    public float comboResetTime = 1.2f;
+    private static readonly int AttackTrigger = Animator.StringToHash("Attack");
+    private static readonly int UltimateTrigger = Animator.StringToHash("Ultimate");
 
-    private int comboStep = 0;
-    private float lastComboTime;
-    private bool inputBuffered = false;
-    private bool isAttacking = false;
+    [Header("Ultimate Projectile Settings")]
+    public GameObject ultimateProjectilePrefab;
+    public Transform ultimateSpawnPoint;
+    public float ultimateProjectileSpeed = 30f;
+
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+        if (attackPoint == null)
+            attackPoint = transform;
+
+        if (ultimateSpawnPoint == null)
+            ultimateSpawnPoint = transform; // fallback
+    }
 
     private void Update()
     {
+        // Normal punch
         if (Input.GetMouseButtonDown(0) && canAttack)
         {
-            inputBuffered = true;
-
-            if (!isAttacking)
-            {
-                StartCombo();
-            }
+            PerformAttack();
         }
 
-        if (Time.time - lastComboTime > comboResetTime)
+        // Ultimate
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canAttack)
         {
-            ResetCombo();
+            PerformUltimate();
         }
     }
 
-    private void StartCombo()
+    public override void PerformAttack()
     {
-        comboStep = 1;
-        lastComboTime = Time.time;
-        isAttacking = true;
+        if (animator != null)
+            animator.SetTrigger(AttackTrigger);
 
-        animator.CrossFade("PunchCombo", 0.1f);
-        animator.SetFloat("PunchIndex", comboStep - 1);
-
-        DealDamage();
+        lastAttackTime = Time.time;
     }
 
-    public void TryContinueCombo()
+    public override void PerformUltimate()
     {
-        if (inputBuffered && comboStep < 2) // Only allow up to Punch 2 now
-        {
-            comboStep++;
-            lastComboTime = Time.time;
-            inputBuffered = false;
+        if (animator != null)
+            animator.SetTrigger(UltimateTrigger);
 
-            animator.CrossFade("PunchCombo", 0.1f);
-            animator.SetFloat("PunchIndex", comboStep - 1);
-
-            DealDamage();
-        }
-        else
-        {
-            ResetCombo();
-        }
+        lastAttackTime = Time.time;
     }
 
-    private void DealDamage()
+    // Called via animation event for melee damage
+    public void DealDamage()
     {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, range, enemyLayers);
         foreach (Collider enemy in hitEnemies)
@@ -79,30 +74,56 @@ public class BrawlerAttack : PlayerAttackBase
             if (enemy.TryGetComponent(out AIHealth enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
-
-                if (comboStep == 2 && enemy.TryGetComponent(out BaseAIController aiController))
-                {
-                    Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
-                    knockbackDir.y = 0; // keep it horizontal
-                    aiController.ApplyKnockback(knockbackDir, knockbackForce, 0.2f);
-                }
-
-
-                Debug.Log($"Combo hit {comboStep}: {damage} damage to {enemy.name}");
+                Debug.Log($"Punch hit: {damage} damage to {enemy.name}");
             }
-        }
-
-        if (impactEffect != null)
-        {
-            Instantiate(impactEffect, attackPoint.position, Quaternion.identity);
         }
     }
 
-    private void ResetCombo()
+    public void SpawnImpactEffect()
     {
-        comboStep = 0;
-        inputBuffered = false;
-        isAttacking = false;
-        animator.SetFloat("PunchIndex", -1);
+        if (impactEffect != null && attackPoint != null)
+        {
+            GameObject impact = Instantiate(impactEffect, attackPoint.position, attackPoint.rotation);
+            Destroy(impact, 0.3f);
+        }
+    }
+
+    // Called via animation event to fire ultimate projectile
+    public void CastUltimateProjectile()
+    {
+        if (ultimateProjectilePrefab == null || ultimateSpawnPoint == null)
+        {
+            Debug.LogError("Missing ultimate projectile prefab or spawn point.");
+            return;
+        }
+
+        Vector3 spawnPos = ultimateSpawnPoint.position;
+        Vector3 direction = transform.forward; // straight ahead
+        direction.Normalize();
+
+        GameObject projectile = Instantiate(ultimateProjectilePrefab, spawnPos, Quaternion.LookRotation(direction));
+        projectile.SetActive(true);
+
+        if (projectile.TryGetComponent(out Rigidbody rb))
+        {
+            rb.linearVelocity = direction * ultimateProjectileSpeed;
+        }
+
+        Debug.Log("Ultimate projectile launched!");
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, range);
+        }
+
+        if (ultimateSpawnPoint != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(ultimateSpawnPoint.position, 0.2f);
+        }
     }
 }

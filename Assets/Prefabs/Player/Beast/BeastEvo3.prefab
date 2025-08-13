@@ -1270,6 +1270,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 8957953737148741434}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 0.4
+  currentLevel: 1
 --- !u!114 &8824997522953851987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1309,7 +1310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 1
-  damage: 20
+  damage: 30
   range: 1.5
   attackPoint: {fileID: 2919344877715983669}
   enemyLayers:
@@ -1351,7 +1352,7 @@ MonoBehaviour:
   defaultHeight: 2
   dodgeCooldown: 3
   lastDodgeTime: -Infinity
-  dodgeDistance: 5
+  dodgeDistance: 2.5
   dodgeDuration: 0.3
   isInvincible: 0
   dodgeEffectPrefab: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}

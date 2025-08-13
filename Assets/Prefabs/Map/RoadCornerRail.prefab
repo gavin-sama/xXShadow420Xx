@@ -5277,6 +5277,7 @@ GameObject:
   - component: {fileID: 210251763765928260}
   - component: {fileID: 1622568761415747250}
   - component: {fileID: 4818155109682179925}
+  - component: {fileID: 1218405109556767106}
   m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
@@ -10099,6 +10100,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &1218405109556767106
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800972900914104515}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 15, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &1821696651545485511
 GameObject:
   m_ObjectHideFlags: 0
@@ -10110,6 +10132,7 @@ GameObject:
   - component: {fileID: 1991206069059540495}
   - component: {fileID: 1315002228962507799}
   - component: {fileID: 7708534820794614253}
+  - component: {fileID: 3760481320396714135}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -14932,6 +14955,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &3760481320396714135
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821696651545485511}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 15, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &2224418363631870934
 GameObject:
   m_ObjectHideFlags: 0

@@ -5385,6 +5385,7 @@ GameObject:
   - component: {fileID: 378132195616098148}
   - component: {fileID: 6842706656262262182}
   - component: {fileID: 7124181961861426087}
+  - component: {fileID: 7232415603236651904}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -10207,6 +10208,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &7232415603236651904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356104590476421426}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 15, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &4736387003512867632
 GameObject:
   m_ObjectHideFlags: 0

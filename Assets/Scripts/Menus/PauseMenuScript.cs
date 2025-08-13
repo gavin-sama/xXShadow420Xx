@@ -8,7 +8,7 @@ using UnityEngine.UI; // <-- Needed for Button
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // The pause menu panel
-    public GameObject controlsContent; // assign in inspector
+    public GameObject controlsScrollView; // Assign Scroll View parent in Inspector
     public TMP_Text saveDataText; // Text to show save/load data
     private bool isPaused = false;
 
@@ -32,6 +32,9 @@ public class PauseMenu : MonoBehaviour
         {
             returnButton.gameObject.SetActive(false);
         }
+
+        if (controlsScrollView != null)
+        { controlsScrollView.SetActive(false); }
 
         Time.timeScale = 1f; // Always ensure time is running
         Cursor.lockState = CursorLockMode.Locked;
@@ -131,10 +134,12 @@ public class PauseMenu : MonoBehaviour
 
     public void ToggleControls()
     {
-        if (controlsContent != null)
+        if (controlsScrollView != null)
         {
-            bool isActive = controlsContent.activeSelf;
-            controlsContent.SetActive(!isActive);
+            bool isActive = controlsScrollView.activeSelf;
+            controlsScrollView.SetActive(!isActive);
+            Debug.Log("Scroll View toggled: " + !isActive);
         }
     }
+
 }

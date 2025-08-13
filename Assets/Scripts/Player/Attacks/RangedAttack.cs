@@ -72,7 +72,7 @@ public class RangedAttack : PlayerAttackBase
         Vector3 spawnPosition = shootPoint.position;
 
         // Direction tilted slightly right
-        Vector3 direction = transform.forward + transform.right * 0.2f;
+        Vector3 direction = transform.forward + transform.right * 0.15f;
         direction.Normalize(); // Make sure it's a unit vector
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.LookRotation(direction));

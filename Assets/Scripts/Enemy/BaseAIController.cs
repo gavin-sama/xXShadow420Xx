@@ -24,7 +24,10 @@ public abstract class BaseAIController : MonoBehaviour
     public AudioClip hurtClip;
     public AudioClip attackClip;
 
-    protected AIHealth aiHealth;
+    private AIHealth aiHealth;
+
+    // NavMeshObstacle component for better local avoidance when stopped
+    private NavMeshObstacle obstacle;
 
     protected virtual void Awake()
     {
@@ -32,6 +35,27 @@ public abstract class BaseAIController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+
+        if (navMeshAgent != null)
+        {
+            // Set agent radius to approximate AI size
+            navMeshAgent.radius = 0.6f;
+
+            // Use high quality obstacle avoidance for better local steering
+            navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+
+            // Randomize avoidance priority (0-99), lower value = higher priority
+            navMeshAgent.avoidancePriority = Random.Range(30, 70);
+        }
+
+        // Setup NavMeshObstacle for carving (avoid overlap when stopped)
+        obstacle = GetComponent<NavMeshObstacle>();
+        if (obstacle != null)
+        {
+            obstacle.carving = true;
+            obstacle.enabled = false; // Start disabled, enabled only when stopped
+        }
     }
 
     protected virtual void Update()
@@ -53,9 +77,15 @@ public abstract class BaseAIController : MonoBehaviour
             return;
         }
 
+        // Disable obstacle and enable agent movement
+        if (obstacle != null && obstacle.enabled)
+        {
+            obstacle.enabled = false;
+            navMeshAgent.enabled = true;
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Check stopping distance
         if (distanceToPlayer <= stopDistanceFromPlayer)
         {
             StopMovement();
@@ -63,7 +93,6 @@ public abstract class BaseAIController : MonoBehaviour
             return;
         }
 
-        // Chase logic
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(player.position);
         navMeshAgent.speed = speedRun;
@@ -86,6 +115,13 @@ public abstract class BaseAIController : MonoBehaviour
         navMeshAgent.isStopped = true;
         navMeshAgent.velocity = Vector3.zero;
         transform.position = navMeshAgent.nextPosition;
+
+        // Enable NavMeshObstacle and disable agent movement to avoid overlap
+        if (obstacle != null && !obstacle.enabled)
+        {
+            navMeshAgent.enabled = false;
+            obstacle.enabled = true;
+        }
     }
 
     public virtual void TakeDamage(int damage)

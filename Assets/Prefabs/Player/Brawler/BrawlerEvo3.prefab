@@ -3826,7 +3826,7 @@ MonoBehaviour:
   dodgeDistance: 5
   dodgeDuration: 0.3
   isInvincible: 0
-  dodgeEffectPrefab: {fileID: 0}
+  dodgeEffectPrefab: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
   inputSmoothTime: 0.1
 --- !u!95 &5281464571617643359
 Animator:
@@ -4047,6 +4047,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   impactEffect: {fileID: 0}
+  knockbackForce: 10
   animator: {fileID: 5281464571617643359}
   comboResetTime: 1.2
 --- !u!1 &8088548442841385909

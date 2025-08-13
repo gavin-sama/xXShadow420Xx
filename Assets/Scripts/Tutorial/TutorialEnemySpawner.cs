@@ -49,25 +49,25 @@ public class TutorialEnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        // Only allow opening spawner panel when game is not paused
+        if (Time.timeScale > 0f && Input.GetKeyDown(KeyCode.M))
         {
             bool isActive = enemySpawnerPanel.activeSelf;
             enemySpawnerPanel.SetActive(!isActive);
 
             if (!isActive)
             {
-                Time.timeScale = 0f;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
             }
             else
             {
-                Time.timeScale = 1f;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
     }
+
 
     void ChangeCount(ref int count, int delta)
     {

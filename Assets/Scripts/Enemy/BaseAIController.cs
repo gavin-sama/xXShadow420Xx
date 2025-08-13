@@ -45,7 +45,7 @@ public abstract class BaseAIController : MonoBehaviour
 
     protected abstract void HandleAI(); // Child scripts define this
 
-    protected void ChasePlayer()
+    protected virtual void ChasePlayer()
     {
         if (PlayerStats.isUndetectable)
         {
@@ -81,7 +81,7 @@ public abstract class BaseAIController : MonoBehaviour
         }
     }
 
-    protected void StopMovement()
+    protected virtual void StopMovement()
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.velocity = Vector3.zero;

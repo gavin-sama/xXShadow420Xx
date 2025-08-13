@@ -9,6 +9,10 @@ public class BrawlerAttack : PlayerAttackBase
     public LayerMask enemyLayers;
     public GameObject impactEffect;
 
+    [Header("Knockback Settings (Punch 2 Only)")]
+    [Range(0f, 50f)]
+    public float knockbackForce = 10f; // Adjustable force
+
     [Header("Combo Settings")]
     public Animator animator;
     public float comboResetTime = 1.2f;
@@ -24,7 +28,6 @@ public class BrawlerAttack : PlayerAttackBase
         {
             inputBuffered = true;
 
-            // Start combo if not attacking
             if (!isAttacking)
             {
                 StartCombo();
@@ -51,7 +54,7 @@ public class BrawlerAttack : PlayerAttackBase
 
     public void TryContinueCombo()
     {
-        if (inputBuffered && comboStep < 3)
+        if (inputBuffered && comboStep < 2) // Only allow up to Punch 2 now
         {
             comboStep++;
             lastComboTime = Time.time;
@@ -76,6 +79,15 @@ public class BrawlerAttack : PlayerAttackBase
             if (enemy.TryGetComponent(out AIHealth enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
+
+                if (comboStep == 2 && enemy.TryGetComponent(out BaseAIController aiController))
+                {
+                    Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
+                    knockbackDir.y = 0; // keep it horizontal
+                    aiController.ApplyKnockback(knockbackDir, knockbackForce, 0.2f);
+                }
+
+
                 Debug.Log($"Combo hit {comboStep}: {damage} damage to {enemy.name}");
             }
         }
@@ -92,14 +104,5 @@ public class BrawlerAttack : PlayerAttackBase
         inputBuffered = false;
         isAttacking = false;
         animator.SetFloat("PunchIndex", -1);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, range);
-        }
     }
 }

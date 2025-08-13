@@ -8,6 +8,7 @@ public class GnarpyAI : BaseAIController
     private float lastAttackTime;
     private bool hasExploded = false;
 
+
     PlayerMovement playerMovement;
 
     [Header("Explosion Settings")]
@@ -24,12 +25,20 @@ public class GnarpyAI : BaseAIController
     {
         base.Awake();
 
+        AIHealth health = GetComponent<AIHealth>();
+        if (health != null)
+        {
+            health.skipXPOnDeath = true;
+        }
+
+        // Your existing code:
         navMeshAgent.stoppingDistance = attackRange;
         stopDistanceFromPlayer = attackRange;
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
     }
+
 
     protected override void UpdateAnimations()
     {

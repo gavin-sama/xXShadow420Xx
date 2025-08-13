@@ -97,6 +97,26 @@ public abstract class BaseAIController : MonoBehaviour
             audioSource.PlayOneShot(hurtClip);
     }
 
+    public void ApplyKnockback(Vector3 direction, float force, float duration)
+    {
+        StartCoroutine(KnockbackRoutine(direction, force, duration));
+    }
+
+    private System.Collections.IEnumerator KnockbackRoutine(Vector3 direction, float force, float duration)
+    {
+        navMeshAgent.isStopped = true; // stop AI movement
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            transform.position += direction * force * Time.deltaTime;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        navMeshAgent.isStopped = false; // resume AI movement
+    }
+
     protected virtual void UpdateAnimations()
     {
         animator.SetBool("isWalking", navMeshAgent.velocity.magnitude > 0.1f);

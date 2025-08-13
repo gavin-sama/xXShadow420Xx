@@ -28,6 +28,7 @@ public class AIHealth : MonoBehaviour
     private Material[] materials;
     public GameObject coinPrefab; //need coin prefab so the enemy drops coin 
     private bool isDead = false;
+    public bool skipXPOnDeath = false;
 
     void Start()
     {
@@ -110,15 +111,31 @@ public class AIHealth : MonoBehaviour
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
 
+        if (!skipXPOnDeath)
+        {
+            GiveXPToPlayer();
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
+        }
+
         FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
 
-        //Instantiate coin 
+        // Instantiate coin
         int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
         for (int i = 0; i < coinDropCount; i++)
         {
-            Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
-            dropPosition.y = transform.position.y;
-            Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+            if (coinPrefab != null) // <-- add this check
+            {
+                Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
+                dropPosition.y = transform.position.y;
+                Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning("Coin prefab is missing on " + gameObject.name);
+            }
         }
 
         // Give XP to player

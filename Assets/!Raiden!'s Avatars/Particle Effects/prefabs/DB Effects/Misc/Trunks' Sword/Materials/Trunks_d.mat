@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Trunks_d
+  m_Shader: {fileID: 4800000, guid: af0f18dfec98c3549906b49f9951ff7f, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Detail:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ILM:
+        m_Texture: {fileID: 2800000, guid: 6b07b191238136d4ea3751e0d2c31218, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 294cbb6ad8ee5744c9630615cf139feb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SSS:
+        m_Texture: {fileID: 2800000, guid: 2a4443de2f1aae140a8c7da764819759, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BaseEmissionIntensity: 1
+    - _BaseEmissiveToggle: 0
+    - _BaseIntensity: 1
+    - _BaseSaturation: 1
+    - _BodyLinesEmissionIntensity: 1
+    - _BodyLinesEmissionToggle: 0
+    - _BumpScale: 1
+    - _Comparison: 0
+    - _Cutoff: 0.5
+    - _DebugGroup: 0
+    - _DepthOffset: 1
+    - _DetailColorSetting: 0
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EditorVersion: 0
+    - _EmissionIntensity: 1
+    - _EmissionMaskIntensity: 1
+    - _EnableCameraDistanceMult: 0
+    - _EnableColorReplacer: 0
+    - _EnableDebug: 0
+    - _EnableEmission: 0
+    - _EnableOutline: 1
+    - _EnableRimlight: 1
+    - _Factor: 0
+    - _FailFront: 0
+    - _FakeGlobalLightIntensity: 0.4
+    - _FakeLightDirX: 35
+    - _FakeLightDirY: -135
+    - _FallbackLightDirection: 0
+    - _GlobalLightPush: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 1
+    - _HighlightRimlightEmissionIntensity: 1
+    - _HighlightRimlightEmissiveToggle: 0
+    - _HighlightRimlightIntensity: 1
+    - _HighlightRimlightSaturation: 1
+    - _ILMAlphaEmissionIntensity: 1
+    - _ILMAlphaLinesEmissionToggle: 0
+    - _ILMChannel: 0
+    - _ILMColorSetting: 0
+    - _LightColorSetting: 0
+    - _LightDirectionSetting: 0
+    - _Metallic: 0
+    - _MinimumGlobalLightIntensity: 0.4
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 1
+    - _OutlineColorIntensity: 1
+    - _OutlineEnableBaseColorMult: 1
+    - _OutlineThickness: 100
+    - _Parallax: 0.02
+    - _PassFront: 0
+    - _PermanentShadowThreshold: 0.1
+    - _ReadMask: 255
+    - _Reference: 0
+    - _RimlightSize: 0.4
+    - _SSSHueShift1: 0
+    - _SSSHueShift2: 0
+    - _SSSHueShift3: 0
+    - _SSSHueShift4: 0
+    - _SSSHueShift5: 0
+    - _Shadow1EmissionIntensity: 1
+    - _Shadow1EmissiveToggle: 0
+    - _Shadow1Intensity: 1
+    - _Shadow1Push: 0.5
+    - _Shadow1Saturation: 1
+    - _Shadow1Smoothness: 0
+    - _Shadow1VertexRThreshold: 0.5
+    - _Shadow2EmissionIntensity: 1
+    - _Shadow2EmissiveToggle: 0
+    - _Shadow2Intensity: 1
+    - _Shadow2Push: 0.2
+    - _Shadow2Saturation: 1
+    - _Shadow2Smoothness: 0
+    - _Shadow2VertexRThreshold: 0.1
+    - _ShadowRimlightEmissionIntensity: 1
+    - _ShadowRimlightEmissiveToggle: 0
+    - _ShadowRimlightIntensity: 1
+    - _ShadowRimlightSaturation: 1
+    - _SmoothnessTextureChannel: 0
+    - _Source1Fuzziness: 0
+    - _Source2Fuzziness: 0
+    - _Source3Fuzziness: 0.01
+    - _Source4Fuzziness: 0.01
+    - _Source5Fuzziness: 0.01
+    - _SpecularEmissionIntensity: 1
+    - _SpecularEmissiveToggle: 0
+    - _SpecularHighlights: 1
+    - _SpecularIntensity: 1
+    - _SpecularSaturation: 1
+    - _SpecularSize: 0.3
+    - _SrcBlend: 1
+    - _TotalReplacements: 0
+    - _UVSec: 0
+    - _Units: 0
+    - _VertexChannel: 0
+    - _ViewDirOffsetPitch: 0
+    - _ViewDirOffsetYaw: 0
+    - _WriteMask: 255
+    - _ZFailFront: 0
+    - _ZTestMode: 4
+    - _ZWrite: 1
+    - _ZWriteMode: 1
+    m_Colors:
+    - _AmbientColor: {r: 1, g: 1, b: 1, a: 0}
+    - _BaseTint: {r: 1, g: 1, b: 1, a: 0}
+    - _BodyLinesColor: {r: 0, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DebugColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FakeGlobalLightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _HighlightRimlightTint: {r: 1, g: 1, b: 1, a: 0}
+    - _ILMAlphaColor: {r: 1, g: 0, b: 0, a: 0}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Shadow1Tint: {r: 1, g: 1, b: 1, a: 0}
+    - _Shadow2Tint: {r: 1, g: 1, b: 1, a: 0}
+    - _ShadowRimlightBaseColor: {r: 0.23921567, g: 0.23921567, b: 0.5294118, a: 0}
+    - _ShadowRimlightTint: {r: 1, g: 1, b: 1, a: 0}
+    - _Source1Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Source2Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Source3Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Source4Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Source5Color: {r: 1, g: 1, b: 1, a: 0}
+    - _SpecularTint: {r: 1, g: 1, b: 1, a: 0}
+    - _Target1Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Target2Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Target3Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Target4Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Target5Color: {r: 1, g: 1, b: 1, a: 0}

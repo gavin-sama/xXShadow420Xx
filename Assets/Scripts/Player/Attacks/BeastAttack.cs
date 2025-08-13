@@ -76,6 +76,18 @@ public class BeastAttack : PlayerAttackBase
     {
         HandleChargeInput();
         HandleUltimateTimer();
+
+        // Left Mouse Button attack
+        if (Input.GetMouseButtonDown(0) && canAttack && !isCharging)
+        {
+            PerformAttack();
+        }
+
+        // Ultimate ability ( key)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canAttack)
+        {
+            PerformUltimate();
+        }
     }
 
     private void HandleChargeInput()
@@ -190,7 +202,8 @@ public class BeastAttack : PlayerAttackBase
 
         if (impactEffect != null)
         {
-            Instantiate(impactEffect, attackPoint.position, Quaternion.identity);
+            GameObject effectInstance = Instantiate(impactEffect, attackPoint.position, Quaternion.identity);
+            Destroy(effectInstance, 2f); // Auto destroy after 2 seconds
         }
     }
 

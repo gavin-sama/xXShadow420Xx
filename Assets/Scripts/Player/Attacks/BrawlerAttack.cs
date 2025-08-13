@@ -18,7 +18,7 @@ public class BrawlerAttack : PlayerAttackBase
     public GameObject ultimateProjectilePrefab;
     public Transform ultimateSpawnPoint;
     public float ultimateProjectileSpeed = 30f;
-
+    public AudioClip ultimateSound;
     private AudioSource audioSource;
 
     private void Start()
@@ -107,6 +107,11 @@ public class BrawlerAttack : PlayerAttackBase
         if (projectile.TryGetComponent(out Rigidbody rb))
         {
             rb.linearVelocity = direction * ultimateProjectileSpeed;
+        }
+
+        if (ultimateSound != null)
+        {
+            audioSource.PlayOneShot(ultimateSound);
         }
 
         Debug.Log("Ultimate projectile launched!");

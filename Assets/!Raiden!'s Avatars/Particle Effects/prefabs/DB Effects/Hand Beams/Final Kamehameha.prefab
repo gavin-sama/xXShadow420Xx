@@ -12288,7 +12288,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 06d598053eb931a4aaa5e6360558d06d, type: 3}
   m_Resource: {fileID: 8300000, guid: 06d598053eb931a4aaa5e6360558d06d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.047
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -12297,9 +12297,9 @@ AudioSource:
   Priority: 256
   DopplerLevel: 1
   MinDistance: 0
-  MaxDistance: 100
-  Pan2D: 0
-  rolloffMode: 1
+  MaxDistance: 10
+  Pan2D: 0.117
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -12362,7 +12362,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -19840,6 +19840,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   lifetime: 7
+  canHitMultiple: 1
 --- !u!1 &5507762303496740144
 GameObject:
   m_ObjectHideFlags: 0
@@ -46715,7 +46716,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: c24dee33b6d599242871452681f146aa, type: 3}
   m_Resource: {fileID: 8300000, guid: c24dee33b6d599242871452681f146aa, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.049
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -46759,7 +46760,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.674
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -46789,7 +46790,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.625
       inSlope: 0
       outSlope: 0
       tangentMode: 0

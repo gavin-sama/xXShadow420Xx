@@ -178,7 +178,7 @@ public class RoadGenerator : MonoBehaviour
             }
         }
 
-        if (gridComponents.Count >= 150)
+        if (gridComponents.Count >= 30)
             isComplete = true;
 
         StartCoroutine(CheckEntropy());
@@ -201,8 +201,6 @@ public class RoadGenerator : MonoBehaviour
                         {
                             if (validOptions[p].rotationsChanged == false)
                             {
-                                //validOptions[p].rotations[r] = (int)((validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
-
                                 validOptions[p].rotations = validOptions[p].originalRotations
                                     .Select(rot => ((int)(rot + groundComponents[x].transform.rotation.eulerAngles.y)) % 360)
                                     .ToList();
@@ -234,8 +232,6 @@ public class RoadGenerator : MonoBehaviour
                 for (int r = 0; r < validOptions[p].rotations.Count; r++)
                 {
                     s += $" | {validOptions[p].prefab.GetComponentAtIndex(1).GetType()} -- Old Rotation: {validOptions[p].rotations[r].ToString()} + Ground Rotation: {groundComponents[x].transform.rotation.eulerAngles.y}";
-                    //validOptions[p].rotations[r] = (int)(1 * (validOptions[p].rotations[r] + groundComponents[x].transform.rotation.eulerAngles.y) % 360);
-
                     validOptions[p].rotations = validOptions[p].originalRotations
                                     .Select(rot => ((int)(rot + groundComponents[x].transform.rotation.eulerAngles.y)) % 360)
                                     .ToList();

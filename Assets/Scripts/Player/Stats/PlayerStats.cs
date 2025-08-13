@@ -15,7 +15,9 @@ public class PlayerStats : MonoBehaviour
 
     private float targetXp;
     [SerializeField] private float xpLerpSpeed = 3f;
-    
+
+    [SerializeField] private PlayerClassData playerClassData;
+
     public HealthBar healthBar;
     public XPBar xpBar;
     public DamageIndicator damageIndicator;
@@ -62,7 +64,8 @@ public class PlayerStats : MonoBehaviour
         healthBar.SetSliderMax(maxHealth);
 
         PlayerAttack.attackDamage = 20 + (permAttackUpgrades * 5);
-        PlayerAttack.attackSpeed = 0.6f + (permSpeedUpgrades * 0.1f);
+        playerClassData.walkSpeed = 6f + (permSpeedUpgrades * 0.5f);
+        playerClassData.runSpeed = 12f + (permSpeedUpgrades * 0.5f);
 
         currentXp = 0;
         xpBar.SetSliderCap(xpCap);
@@ -239,7 +242,8 @@ public class PlayerStats : MonoBehaviour
         PlayerStats.speedUpgrades = 0;
 
         PlayerAttack.attackDamage = 20;
-        PlayerAttack.attackSpeed = 0.6f;
+        playerClassData.walkSpeed = 6f;
+        playerClassData.runSpeed = 12f;
         maxHealth = 100;
 
         xpCap = baseXpCap;

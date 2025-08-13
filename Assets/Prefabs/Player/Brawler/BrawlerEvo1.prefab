@@ -3612,6 +3612,13 @@ MonoBehaviour:
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
   currentLevel: 1
+  class0Evolutions: []
+  class1Evolutions: []
+  class2Evolutions:
+  - {fileID: 7761668383785449871}
+  - {fileID: 1561475489188607983, guid: ba115357f92e36e4aac358b54fb589ba, type: 3}
+  - {fileID: 6853334919620267094, guid: 39998d36d2058e74e9805febdb3e948d, type: 3}
+  currentEvolutionStage: 1
 --- !u!114 &7434678976553320296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3759,7 +3766,6 @@ MonoBehaviour:
   ultimateProjectilePrefab: {fileID: 5257409841669571576, guid: 29a652ff9aaf4514bacb70b9e81abc61, type: 3}
   ultimateSpawnPoint: {fileID: 1964769706921520468}
   ultimateProjectileSpeed: 5
-  ultimateSound: {fileID: 0}
 --- !u!1 &7777425257097218422
 GameObject:
   m_ObjectHideFlags: 0

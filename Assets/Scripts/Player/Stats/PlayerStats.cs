@@ -183,6 +183,7 @@ public class PlayerStats : MonoBehaviour
     private void EvolvePlayer(int newEvolutionStage)
     {
         int classIndex = PlayerData.SelectedOutfitIndex; // 0 = Wizard, 1 = Dino, 2 = Brawler
+        Debug.Log($"Evolving: class={classIndex}, newEvolutionStage={newEvolutionStage}");
         GameObject nextPrefab = null;
 
         switch (classIndex)
@@ -209,6 +210,7 @@ public class PlayerStats : MonoBehaviour
 
         if (nextPrefab == null)
         {
+            
             Debug.LogWarning($"No prefab found for class {classIndex} at stage {newEvolutionStage}");
             return;
         }

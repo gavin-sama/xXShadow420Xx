@@ -11,6 +11,7 @@ public class CharacterMenuUI : MonoBehaviour
     public TMP_Dropdown characterDropdown;
     public TMP_Dropdown evolutionDropdown;
     public GameObject characterSelectCanvas;
+    public CrosshairManager crosshairManager; 
 
 
 
@@ -63,7 +64,7 @@ public class CharacterMenuUI : MonoBehaviour
                 prefabToSpawn = evolution == 1 ? brawlerEvo1 :
                                 evolution == 2 ? brawlerEvo2 : brawlerEvo3;
                 break;
-            case "Dino":
+            case "Dino": 
                 prefabToSpawn = evolution == 1 ? dinoEvo1 :
                                 evolution == 2 ? dinoEvo2 : dinoEvo3;
                 break;
@@ -71,18 +72,24 @@ public class CharacterMenuUI : MonoBehaviour
 
         if (prefabToSpawn)
         {
+            // Activate the correct crosshair before spawning
+            if (crosshairManager != null)
+            {
+                crosshairManager.ActivateCrosshair(character);
+            }
+
             StartCoroutine(Spawn(prefabToSpawn));
             characterSelectCanvas.SetActive(false);
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
         else
         {
             Debug.LogWarning("No prefab matched the selection!");
         }
     }
+
 
     IEnumerator Spawn(GameObject prefab)
     {

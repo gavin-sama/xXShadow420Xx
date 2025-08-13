@@ -2188,9 +2188,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 826b26d541a685b4aa3f0deaad1e7583, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7543469401753775875}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 826b26d541a685b4aa3f0deaad1e7583, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1049429066867399768}
   m_SourcePrefab: {fileID: 100100000, guid: 826b26d541a685b4aa3f0deaad1e7583, type: 3}
 --- !u!4 &3833575746054072300 stripped
 Transform:
@@ -2284,7 +2281,7 @@ MonoBehaviour:
   dodgeDistance: 5
   dodgeDuration: 0.3
   isInvincible: 0
-  dodgeEffectPrefab: {fileID: 0}
+  dodgeEffectPrefab: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
   inputSmoothTime: 0.1
 --- !u!95 &7246146442619865101
 Animator:
@@ -2355,7 +2352,7 @@ MonoBehaviour:
   xpLerpSpeed: 3
   healthBar: {fileID: 4407629588804932835}
   xpBar: {fileID: 5773786056049345184}
-  damageIndicator: {fileID: 1049429066867399768}
+  damageIndicator: {fileID: 0}
   audioSource: {fileID: 7543469401753775875}
   hurtClip: {fileID: 0}
   deathClip: {fileID: 0}
@@ -2401,18 +2398,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 1
-  projectilePrefab: {fileID: 8735408722482519607, guid: a048bcf1214005047861302d0a4515da, type: 3}
+  projectilePrefab: {fileID: 8793510976239746625, guid: 8fa5143051527e949b0ae174c8430414, type: 3}
   shootPoint: {fileID: 2955504030751812052}
   projectileSpeed: 6
   aimLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   ultimateRange: 6
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
   ultimateEffectPrefab: {fileID: 5793841387165916247, guid: 8a474c5401202784ab11371270ef4e33, type: 3}
-  castSound: {fileID: 8300000, guid: e129d625ea0c7b9498babb3d4346010f, type: 3}
+  castSound: {fileID: 0}
   ultimateSound: {fileID: 0}
 --- !u!82 &7543469401753775875
 AudioSource:
@@ -2427,13 +2424,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -2511,21 +2508,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1049429066867399768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5568254575380219613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cacfee5a7afb5e24ba979c06d6ff867e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageImage: {fileID: 0}
-  flashSpeed: 0.5
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
-  shakeAmount: 0.2
-  shakeDecreaseFactor: 1
-  shakeDuration: 0.1

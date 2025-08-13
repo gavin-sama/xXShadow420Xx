@@ -816,7 +816,7 @@ MonoBehaviour:
   playerClassData: {fileID: 11400000, guid: f2cb3007057344d4bb3707f06fafeea9, type: 2}
   animator: {fileID: 1804025803801452346}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  runClip: {fileID: 0}
+  runClip: {fileID: 8300000, guid: 0a724c41ea985364c91c820ad6e47151, type: 3}
   idleClip: {fileID: 0}
   playerStats: {fileID: 1530329209307111260}
   walkSpeed: 6
@@ -947,13 +947,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   projectileSpeed: 6
   aimLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   ultimateRange: 6
   enemyLayers:
     serializedVersion: 2
@@ -1057,6 +1057,7 @@ MonoBehaviour:
   ultimateEffectPrefab: {fileID: 1672939242464963779, guid: 00ed7617cf83d5d44824c6fe6f0c8322, type: 3}
   castSound: {fileID: 0}
   ultimateSound: {fileID: 0}
+  playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
 --- !u!1 &1562334960549725714
 GameObject:
   m_ObjectHideFlags: 0

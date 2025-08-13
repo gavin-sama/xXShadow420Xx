@@ -70,15 +70,9 @@ public class CharacterMenuUI : MonoBehaviour
                 prefabToSpawn = CurrentEvolution == 1 ? brawlerEvo1 :
                                 CurrentEvolution == 2 ? brawlerEvo2 : brawlerEvo3;
                 break;
-<<<<<<< Updated upstream
-            case "Dino": 
-                prefabToSpawn = evolution == 1 ? dinoEvo1 :
-                                evolution == 2 ? dinoEvo2 : dinoEvo3;
-=======
             case "Dino":
                 prefabToSpawn = CurrentEvolution == 1 ? dinoEvo1 :
                                 CurrentEvolution == 2 ? dinoEvo2 : dinoEvo3;
->>>>>>> Stashed changes
                 break;
         }
 
@@ -102,8 +96,6 @@ public class CharacterMenuUI : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public GameObject GetPrefabFor(string character, int CurrentEvolution)
     {
         switch (character)
@@ -121,7 +113,6 @@ public class CharacterMenuUI : MonoBehaviour
                 return null;
         }
     }
->>>>>>> Stashed changes
 
     IEnumerator Spawn(GameObject prefab)
     {

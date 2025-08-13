@@ -47,6 +47,12 @@ public abstract class BaseAIController : MonoBehaviour
 
     protected void ChasePlayer()
     {
+        if (PlayerStats.isUndetectable)
+        {
+            StopMovement();
+            return;
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         // Check stopping distance

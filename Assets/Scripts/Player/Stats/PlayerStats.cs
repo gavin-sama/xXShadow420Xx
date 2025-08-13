@@ -156,6 +156,26 @@ public class PlayerStats : MonoBehaviour
         healthBar.SetSlider(currentHealth);
     }
 
+    public static void SetActivePerk(string perkName)
+    {
+        hasResurrection = false;
+        extraCoins = false;
+        lowHealthStealth = false;
+
+        switch (perkName)
+        {
+            case "Resurrection":
+                hasResurrection = true;
+                break;
+            case "ExtraCoins":
+                extraCoins = true;
+                break;
+            case "LowHealthStealth":
+                lowHealthStealth = true;
+                break;
+        }
+    }
+
     private void ActivateStealth()
     {
         isStealthed = true;

@@ -55,18 +55,21 @@ public class PermUpMenu : MonoBehaviour
         {
             PlayerStats.hasResurrection = true;
             resurrectButton.interactable = false;
+            PlayerStats.SetActivePerk("Resurrection");
         }));
 
         moreCoinsButton.onClick.AddListener(() => SelectUpgrade(coinBoostCost, () =>
         {
             PlayerStats.extraCoins = true;
             moreCoinsButton.interactable = false;
+            PlayerStats.SetActivePerk("ExtraCoins");
         }));
 
         stealthButton.onClick.AddListener(() => SelectUpgrade(stealthCost, () =>
         {
             PlayerStats.lowHealthStealth = true;
             stealthButton.interactable = false;
+            PlayerStats.SetActivePerk("LowHealthStealth");
         }));
 
         healthButton.onClick.AddListener(() => SelectUpgrade(healthCost, () =>

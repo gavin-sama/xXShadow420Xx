@@ -10,6 +10,7 @@ public class PlayerClassData : ScriptableObject
     public float runSpeed = 12f;
     public float gravity = 20f;
 
+
     // Animation Clips
     public RuntimeAnimatorController baseAnimatorController;
 

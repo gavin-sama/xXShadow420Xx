@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b12951126fc0e45835e64f468284df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManagerPrefab: {fileID: 0}
+  MenuManagerPrefab: {fileID: 0}
+  CameraManagerPrefab: {fileID: 0}
+  EventManagerPrefab: {fileID: 0}
   roadPrefabs:
   - {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
   - {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
@@ -59,6 +63,7 @@ MonoBehaviour:
   bossAreaPrefab: {fileID: 9122067106741263647, guid: 78576008a77b402488fcdce0f6d304b1, type: 3}
   miniBossAreaPrefab: {fileID: 0}
   startingAreaPrefab: {fileID: 7769227496770701721, guid: d4de1239f76909b4a8944cf77f1acced, type: 3}
+  Test: {fileID: 4647063319648470068, guid: ff10af28fb23dcc41a921a97c0230ad9, type: 3}
   cellObj: {fileID: 649724680648757351, guid: f1c970e0521ce3b42b2361bf48e233bb, type: 3}
   totalAllowedComponents: 25
   groundComponents: []

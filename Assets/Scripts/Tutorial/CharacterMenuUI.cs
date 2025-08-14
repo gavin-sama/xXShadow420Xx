@@ -31,6 +31,7 @@ public class CharacterMenuUI : MonoBehaviour
         if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
             SceneManager.UnloadSceneAsync(2);
 
+        crosshairManager = GameObject.Find("CrosshairManagerCanvas").GetComponent<CrosshairManager>();
         characterSelectCanvas.SetActive(true);
         Time.timeScale = 0f; // Freeze for selection
         Cursor.lockState = CursorLockMode.None;
@@ -135,7 +136,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     IEnumerator Spawn(GameObject prefab)
     {
-        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(-32, 0, -75);
+        Vector3 spawnPosition = currentCharacter ? currentCharacter.transform.position : new Vector3(0, 0, 0);
         Quaternion spawnRotation = currentCharacter ? currentCharacter.transform.rotation : Quaternion.identity;
 
         if (currentCharacter)

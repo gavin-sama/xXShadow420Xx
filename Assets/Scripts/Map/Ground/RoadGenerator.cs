@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using UnityEditor.Compilation;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Splines;
@@ -14,6 +15,11 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class RoadGenerator : MonoBehaviour
 {
+    public GameObject GameManagerPrefab;
+    public GameObject MenuManagerPrefab;
+    public GameObject CameraManagerPrefab;
+    public GameObject EventManagerPrefab;
+
     [SerializeField] private List<GameObject> roadPrefabs;
     [SerializeField] private GameObject bossAreaPrefab;
     [SerializeField] private GameObject miniBossAreaPrefab;
@@ -31,6 +37,7 @@ public class RoadGenerator : MonoBehaviour
 
     private bool isComplete;
     private bool isReady;
+    private bool isFinished;
 
     private List<GameObject> tempGrid;
     private const float waitTime = 0.125f;
@@ -45,6 +52,7 @@ public class RoadGenerator : MonoBehaviour
         tempGrid = new List<GameObject>();
         isComplete = false;
         isReady = false;
+        isFinished = false;
         allowedEnds = 1;
 
 
@@ -60,6 +68,8 @@ public class RoadGenerator : MonoBehaviour
     {
         if (isReady)
             FillRandomCell();
+        else if (isFinished)
+            GameSetup();
     }
 
     void InitializeNextGrid(GameObject groundToGenerateAround)
@@ -109,8 +119,15 @@ public class RoadGenerator : MonoBehaviour
             GameObject bossGround = Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
             RoadCulDeSac bossGroundScript = bossGround.GetComponent<RoadCulDeSac>();
 
-            DestroyImmediate(cellsToGenerate[0]);
-            DestroyImmediate(cells[0]);
+            var cell = cells[0];
+            var cellScript = cellsToGenerate[0];
+
+            gridComponents.Remove(cell);
+            cells.Remove(cell);
+            cellsToGenerate.Remove(cellScript);
+
+            DestroyImmediate(cellScript);
+            DestroyImmediate(cell);
 
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))                                 // Change the groundScript to derive from the attached ground based on the connected fog wall
             {
@@ -144,6 +161,7 @@ public class RoadGenerator : MonoBehaviour
                                         bossGround.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         break;
                                 }
+                                isFinished = true;
                                 return;
                             }
                         }
@@ -152,6 +170,16 @@ public class RoadGenerator : MonoBehaviour
             }
         }
     }
+
+    public void GameSetup()
+    {
+        Instantiate(GameManagerPrefab);
+        Instantiate(EventManagerPrefab);
+        Instantiate(CameraManagerPrefab);
+        Instantiate(MenuManagerPrefab);
+
+        this.gameObject.SetActive(false);
+}
 
     void ValidateCellPosition(ref GameObject cell, GameObject objectGeneratedAround)
     {

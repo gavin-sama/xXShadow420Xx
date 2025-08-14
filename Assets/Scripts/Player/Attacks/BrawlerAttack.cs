@@ -41,12 +41,6 @@ public class BrawlerAttack : PlayerAttackBase
         {
             PerformAttack();
         }
-
-        // Ultimate
-        if (Input.GetKeyDown(KeyCode.LeftControl) && canAttack)
-        {
-            PerformUltimate();
-        }
     }
 
     public override void PerformAttack()

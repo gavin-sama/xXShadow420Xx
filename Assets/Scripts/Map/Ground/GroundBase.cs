@@ -35,25 +35,21 @@ public abstract class GroundBase : MonoBehaviour
         {
             nextPosition = this.gameObject.transform.position + transformFlatForward * 45f;
             //Debug.Log($"North Transform Flat: {transformFlatForward} -- Transform Change: {transformFlatForward * 45}");
-            nextPosition.y = currentHeightChange * heightAdjustment;
         }
         else if (direction == Direction.East)
         {
             nextPosition = this.gameObject.transform.position + transformFlatRight * 45f;
             //Debug.Log($"East Transform Flat: {transformFlatRight} -- Transform Change: {transformFlatRight * 45f}");
-            nextPosition.y = currentHeightChange * heightAdjustment;
         }
         else if (direction == Direction.South)
         {
             nextPosition = this.gameObject.transform.position + (-transformFlatForward) * 45f;
             //Debug.Log($"South Transform Flat: {-transformFlatForward} -- Transform Change: {(-transformFlatForward) * 45}");
-            nextPosition.y = currentHeightChange * heightAdjustment;
         }
         else
         {
             nextPosition = this.gameObject.transform.position + (-transformFlatRight) * 45f;
             //Debug.Log($"West Transform Flat: {-transformFlatRight} -- Transform Change: {(-transformFlatRight) * 45f}");
-            nextPosition.y = currentHeightChange * heightAdjustment;
         }
 
 

@@ -13,6 +13,7 @@ public static class DataSave
             case 0:
                 gameData.load0 = new PlayerData()
                 {
+                    selectedOutfitIndex = PlayerData.SelectedOutfitIndex,
                     healthPoints = PlayerStats.maxHealth,
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
@@ -31,6 +32,7 @@ public static class DataSave
             case 1:
                 gameData.load1 = new PlayerData()
                 {
+                    selectedOutfitIndex = PlayerData.SelectedOutfitIndex,
                     healthPoints = PlayerStats.maxHealth,
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
@@ -51,6 +53,7 @@ public static class DataSave
             case 2:
                 gameData.load2 = new PlayerData()
                 {
+                    selectedOutfitIndex = PlayerData.SelectedOutfitIndex,
                     healthPoints = PlayerStats.maxHealth,
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
@@ -71,6 +74,7 @@ public static class DataSave
             case 3:
                 gameData.load3 = new PlayerData()
                 {
+                    selectedOutfitIndex = PlayerData.SelectedOutfitIndex,
                     healthPoints = PlayerStats.maxHealth,
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
@@ -91,6 +95,7 @@ public static class DataSave
             case 4:
                 gameData.load4 = new PlayerData()
                 {
+                    selectedOutfitIndex = PlayerData.SelectedOutfitIndex,
                     healthPoints = PlayerStats.maxHealth,
                     attackDamage = PlayerAttack.attackDamage,
                     attackRange = PlayerAttack.attackRange,
@@ -139,6 +144,7 @@ public static class DataSave
             case 0:
                 if (gameData.load0 == null) 
                     goto default;
+                PlayerData.SelectedOutfitIndex = gameData.load0.selectedOutfitIndex;
                 PlayerStats.maxHealth = gameData.load0.healthPoints;
                 PlayerAttack.attackDamage = gameData.load0.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load0.attackSpeed;
@@ -158,6 +164,7 @@ public static class DataSave
                     Debug.Log("Go TO Default Activated beepboop");
                     goto default;
                 }
+                PlayerData.SelectedOutfitIndex = gameData.load1.selectedOutfitIndex;
                 PlayerStats.maxHealth = gameData.load1.healthPoints;
                 PlayerAttack.attackDamage = gameData.load1.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load1.attackSpeed;
@@ -174,6 +181,7 @@ public static class DataSave
             case 2:
                 if (gameData.load2 == null)
                         goto default;
+                PlayerData.SelectedOutfitIndex = gameData.load2.selectedOutfitIndex;
                 PlayerStats.maxHealth = gameData.load2.healthPoints;
                 PlayerAttack.attackDamage = gameData.load2.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load2.attackSpeed;
@@ -190,6 +198,7 @@ public static class DataSave
             case 3:
                 if (gameData.load3 == null)
                     goto default;
+                PlayerData.SelectedOutfitIndex = gameData.load3.selectedOutfitIndex;
                 PlayerStats.maxHealth = gameData.load3.healthPoints;
                 PlayerAttack.attackDamage = gameData.load3.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load3.attackSpeed;
@@ -206,6 +215,7 @@ public static class DataSave
             case 4:
                 if (gameData.load4 == null)
                     goto default;
+                PlayerData.SelectedOutfitIndex = gameData.load4.selectedOutfitIndex;
                 PlayerStats.maxHealth = gameData.load4.healthPoints;
                 PlayerAttack.attackDamage = gameData.load4.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load4.attackSpeed;
@@ -222,6 +232,7 @@ public static class DataSave
             default:
                 Debug.Log("Default Activated beepboop");
                 PlayerData tempData = new PlayerData();
+                PlayerData.SelectedOutfitIndex = tempData.selectedOutfitIndex;
                 PlayerStats.maxHealth = tempData.healthPoints;
                 PlayerAttack.attackDamage = tempData.attackDamage;
                 PlayerAttack.attackSpeed = tempData.attackSpeed;

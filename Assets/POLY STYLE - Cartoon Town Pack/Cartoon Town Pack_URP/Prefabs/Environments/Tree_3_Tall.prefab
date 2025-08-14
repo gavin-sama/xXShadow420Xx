@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1498096677659701790}
   - component: {fileID: 3978217182719827356}
   - component: {fileID: 7534146305016339179}
-  - component: {fileID: -2276736872189816616}
+  - component: {fileID: -6917128277615206517}
   m_Layer: 9
-  m_Name: Tree_3
+  m_Name: Tree_3_Tall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.27, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &-2276736872189816616
+--- !u!64 &-6917128277615206517
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

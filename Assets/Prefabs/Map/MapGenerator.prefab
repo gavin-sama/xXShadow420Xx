@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b12951126fc0e45835e64f468284df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManagerPrefab: {fileID: 0}
+  MenuManagerPrefab: {fileID: 0}
+  CameraManagerPrefab: {fileID: 0}
+  EventManagerPrefab: {fileID: 0}
   roadPrefabs:
   - {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
   - {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
@@ -53,14 +57,13 @@ MonoBehaviour:
   - {fileID: 3954036487325459535, guid: 41aea8ebe6bacaa4bb692bbd828627b7, type: 3}
   - {fileID: 7765347481899024103, guid: 5aecfe969abf6c14c9255215ad91b7a0, type: 3}
   - {fileID: 5864913858812173581, guid: 09516d2f1db8eb6478d27373a380e3e9, type: 3}
-  - {fileID: 3450862008188500209, guid: c4daa2e3266bc604ea71dbd62e20e22a, type: 3}
   - {fileID: 8107975816218347592, guid: 49d087c985502cf40915c4bea52d8355, type: 3}
   - {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
   - {fileID: 4154364170433779805, guid: f01b1b45c197c764db55200bb63b409f, type: 3}
-  bossAreaPrefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+  bossAreaPrefab: {fileID: 9122067106741263647, guid: 78576008a77b402488fcdce0f6d304b1, type: 3}
   miniBossAreaPrefab: {fileID: 0}
-  startingAreaPrefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+  startingAreaPrefab: {fileID: 7769227496770701721, guid: d4de1239f76909b4a8944cf77f1acced, type: 3}
+  Test: {fileID: 4647063319648470068, guid: ff10af28fb23dcc41a921a97c0230ad9, type: 3}
   cellObj: {fileID: 649724680648757351, guid: f1c970e0521ce3b42b2361bf48e233bb, type: 3}
   totalAllowedComponents: 25
-  gridComponents: []
   groundComponents: []

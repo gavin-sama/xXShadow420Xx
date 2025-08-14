@@ -11,6 +11,8 @@ public class RangedEnemy : BaseAIController
     private float lastShotTime;
     private bool isShooting;
 
+    private bool isAttacking;
+
     public void AssignPlayer(Transform playerTransform)
     {
         player = playerTransform;
@@ -38,10 +40,12 @@ public class RangedEnemy : BaseAIController
 
         if (Time.time < lastShotTime + attackCooldown)
         {
+            isAttacking = true;
             navMeshAgent.isStopped = true;
             return;
         }
 
+        isAttacking = false;
 
         if (distanceToPlayer <= shootingRange)
         {

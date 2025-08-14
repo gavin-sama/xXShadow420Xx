@@ -2267,7 +2267,7 @@ MonoBehaviour:
   playerClassData: {fileID: 11400000, guid: f2cb3007057344d4bb3707f06fafeea9, type: 2}
   animator: {fileID: 7246146442619865101}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  runClip: {fileID: 8300000, guid: 37035413b5e0f3c4ba28a837c3b415f2, type: 3}
+  runClip: {fileID: 0}
   idleClip: {fileID: 0}
   playerStats: {fileID: 7008433978988779671}
   walkSpeed: 6
@@ -2350,13 +2350,12 @@ MonoBehaviour:
   xpCap: 100
   currentXp: 0
   xpLerpSpeed: 3
-  playerClassData: {fileID: 0}
   healthBar: {fileID: 4407629588804932835}
   xpBar: {fileID: 5773786056049345184}
   damageIndicator: {fileID: 0}
   audioSource: {fileID: 7543469401753775875}
-  hurtClip: {fileID: 8300000, guid: 850a3eb3e5f00284286d71b098460fa3, type: 3}
-  deathClip: {fileID: 8300000, guid: 9d805ac91588fc843b31d82c2ead2c50, type: 3}
+  hurtClip: {fileID: 0}
+  deathClip: {fileID: 0}
   playerAnimator: {fileID: 7246146442619865101}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
@@ -2419,7 +2418,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   ultimateEffectPrefab: {fileID: 5793841387165916247, guid: 8a474c5401202784ab11371270ef4e33, type: 3}
-  castSound: {fileID: 8300000, guid: 01124d2f9be57d9459993b928ec95271, type: 3}
+  castSound: {fileID: 0}
   ultimateSound: {fileID: 0}
 --- !u!82 &7543469401753775875
 AudioSource:
@@ -2434,7 +2433,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

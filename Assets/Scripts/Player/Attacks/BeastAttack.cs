@@ -82,6 +82,12 @@ public class BeastAttack : PlayerAttackBase
         {
             PerformAttack();
         }
+
+        // Ultimate ability ( key)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canAttack)
+        {
+            PerformUltimate();
+        }
     }
 
     private void HandleChargeInput()

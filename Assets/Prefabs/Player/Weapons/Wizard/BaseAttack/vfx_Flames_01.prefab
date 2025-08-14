@@ -1313,7 +1313,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0, b: 0.009047508, a: 1}
-        key1: {r: 1, g: 0.12244898, b: 0, a: 1}
+        key1: {r: 0.96178377, g: 0.11586569, b: 0, a: 1}
         key2: {r: 1, g: 0.120469585, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4849,7 +4849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ece08640ff4f24480653d54b4199a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 45
 --- !u!54 &-2972085630809558324
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4896,8 +4896,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.3969139
-  m_Center: {x: -0.05791783, y: 0.118747026, z: 1.7357572}
+  m_Radius: 0.48627222
+  m_Center: {x: 0.7433318, y: 0.11874664, z: 0.060726643}
 --- !u!1 &9064956068904258685
 GameObject:
   m_ObjectHideFlags: 0
@@ -6206,7 +6206,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0.028217316, a: 1}
+        key0: {r: 0.4811321, g: 0, b: 0.04095865, a: 1}
         key1: {r: 0, g: 0, b: 0, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}

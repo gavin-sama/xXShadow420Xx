@@ -1001,7 +1001,7 @@ MonoBehaviour:
   playerClassData: {fileID: 11400000, guid: a3cfaf48044e0764fb207ec8b8b37a10, type: 2}
   animator: {fileID: 8457859625737902123}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  runClip: {fileID: 8300000, guid: 37035413b5e0f3c4ba28a837c3b415f2, type: 3}
+  runClip: {fileID: 0}
   idleClip: {fileID: 0}
   playerStats: {fileID: 4784529401281274051}
   walkSpeed: 6
@@ -1084,13 +1084,12 @@ MonoBehaviour:
   xpCap: 100
   currentXp: 0
   xpLerpSpeed: 3
-  playerClassData: {fileID: 0}
   healthBar: {fileID: 3428505834452792528}
   xpBar: {fileID: 5079045912993848109}
   damageIndicator: {fileID: 0}
   audioSource: {fileID: 2090494495282202094}
-  hurtClip: {fileID: 8300000, guid: d1d9745050fa3d34681b3c7badbf8a18, type: 3}
-  deathClip: {fileID: 8300000, guid: edcacf4be6afd7c4fbe2fbc18d2207b2, type: 3}
+  hurtClip: {fileID: 0}
+  deathClip: {fileID: 0}
   playerAnimator: {fileID: 8457859625737902123}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
@@ -1144,7 +1143,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Splines;
 using static UnityEditor.Rendering.FilterWindow;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class RoadGenerator : MonoBehaviour
 {
@@ -63,9 +64,10 @@ public class RoadGenerator : MonoBehaviour
 
     void InitializeNextGrid(GameObject groundToGenerateAround)
     {
+        GroundBase groundScript = (GroundBase)groundToGenerateAround.GetComponentAtIndex(1);
+
         if (!isComplete || cellsToGenerate.Count > 1)
         {
-            GroundBase groundScript = (GroundBase)groundToGenerateAround.GetComponentAtIndex(1);
             foreach (Direction direction in groundScript.PlaceableDirections)
             {
                 GameObject newCell = Instantiate(cellObj, groundScript.GetNextPosition(direction), new Quaternion(0, 0, 0, 0));
@@ -108,8 +110,33 @@ public class RoadGenerator : MonoBehaviour
         //}
         else
         {
-            Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
+            GameObject bossGround = Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
             DestroyImmediate(cellsToGenerate[0]);
+
+            foreach (Direction direction in groundScript.PlaceableDirections)                                 // Change the groundScript to derive from the attached ground based on the connected fog wall
+            {
+                if (groundScript.GetNextPosition(direction) == bossGround.transform.position)
+                {
+                    Quaternion rot = Quaternion.identity;
+                    switch (direction)
+                    {
+                        case Direction.North:
+                            rot = Quaternion.Euler(0, 270f, 0);
+                            break;
+                        case Direction.East:
+                            rot = Quaternion.Euler(0, 180f, 0);
+                            break;
+                        case Direction.South:
+                            rot = Quaternion.Euler(0, 90f, 0);
+                            break;
+                        default:
+                            rot = Quaternion.Euler(0, 0, 0);
+                            break;
+                    }
+
+                    bossGround.transform.rotation = rot;
+                }
+            }
         }
     }
 

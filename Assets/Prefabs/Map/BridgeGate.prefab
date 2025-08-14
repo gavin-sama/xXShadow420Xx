@@ -14732,6 +14732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df6968744b687ac4d916bc656ba58dc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height: 0
   <NorthRoadPrefabs>k__BackingField:
   - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
     rotations: 00000000b4000000
@@ -14757,8 +14758,8 @@ MonoBehaviour:
   - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
     rotations: 5a000000b40000000e010000
     originalRotations: 
-  - prefab: {fileID: 3450862008188500209, guid: c4daa2e3266bc604ea71dbd62e20e22a, type: 3}
-    rotations: 00000000b4000000
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: b4000000
     originalRotations: 
   <EastRoadPrefabs>k__BackingField:
   - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
@@ -14788,9 +14789,6 @@ MonoBehaviour:
   - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
     rotations: 00000000b40000005a000000
     originalRotations: 
-  - prefab: {fileID: 3450862008188500209, guid: c4daa2e3266bc604ea71dbd62e20e22a, type: 3}
-    rotations: 00000000b4000000
-    originalRotations: 
   <SouthRoadPrefabs>k__BackingField:
   - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
     rotations: 00000000b4000000
@@ -14816,8 +14814,8 @@ MonoBehaviour:
   - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
     rotations: 5a000000000000000e010000
     originalRotations: 
-  - prefab: {fileID: 3450862008188500209, guid: c4daa2e3266bc604ea71dbd62e20e22a, type: 3}
-    rotations: 00000000b4000000
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: 00000000
     originalRotations: 
   <WestRoadPrefabs>k__BackingField:
   - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
@@ -14846,9 +14844,6 @@ MonoBehaviour:
     originalRotations: 
   - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
     rotations: 00000000b40000000e010000
-    originalRotations: 
-  - prefab: {fileID: 3450862008188500209, guid: c4daa2e3266bc604ea71dbd62e20e22a, type: 3}
-    rotations: 00000000b4000000
     originalRotations: 
   <RailLikelihood>k__BackingField: 0.35
 --- !u!1 &4678250225744152732

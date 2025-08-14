@@ -27,6 +27,7 @@ public class CharacterMenuUI : MonoBehaviour
 
     void Start()
     {
+
         if (SceneManager.GetSceneByBuildIndex(2).isLoaded)
             SceneManager.UnloadSceneAsync(2);
 
@@ -53,6 +54,9 @@ public class CharacterMenuUI : MonoBehaviour
 
     public void StartGame()
     {
+        DataSave.LoadPlayerData();
+        FindFirstObjectByType<PlayerDataManager>()?.ResetLastRunKills();
+
         string character = characterDropdown.options[characterDropdown.value].text.Trim();
         SelectedClass = character; // Store the class
         CurrentEvolution = evolutionDropdown.value + 1;

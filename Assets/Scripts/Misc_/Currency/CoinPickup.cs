@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CoinPickup : MonoBehaviour
 {
-    public int coinValue = 1;
+    public int teethValue = 1;
     public float pickupRange = 2f;
     private Transform player;
 
@@ -35,7 +35,7 @@ public class CoinPickup : MonoBehaviour
 
     void CollectCoin()
     {
-        PlayerCurrency.Instance.AddCoins(coinValue);
+        PlayerTeeth.Instance.AddTeeth(teethValue);
         Destroy(gameObject);
     }
 }

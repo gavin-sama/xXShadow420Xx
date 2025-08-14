@@ -19,6 +19,7 @@ public static class DataSave
                     attackSpeed = PlayerAttack.attackSpeed,
                     teeth = PlayerStats.teethCurrency,
                     
+                    killsLastRun = PlayerDataManager.killsLastRun,
                     totalKills = PlayerDataManager.totalKills,
 
                     hasResurrection = PlayerStats.hasResurrection,
@@ -38,6 +39,7 @@ public static class DataSave
                     attackSpeed = PlayerAttack.attackSpeed,
                     teeth = PlayerStats.teethCurrency,
                     
+                    killsLastRun = PlayerDataManager.killsLastRun,
                     totalKills = PlayerDataManager.totalKills,
                     
                     hasResurrection = PlayerStats.hasResurrection,
@@ -57,6 +59,7 @@ public static class DataSave
                     attackSpeed = PlayerAttack.attackSpeed,
                     teeth = PlayerStats.teethCurrency,
                     
+                    killsLastRun = PlayerDataManager.killsLastRun,
                     totalKills = PlayerDataManager.totalKills,
                     
                     hasResurrection = PlayerStats.hasResurrection,
@@ -76,6 +79,7 @@ public static class DataSave
                     attackSpeed = PlayerAttack.attackSpeed,
                     teeth = PlayerStats.teethCurrency,
                     
+                    killsLastRun = PlayerDataManager.killsLastRun,
                     totalKills = PlayerDataManager.totalKills,
                     
                     hasResurrection = PlayerStats.hasResurrection,
@@ -122,6 +126,7 @@ public static class DataSave
                 PlayerAttack.attackDamage = gameData.load1.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load1.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load1.teeth;
+                PlayerDataManager.killsLastRun = gameData.load1.killsLastRun;
                 PlayerDataManager.totalKills = gameData.load1.totalKills;
                 PlayerStats.hasResurrection = gameData.load1.hasResurrection;
                 PlayerStats.extraCoins = gameData.load1.extraCoins;
@@ -137,6 +142,7 @@ public static class DataSave
                 PlayerAttack.attackDamage = gameData.load2.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load2.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load2.teeth;
+                PlayerDataManager.killsLastRun = gameData.load2.killsLastRun;
                 PlayerDataManager.totalKills = gameData.load2.totalKills;
                 PlayerStats.hasResurrection = gameData.load2.hasResurrection;
                 PlayerStats.extraCoins = gameData.load2.extraCoins;
@@ -152,6 +158,7 @@ public static class DataSave
                 PlayerAttack.attackDamage = gameData.load3.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load3.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load3.teeth;
+                PlayerDataManager.killsLastRun = gameData.load3.killsLastRun;
                 PlayerDataManager.totalKills = gameData.load3.totalKills;
                 PlayerStats.hasResurrection = gameData.load3.hasResurrection;
                 PlayerStats.extraCoins = gameData.load3.extraCoins;
@@ -167,6 +174,7 @@ public static class DataSave
                 PlayerAttack.attackDamage = gameData.load4.attackDamage;
                 PlayerAttack.attackSpeed = gameData.load4.attackSpeed;
                 PlayerStats.teethCurrency = gameData.load4.teeth;
+                PlayerDataManager.killsLastRun = gameData.load4.killsLastRun;
                 PlayerDataManager.totalKills = gameData.load4.totalKills;
                 PlayerStats.hasResurrection = gameData.load4.hasResurrection;
                 PlayerStats.extraCoins = gameData.load4.extraCoins;
@@ -182,6 +190,7 @@ public static class DataSave
                 PlayerAttack.attackDamage = tempData.attackDamage;
                 PlayerAttack.attackSpeed = tempData.attackSpeed;
                 PlayerStats.teethCurrency = tempData.teeth;
+                PlayerDataManager.killsLastRun = tempData.killsLastRun;
                 PlayerDataManager.totalKills = tempData.totalKills;
                 PlayerStats.hasResurrection = tempData.hasResurrection;
                 PlayerStats.extraCoins = tempData.extraCoins;

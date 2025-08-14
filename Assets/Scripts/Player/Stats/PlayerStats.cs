@@ -28,7 +28,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Image fadeOverlay;
     [SerializeField] private float fadeSpeed = 1f;
 
-    public static int teethCurrency = 100;
+    public static int teethCurrency = 0;
     public static int attackUpgrades = 0;
     public static int healthUpgrades = 0;
     public static int speedUpgrades = 0;
@@ -337,6 +337,9 @@ public class PlayerStats : MonoBehaviour
         isDead = true;
 
         Debug.Log("You died!");
+
+        DataSave.SaveInstancePlayerData();
+        DataSave.SavePlayerData();
 
         if (deathClip != null)
             audioSource.PlayOneShot(deathClip);

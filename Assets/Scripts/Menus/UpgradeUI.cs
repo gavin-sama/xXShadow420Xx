@@ -10,6 +10,10 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private Button healthButton;
     [SerializeField] private Button speedButton;
 
+    [SerializeField] private PlayerClassData playerClassData;
+
+    [SerializeField] private float speedIncreaseAmount = 1f;
+
     private void Awake()
     {
         instance = this;
@@ -103,11 +107,11 @@ public class UpgradeUI : MonoBehaviour
     //doesnt work + there is no attack speed. who the fuck does attack speed instead of movement speed
     public void UpgradeSpeed()
     {
-        Debug.Log($"[UpgradeSpeed] Before: AttackSpeed={PlayerAttack.attackSpeed}, SpeedUpgrades={PlayerStats.speedUpgrades}");
-        PlayerAttack.attackSpeed *= 0.9f;
+        playerClassData.walkSpeed += speedIncreaseAmount;
+        playerClassData.runSpeed += speedIncreaseAmount;
+
         PlayerStats.speedUpgrades++;
         Debug.Log($"[UpgradeSpeed] After: AttackSpeed={PlayerAttack.attackSpeed}, SpeedUpgrades={PlayerStats.speedUpgrades}");
         Hide();
     }
 }
-

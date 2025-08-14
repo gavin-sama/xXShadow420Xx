@@ -104,10 +104,6 @@ public class RoadGenerator : MonoBehaviour
 
             UpdateGeneration();
         }
-        //else if (cellsToGenerate.Count > 1)
-        //{
-        //    UpdateGeneration();
-        //}
         else
         {
             GameObject bossGround = Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
@@ -115,35 +111,42 @@ public class RoadGenerator : MonoBehaviour
 
             DestroyImmediate(cellsToGenerate[0]);
             DestroyImmediate(cells[0]);
-            
 
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))                                 // Change the groundScript to derive from the attached ground based on the connected fog wall
             {
+                Debug.Log("Starting loop");
                 Vector3 testDirection = bossGroundScript.GetNextPosition(direction);
+                (float x, float z) testTuple = (testDirection.x, testDirection.z);
 
                 foreach (GameObject component in gridComponents)
                 {
-                    if (component.transform.position == testDirection)
+                    Debug.Log("Starting loop");
+                    if (((GroundBase)component.GetComponentAtIndex(1)).GetAvailablePositions().Contains(testDirection))
                     {
-                        Debug.Log("Are we working");
-                        Quaternion rot = Quaternion.identity;
-                        switch (direction)
+                        Debug.Log("Starting loop/available position found");
+                        foreach (Vector3 position in ((GroundBase)component.GetComponentAtIndex(1)).GetAvailablePositions())
                         {
-                            case Direction.North:
-                                rot = Quaternion.Euler(0, 270f, 0);
-                                break;
-                            case Direction.East:
-                                rot = Quaternion.Euler(0, 180f, 0);
-                                break;
-                            case Direction.South:
-                                rot = Quaternion.Euler(0, 90f, 0);
-                                break;
-                            default:
-                                rot = Quaternion.Euler(0, 0, 0);
-                                break;
+                            (float x, float z) positionTuple = (position.x, position.z);
+                            if (positionTuple == testTuple)
+                            {
+                                switch (direction)
+                                {
+                                    case Direction.North:
+                                        bossGround.transform.rotation = Quaternion.Euler(0, 90f, 0);
+                                        break;
+                                    case Direction.East:
+                                        bossGround.transform.rotation = Quaternion.Euler(0, 180f, 0);
+                                        break;
+                                    case Direction.South:
+                                        bossGround.transform.rotation = Quaternion.Euler(0, 270f, 0);
+                                        break;
+                                    case Direction.West:
+                                        bossGround.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                        break;
+                                }
+                                return;
+                            }
                         }
-
-                        bossGround.transform.rotation = rot;
                     }
                 }
             }

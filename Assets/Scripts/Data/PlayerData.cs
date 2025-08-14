@@ -10,10 +10,10 @@ public class PlayerData
     public int attackDamage = 100;
     public float attackRange = 100;
     public float attackSpeed = 100;
-    public int teeth = 100;
+    public int teeth = 0;
     
     public int killsLastRun = 0;
-    public int totalKills = 100;
+    public int totalKills = 1;
 
     public bool hasResurrection = false;
     public bool extraCoins = false;

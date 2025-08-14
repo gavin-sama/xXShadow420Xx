@@ -9991,7 +9991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 0}
-  controlsContent: {fileID: 0}
+  controlsScrollView: {fileID: 0}
   saveDataText: {fileID: 0}
   player: {fileID: 1351822884}
   returnButton: {fileID: 0}
@@ -13979,6 +13979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2004200209}
   - component: {fileID: 2004200210}
+  - component: {fileID: 2004200211}
   m_Layer: 0
   m_Name: HubManager
   m_TagString: Untagged
@@ -14015,11 +14016,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 906446812}
-  controlsContent: {fileID: 0}
+  controlsScrollView: {fileID: 0}
   saveDataText: {fileID: 582035169}
   player: {fileID: 1351822884}
   returnButton: {fileID: 733347474}
   hubSceneName: Hub
+--- !u!114 &2004200211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004200208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c49ce6dbd28e343beec22b6485c835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2015209248
 GameObject:
   m_ObjectHideFlags: 0

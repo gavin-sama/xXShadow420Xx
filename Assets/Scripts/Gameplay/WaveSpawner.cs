@@ -4,12 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class WaveSpawner : MonoBehaviour
 {
+
+    [Header("Fog Walls")]
+    public FogWall[] fogWalls; // assign the 4 walls on the road piece in the inspector
+
     [Header("Enemy Prefabs (3 Types)")]
     public GameObject[] enemyPrefabs; // Assign your 3 enemy prefabs here
 
     [Header("Spawn Settings")]
     public int minEnemies = 3;
     public int maxEnemies = 8;
+    
 
     private List<GameObject> currentEnemies = new List<GameObject>();
     private bool waveSpawned = false;
@@ -69,6 +74,12 @@ public class WaveSpawner : MonoBehaviour
             {
                 waveComplete = true;
                 Debug.Log("Wave Complete!");
+
+                // Trigger fog walls to fall
+                foreach (FogWall wall in fogWalls)
+                {
+                    wall.TryFall();
+                }
             }
         }
     }

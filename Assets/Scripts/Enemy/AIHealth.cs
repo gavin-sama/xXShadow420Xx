@@ -28,6 +28,7 @@ public class AIHealth : MonoBehaviour
     private Material[] materials;
     public GameObject coinPrefab; //need coin prefab so the enemy drops coin 
     private bool isDead = false;
+    public bool skipXPOnDeath = false;
 
     void Start()
     {
@@ -69,6 +70,14 @@ public class AIHealth : MonoBehaviour
         }
 
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // avoid negatives
+
+        // Update slider here
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+
         Debug.Log($"{gameObject.name} took {damage} damage. Remaining: {currentHealth}");
 
         if (currentHealth <= 0)
@@ -89,36 +98,47 @@ public class AIHealth : MonoBehaviour
         if (navAgent != null) navAgent.enabled = false;
         if (aiController != null) aiController.enabled = false;
         if (enemyCollider != null) enemyCollider.enabled = false;
-
+        
         // Play death sound
         if (deathSound != null)
-        {
             AudioSource.PlayClipAtPoint(deathSound, transform.position);
-        }
 
-        // Spawn death particles immediately
+        // Spawn death particles
         if (deathEffectPrefab != null)
-        {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
 
-        FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
-
-        //Instantiate coin 
+        // Drop coins
         int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
         for (int i = 0; i < coinDropCount; i++)
         {
-            Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
-            dropPosition.y = transform.position.y;
-            Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+            if (coinPrefab != null)
+            {
+                Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
+                dropPosition.y = transform.position.y;
+                Instantiate(coinPrefab, dropPosition, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning("Coin prefab is missing on " + gameObject.name);
+            }
         }
 
-        // Give XP to player
-        GiveXPToPlayer();
-
-        // Destroy the enemy immediately — no fade delay or coroutine
-        Destroy(gameObject);
+        // Delay XP & destruction until next frame
+        StartCoroutine(FinishDeath());
     }
+
+    private IEnumerator FinishDeath()
+{
+    if (!skipXPOnDeath)
+        GiveXPToPlayer();
+    else
+        Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
+
+    FindFirstObjectByType<UltimateCharge>()?.AddChargeFromKill();
+
+    Destroy(gameObject); // Immediate removal
+    yield break;
+}
 
 
     void GiveXPToPlayer()

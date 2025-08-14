@@ -11,6 +11,7 @@ public class CharacterMenuUI : MonoBehaviour
     public TMP_Dropdown characterDropdown;
     public TMP_Dropdown evolutionDropdown;
     public GameObject characterSelectCanvas;
+    public CrosshairManager crosshairManager; 
 
 
 
@@ -20,6 +21,9 @@ public class CharacterMenuUI : MonoBehaviour
     public GameObject dinoEvo1, dinoEvo2, dinoEvo3;
 
     private GameObject currentCharacter;
+
+    public static string SelectedClass; // "Wizard", "Brawler", or "Dino"
+    public static int CurrentEvolution = 1;
 
     void Start()
     {
@@ -50,37 +54,78 @@ public class CharacterMenuUI : MonoBehaviour
     public void StartGame()
     {
         string character = characterDropdown.options[characterDropdown.value].text.Trim();
-        int evolution = evolutionDropdown.value + 1;
+        SelectedClass = character; // Store the class
+        CurrentEvolution = evolutionDropdown.value + 1;
+
+        // Set PlayerData.SelectedOutfitIndex based on dropdown selection
+        switch (character)
+        {
+            case "Wizard":
+                PlayerData.SelectedOutfitIndex = 0;
+                break;
+            case "Dino":
+                PlayerData.SelectedOutfitIndex = 1;
+                break;
+            case "Brawler":
+                PlayerData.SelectedOutfitIndex = 2;
+                break;
+            default:
+                PlayerData.SelectedOutfitIndex = 0; // fallback
+                break;
+        }
 
         GameObject prefabToSpawn = null;
         switch (character)
         {
             case "Wizard":
-                prefabToSpawn = evolution == 1 ? wizardEvo1 :
-                                evolution == 2 ? wizardEvo2 : wizardEvo3;
+                prefabToSpawn = CurrentEvolution == 1 ? wizardEvo1 :
+                                CurrentEvolution == 2 ? wizardEvo2 : wizardEvo3;
                 break;
             case "Brawler":
-                prefabToSpawn = evolution == 1 ? brawlerEvo1 :
-                                evolution == 2 ? brawlerEvo2 : brawlerEvo3;
+                prefabToSpawn = CurrentEvolution == 1 ? brawlerEvo1 :
+                                CurrentEvolution == 2 ? brawlerEvo2 : brawlerEvo3;
                 break;
             case "Dino":
-                prefabToSpawn = evolution == 1 ? dinoEvo1 :
-                                evolution == 2 ? dinoEvo2 : dinoEvo3;
+                prefabToSpawn = CurrentEvolution == 1 ? dinoEvo1 :
+                                CurrentEvolution == 2 ? dinoEvo2 : dinoEvo3;
                 break;
         }
 
         if (prefabToSpawn)
         {
+            // Activate the correct crosshair before spawning
+            if (crosshairManager != null)
+            {
+                crosshairManager.ActivateCrosshair(character);
+            }
+
             StartCoroutine(Spawn(prefabToSpawn));
             characterSelectCanvas.SetActive(false);
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
         else
         {
             Debug.LogWarning("No prefab matched the selection!");
+        }
+    }
+
+    public GameObject GetPrefabFor(string character, int CurrentEvolution)
+    {
+        switch (character)
+        {
+            case "Wizard":
+                return CurrentEvolution == 1 ? wizardEvo1 :
+                    CurrentEvolution == 2 ? wizardEvo2 : wizardEvo3;
+            case "Brawler":
+                return CurrentEvolution == 1 ? brawlerEvo1 :
+                    CurrentEvolution == 2 ? brawlerEvo2 : brawlerEvo3;
+            case "Dino":
+                return CurrentEvolution == 1 ? dinoEvo1 :
+                    CurrentEvolution == 2 ? dinoEvo2 : dinoEvo3;
+            default:
+                return null;
         }
     }
 
@@ -111,4 +156,6 @@ public class CharacterMenuUI : MonoBehaviour
 
         yield return new WaitUntil(() => currentCharacter != null);
     }
+
+    
 }

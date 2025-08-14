@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UltimateChargeUI : MonoBehaviour
+public class UltimateCharge : MonoBehaviour
 {
     [Header("UI References")]
     public Button ultButton;
@@ -21,15 +21,12 @@ public class UltimateChargeUI : MonoBehaviour
     public BrawlerAttack brawlerAttack;
 
 
-
     private float currentCharge = 0f;
     private bool isReady = false;
-
 
     void Awake()
     {
     }
-
 
     void Start()
     {
@@ -60,6 +57,8 @@ public class UltimateChargeUI : MonoBehaviour
             {
                 chargeText.text = $"{Mathf.FloorToInt(currentCharge)}%";
             }
+
+            
         }
 
         if (isReady && Input.GetKeyDown(ultKey))
@@ -97,7 +96,6 @@ public class UltimateChargeUI : MonoBehaviour
         UpdateUI();
     }
 
-
     private void UpdateUI()
     {
         if (!isReady)
@@ -122,4 +120,5 @@ public class UltimateChargeUI : MonoBehaviour
             ultIcon.color = baseColor * brightness;
         }
     }
+
 }

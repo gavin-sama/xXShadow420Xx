@@ -55,6 +55,19 @@ public class PlayerStats : MonoBehaviour
     private float currentHealth;
     private bool isDead = false;
 
+    public int currentLevel = 1;
+
+    private bool evolvedTo2 = false;
+    private bool evolvedTo3 = false;
+
+    [SerializeField] private GameObject[] class0Evolutions; // Assign in Inspector
+    [SerializeField] private GameObject[] class1Evolutions; // Assign in Inspector
+    [SerializeField] private GameObject[] class2Evolutions; // etc...
+
+    [SerializeField] private int currentEvolutionStage = 1; // start at stage 1
+    
+
+
     private void Start()
     {
         baseXpCap = xpCap;
@@ -120,6 +133,21 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    private void CheckForEvolution()
+    {
+        // Example thresholds — adjust these to your game’s logic
+        if (currentEvolutionStage == 1 && currentLevel >= 5)
+        {
+            currentEvolutionStage = 2;
+            EvolvePlayer(currentEvolutionStage);
+        }
+        else if (currentEvolutionStage == 2 && currentLevel >= 10)
+        {
+            currentEvolutionStage = 3;
+            EvolvePlayer(currentEvolutionStage);
+        }
+    }
+    
     public void GainXP(float amount)
     {
         if (isDead) return;
@@ -132,8 +160,92 @@ public class PlayerStats : MonoBehaviour
             xpCap *= 1.2f;
             xpBar.SetSliderCap(xpCap);
 
+            currentLevel++; // Increase level
+
+            Debug.Log("Leveled up! Current level: " + currentLevel);
+
             OpenUpgradeMenu();
+
+            CheckForEvolution();    
+
         }
+    }
+
+    private void OnLevelUp()
+    {
+        if (currentLevel == 5 && CharacterMenuUI.CurrentEvolution == 1)
+        {
+            EvolvePlayer(2);
+        }
+        else if (currentLevel == 10 && CharacterMenuUI.CurrentEvolution == 2)
+        {
+            EvolvePlayer(3);
+        }
+    }
+
+    private void EvolvePlayer(int newEvolutionStage)
+    {
+        int classIndex = PlayerData.SelectedOutfitIndex; // 0 = Wizard, 1 = Dino, 2 = Brawler
+        Debug.Log($"Evolving: class={classIndex}, newEvolutionStage={newEvolutionStage}");
+        GameObject nextPrefab = null;
+
+        switch (classIndex)
+        {
+            case 0: // Wizard
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class0Evolutions.Length)
+                    nextPrefab = class0Evolutions[newEvolutionStage - 1];
+                break;
+
+            case 1: // Dino
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class1Evolutions.Length)
+                    nextPrefab = class1Evolutions[newEvolutionStage - 1];
+                break;
+
+            case 2: // Brawler
+                if (newEvolutionStage - 1 >= 0 && newEvolutionStage - 1 < class2Evolutions.Length)
+                    nextPrefab = class2Evolutions[newEvolutionStage - 1];
+                break;
+
+            default:
+                Debug.LogWarning($"Unknown class index: {classIndex}");
+                return;
+        }
+
+        if (nextPrefab == null)
+        {
+            
+            Debug.LogWarning($"No prefab found for class {classIndex} at stage {newEvolutionStage}");
+            return;
+        }
+
+        Vector3 pos = transform.position;
+        Quaternion rot = transform.rotation;
+
+        CameraFollow camFollow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
+
+        Destroy(gameObject);
+
+        GameObject newPlayer = Instantiate(nextPrefab, pos, rot);
+        newPlayer.name = "Player";
+
+        // Update all enemy targets to the new player
+        foreach (var enemy in FindObjectsOfType<BaseAIController>())
+        {
+            enemy.player = newPlayer.transform;
+        }
+        
+
+        // Transfer stats
+        PlayerStats newStats = newPlayer.GetComponent<PlayerStats>();
+        if (newStats != null)
+        {
+            newStats.currentLevel = this.currentLevel;
+            newStats.currentXp = this.currentXp;
+            PlayerStats.maxHealth = PlayerStats.maxHealth;
+            newStats.currentHealth = this.currentHealth;
+        }
+        
+                
     }
 
 
@@ -153,8 +265,7 @@ public class PlayerStats : MonoBehaviour
         if (hurtClip != null && !audioSource.isPlaying)
             audioSource.PlayOneShot(hurtClip);
 
-        if (damageIndicator != null)
-            damageIndicator.Flash();
+        FindFirstObjectByType<DamageIndicator>()?.Flash();
 
         if (currentHealth <= 0)
             Die();
@@ -166,6 +277,26 @@ public class PlayerStats : MonoBehaviour
 
         currentHealth += amount;
         healthBar.SetSlider(currentHealth);
+    }
+
+    public static void SetActivePerk(string perkName)
+    {
+        hasResurrection = false;
+        extraCoins = false;
+        lowHealthStealth = false;
+
+        switch (perkName)
+        {
+            case "Resurrection":
+                hasResurrection = true;
+                break;
+            case "ExtraCoins":
+                extraCoins = true;
+                break;
+            case "LowHealthStealth":
+                lowHealthStealth = true;
+                break;
+        }
     }
 
     private void ActivateStealth()
@@ -270,6 +401,17 @@ public class PlayerStats : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    // ===== New helper methods =====
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void SetCurrentHealth(float value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
     }
 
 }

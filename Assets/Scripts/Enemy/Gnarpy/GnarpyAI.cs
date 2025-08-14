@@ -1,13 +1,19 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GnarpyAI : BaseAIController
 {
     public float attackRange = 0.6f;
     public float attackCooldown = 1.5f;
     private float lastAttackTime;
-    private bool isDead = false;
+    private bool hasExploded = false;
+
 
     PlayerMovement playerMovement;
+
+    [Header("Explosion Settings")]
+    public GameObject explosionPrefab;
+    public AudioClip explosionClip;
 
     public void AssignPlayer(Transform playerTransform)
     {
@@ -18,92 +24,149 @@ public class GnarpyAI : BaseAIController
     protected override void Awake()
     {
         base.Awake();
+
+        AIHealth health = GetComponent<AIHealth>();
+        if (health != null)
+        {
+            health.skipXPOnDeath = true;
+        }
+
+        // Your existing code:
         navMeshAgent.stoppingDistance = attackRange;
+        stopDistanceFromPlayer = attackRange;
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
     }
 
-    private void FacePlayer()
+
+    protected override void UpdateAnimations()
     {
-        if (player == null) return;
-
-        Vector3 lookDir = player.position - transform.position;
-        lookDir.y = 0; // Prevent tilting up/down
-
-        if (lookDir.sqrMagnitude > 0.01f)
-        {
-            transform.rotation = Quaternion.LookRotation(lookDir);
-        }
+        base.UpdateAnimations(); // No attack animation anymore
     }
 
     protected override void HandleAI()
     {
-        if (isDead || player == null || PlayerStats.isUndetectable)
-        {
-            StopMovement();
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isIdle", true);
+        if (player == null || hasExploded)
             return;
-        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-        bool isAttacking = currentState.IsTag("Attack");
-
-        if (isAttacking)
-        {
-            StopMovement();
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isIdle", false);
-            return;
-        }
 
         if (distanceToPlayer > attackRange)
         {
             ChasePlayer();
-            animator.SetBool("isWalking", true);
-            animator.SetBool("isIdle", false);
         }
         else
         {
             StopMovement();
             FacePlayer();
 
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isIdle", false);
-
             if (Time.time >= lastAttackTime + attackCooldown)
             {
-                animator.ResetTrigger("Attack");
-                animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
+                hasExploded = true;
+
+                Debug.Log("GnarpyAI: Suicide range reached — triggering self-destruct.");
+                SelfDestruct();
             }
         }
     }
 
-    public void DealMeleeDamage()
+    protected override void ChasePlayer()
     {
-        if (player == null || playerMovement == null || playerMovement.isInvincible) return;
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        float distance = Vector3.Distance(transform.position, player.position);
-        if (distance <= attackRange + 0.5f)
+        if (distanceToPlayer <= attackRange)
         {
-            player.GetComponent<PlayerStats>()?.TakeDamage(20);
+            StopMovement();
+            return;
+        }
+
+        navMeshAgent.isStopped = false;
+        navMeshAgent.SetDestination(player.position);
+        navMeshAgent.speed = speedRun;
+
+        if (runClip != null && !audioSource.isPlaying && navMeshAgent.velocity.magnitude > 0.1f)
+        {
+            audioSource.clip = runClip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        if (navMeshAgent.velocity.magnitude < 0.1f && audioSource.isPlaying)
+        {
+            audioSource.Stop();
         }
     }
 
-    public void Die()
+    protected override void StopMovement()
     {
-        if (isDead) return;
+        navMeshAgent.isStopped = true;
+        navMeshAgent.ResetPath();
+        navMeshAgent.velocity = Vector3.zero;
 
-        isDead = true;
-        StopMovement();
-        animator.SetTrigger("Death");
+        if (navMeshAgent.updatePosition)
+            transform.position = navMeshAgent.nextPosition;
+    }
 
-        // Optional: disable collider, navmesh, etc.
-        navMeshAgent.enabled = false;
-        GetComponent<Collider>().enabled = false;
+    private void FacePlayer()
+    {
+        Vector3 lookDir = player.position - transform.position;
+        lookDir.y = 0;
+        if (lookDir.sqrMagnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(lookDir);
+        }
+    }
+
+    public void SelfDestruct()
+    {
+        Debug.Log("GnarpyAI: Self-destruct triggered.");
+        animator.SetTrigger("Die"); // Explosion happens via animation event
+        navMeshAgent.isStopped = true;
+        enabled = false; // Disable AI logic
+    }
+
+    public void ExplodeDamage()
+    {
+        if (player == null) return;
+
+        GameObject playerGO = player.gameObject;
+
+        PlayerStats playerStats = playerGO.GetComponent<PlayerStats>();
+        PlayerMovement playerMovement = playerGO.GetComponent<PlayerMovement>();
+
+        if (playerStats == null || playerMovement == null) return;
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        if (distance <= attackRange + 0.5f && !playerMovement.isInvincible)
+        {
+            Debug.Log("Player took damage");
+            playerStats.TakeDamage(20);
+            Debug.Log("GnarpyAI: Explosion damage dealt.");
+        }
+        else
+        {
+            Debug.Log("GnarpyAI: Explosion missed — player out of range or invincible.");
+        }
+
+        if (explosionPrefab != null)
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        if (explosionClip != null)
+            audioSource.PlayOneShot(explosionClip);
+
+        AIHealth health = GetComponent<AIHealth>();
+        if (health != null)
+        {
+            health.Die();
+        }
+        else
+        {
+            Debug.LogWarning("GnarpyAI: AIHealth component missing — fallback destroy.");
+            Destroy(gameObject);
+        }
     }
 
     private void OnDrawGizmosSelected()

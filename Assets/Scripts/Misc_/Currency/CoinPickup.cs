@@ -2,27 +2,40 @@ using UnityEngine;
 
 public class CoinPickup : MonoBehaviour
 {
-    public int coinValue = 1;
+    public int teethValue = 1;
     public float pickupRange = 2f;
     private Transform player;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        FindPlayer();
     }
 
     void Update()
     {
+        // If player reference is lost (destroyed during evolution), reacquire it
+        if (player == null)
+        {
+            FindPlayer();
+            if (player == null) return; // still no player, skip
+        }
+
         if (Vector3.Distance(transform.position, player.position) <= pickupRange)
         {
             CollectCoin();
         }
     }
 
+    void FindPlayer()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            player = playerObj.transform;
+    }
+
     void CollectCoin()
     {
-        // You can replace this with your own currency system
-        PlayerCurrency.Instance.AddCoins(coinValue);
+        PlayerTeeth.Instance.AddTeeth(teethValue);
         Destroy(gameObject);
     }
 }

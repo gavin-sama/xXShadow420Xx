@@ -2564,9 +2564,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aba6515cddabb1040b4a271dcb3b4729, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2322629613865627457}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aba6515cddabb1040b4a271dcb3b4729, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 23004815479127920}
   m_SourcePrefab: {fileID: 100100000, guid: aba6515cddabb1040b4a271dcb3b4729, type: 3}
 --- !u!4 &1571244899498706407 stripped
 Transform:
@@ -2657,10 +2654,10 @@ MonoBehaviour:
   defaultHeight: 2
   dodgeCooldown: 3
   lastDodgeTime: -Infinity
-  dodgeDistance: 5
+  dodgeDistance: 2
   dodgeDuration: 0.3
   isInvincible: 0
-  dodgeEffectPrefab: {fileID: 0}
+  dodgeEffectPrefab: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
   inputSmoothTime: 0.1
 --- !u!95 &5283364862303235176
 Animator:
@@ -2731,13 +2728,21 @@ MonoBehaviour:
   xpLerpSpeed: 3
   healthBar: {fileID: 2496036452727334297}
   xpBar: {fileID: 2738071683491755890}
-  damageIndicator: {fileID: 23004815479127920}
+  damageIndicator: {fileID: 0}
   audioSource: {fileID: 2322629613865627457}
   hurtClip: {fileID: 0}
   deathClip: {fileID: 0}
   playerAnimator: {fileID: 5283364862303235176}
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
+  currentLevel: 1
+  class0Evolutions:
+  - {fileID: 8676186900846091770, guid: 99540c516c63e4444af9971ad0e8366e, type: 3}
+  - {fileID: 5568254575380219613, guid: 0a561db466de6994d9d74e546e420722, type: 3}
+  - {fileID: 7824137509514400165}
+  class1Evolutions: []
+  class2Evolutions: []
+  currentEvolutionStage: 3
 --- !u!114 &2496036452727334297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2777,18 +2782,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 1
-  projectilePrefab: {fileID: 2540417558773106788, guid: 3fdd30d0b52b3864e92fe3606bf66eff, type: 3}
+  projectilePrefab: {fileID: 8793510976239746625, guid: 8fa5143051527e949b0ae174c8430414, type: 3}
   shootPoint: {fileID: 593493841851616183}
   projectileSpeed: 6
   aimLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  bonusDamage: 0
   ultimateRange: 6
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
   ultimateEffectPrefab: {fileID: 5793841387165916247, guid: 8a474c5401202784ab11371270ef4e33, type: 3}
-  castSound: {fileID: 8300000, guid: e129d625ea0c7b9498babb3d4346010f, type: 3}
+  castSound: {fileID: 0}
   ultimateSound: {fileID: 0}
 --- !u!82 &2322629613865627457
 AudioSource:
@@ -2803,13 +2809,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -2887,21 +2893,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &23004815479127920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7824137509514400165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cacfee5a7afb5e24ba979c06d6ff867e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageImage: {fileID: 0}
-  flashSpeed: 0.5
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
-  shakeAmount: 0.2
-  shakeDecreaseFactor: 1
-  shakeDuration: 0.1

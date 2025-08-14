@@ -98,35 +98,20 @@ public class AIHealth : MonoBehaviour
         if (navAgent != null) navAgent.enabled = false;
         if (aiController != null) aiController.enabled = false;
         if (enemyCollider != null) enemyCollider.enabled = false;
-
+        
         // Play death sound
         if (deathSound != null)
-        {
             AudioSource.PlayClipAtPoint(deathSound, transform.position);
-        }
 
-        // Spawn death particles immediately
+        // Spawn death particles
         if (deathEffectPrefab != null)
-        {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
 
-        if (!skipXPOnDeath)
-        {
-            GiveXPToPlayer();
-        }
-        else
-        {
-            Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
-        }
-
-        FindFirstObjectByType<UltimateChargeUI>()?.AddChargeFromKill();
-
-        // Instantiate coin
+        // Drop coins
         int coinDropCount = PlayerStats.extraCoins ? 2 : 1;
         for (int i = 0; i < coinDropCount; i++)
         {
-            if (coinPrefab != null) // <-- add this check
+            if (coinPrefab != null)
             {
                 Vector3 dropPosition = transform.position + Random.insideUnitSphere * 0.5f;
                 dropPosition.y = transform.position.y;
@@ -138,11 +123,23 @@ public class AIHealth : MonoBehaviour
             }
         }
 
-        // Give XP to player
-        GiveXPToPlayer();
+        // Delay XP & destruction until next frame
+        StartCoroutine(FinishDeath());
+    }
 
-        // Destroy the enemy immediately — no fade delay or coroutine
-        Destroy(gameObject);
+    private IEnumerator FinishDeath()
+    {
+        if (!skipXPOnDeath)
+            GiveXPToPlayer();
+        else
+            Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
+
+        FindFirstObjectByType<PlayerDataManager>()?.AddKill();
+
+        FindFirstObjectByType<UltimateCharge>()?.AddChargeFromKill();
+
+        Destroy(gameObject); // Immediate removal
+        yield break;
     }
 
 

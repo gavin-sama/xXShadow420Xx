@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData
 {
-    //Change to fit load script ClassMenuController
+    
     public static int SelectedOutfitIndex;
 
     public float healthPoints = 100;
@@ -12,6 +12,7 @@ public class PlayerData
     public float attackSpeed = 100;
     public int teeth = 100;
     
+    public int killsLastRun = 0;
     public int totalKills = 100;
 
     public bool hasResurrection = false;

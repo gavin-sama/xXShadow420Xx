@@ -128,17 +128,19 @@ public class AIHealth : MonoBehaviour
     }
 
     private IEnumerator FinishDeath()
-{
-    if (!skipXPOnDeath)
-        GiveXPToPlayer();
-    else
-        Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
+    {
+        if (!skipXPOnDeath)
+            GiveXPToPlayer();
+        else
+            Debug.Log($"{gameObject.name} died without giving XP because skipXPOnDeath is true.");
 
-    FindFirstObjectByType<UltimateCharge>()?.AddChargeFromKill();
+        FindFirstObjectByType<PlayerDataManager>()?.AddKill();
 
-    Destroy(gameObject); // Immediate removal
-    yield break;
-}
+        FindFirstObjectByType<UltimateCharge>()?.AddChargeFromKill();
+
+        Destroy(gameObject); // Immediate removal
+        yield break;
+    }
 
 
     void GiveXPToPlayer()

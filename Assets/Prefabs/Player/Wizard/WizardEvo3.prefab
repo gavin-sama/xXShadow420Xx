@@ -2736,6 +2736,13 @@ MonoBehaviour:
   fadeOverlay: {fileID: 0}
   fadeSpeed: 1
   currentLevel: 1
+  class0Evolutions:
+  - {fileID: 8676186900846091770, guid: 99540c516c63e4444af9971ad0e8366e, type: 3}
+  - {fileID: 5568254575380219613, guid: 0a561db466de6994d9d74e546e420722, type: 3}
+  - {fileID: 7824137509514400165}
+  class1Evolutions: []
+  class2Evolutions: []
+  currentEvolutionStage: 3
 --- !u!114 &2496036452727334297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2781,6 +2788,7 @@ MonoBehaviour:
   aimLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  bonusDamage: 0
   ultimateRange: 6
   enemyLayers:
     serializedVersion: 2

@@ -1269,7 +1269,6 @@ MonoBehaviour:
   xpCap: 100
   currentXp: 0
   xpLerpSpeed: 3
-  playerClassData: {fileID: 0}
   healthBar: {fileID: 8434670041373339880}
   xpBar: {fileID: 7542625163034952164}
   damageIndicator: {fileID: 0}
@@ -1337,7 +1336,7 @@ MonoBehaviour:
   ultimateDuration: 5
   damageMultiplierDuringUltimate: 2
   damageReductionFactor: 0.5
-  ultimateSound: {fileID: 8300000, guid: 1b3215b35b3d97c438487b7576ea5b7d, type: 3}
+  ultimateSound: {fileID: 0}
   chargeSpeed: 3
   chargeDamageMultiplier: 1.5
   groundBreakEffect: {fileID: 0}
@@ -1357,7 +1356,7 @@ MonoBehaviour:
   playerClassData: {fileID: 11400000, guid: d90747e633fc5de46b4e1556c2200462, type: 2}
   animator: {fileID: 1685849452901687292}
   playerCamera: {fileID: 8920732146057231876, guid: c72f3540e0587a84fa3ef3c87700ad1c, type: 3}
-  runClip: {fileID: 8300000, guid: 37035413b5e0f3c4ba28a837c3b415f2, type: 3}
+  runClip: {fileID: 0}
   idleClip: {fileID: 0}
   playerStats: {fileID: 7824767110428815996}
   walkSpeed: 2
@@ -1408,7 +1407,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

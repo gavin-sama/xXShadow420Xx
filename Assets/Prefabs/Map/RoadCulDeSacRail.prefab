@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 2267657871907538794}
   - component: {fileID: 4929326275387704428}
   - component: {fileID: 2065108004764199045}
+  - component: {fileID: 719019730200637153}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -4950,8 +4951,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
+--- !u!114 &719019730200637153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285757345565857900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac9ecda7fc39548af214a97d69d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkDistance: 0.1
 --- !u!1 &2293558884943276452
 GameObject:
   m_ObjectHideFlags: 0
@@ -4985,6 +4999,80 @@ Transform:
   - {fileID: 6722483084785155705}
   m_Father: {fileID: 5429467237494864233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2382648621712806574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7755554096387523823}
+  - component: {fileID: 19242471678832425}
+  - component: {fileID: 8133067678099677566}
+  m_Layer: 9
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7755554096387523823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382648621712806574}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5429467237494864233}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &19242471678832425
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382648621712806574}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 11, y: 0.3, z: 25.5}
+  m_Center: {x: 0, y: 0.45, z: 7.5}
+--- !u!114 &8133067678099677566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382648621712806574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b565950ee6fc4f439f26833dfd960db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collapsableFogWalls:
+  - {fileID: 719019730200637153}
+  enemyPrefabs:
+  - {fileID: 494629391383543628, guid: 879ebfc4f4d5db642adf7b8baea01adb, type: 3}
+  - {fileID: 7772086705221682577, guid: e438dbb9b8ab5e048b264e2f18b525d5, type: 3}
+  - {fileID: 4247019861129684067, guid: eccde4cdc0aa22b4d9d175ad127ddf0c, type: 3}
+  minEnemies: 3
+  maxEnemies: 8
 --- !u!1 &3459133662767211301
 GameObject:
   m_ObjectHideFlags: 0
@@ -5368,6 +5456,7 @@ GameObject:
   - component: {fileID: 6256891772060181791}
   - component: {fileID: 7593847861628099789}
   - component: {fileID: 2240869914904198001}
+  - component: {fileID: 4222295639679880393}
   m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
@@ -10190,6 +10279,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &4222295639679880393
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5126278139420928983}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &6775598361646082166
 GameObject:
   m_ObjectHideFlags: 0
@@ -10201,6 +10311,7 @@ GameObject:
   - component: {fileID: 8698655785980222413}
   - component: {fileID: 8272799082952557912}
   - component: {fileID: 849927635315384105}
+  - component: {fileID: 2468261682542774982}
   m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
@@ -15023,6 +15134,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &2468261682542774982
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6775598361646082166}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &7394506123286246378
 GameObject:
   m_ObjectHideFlags: 0
@@ -15034,6 +15166,7 @@ GameObject:
   - component: {fileID: 8652580663080945657}
   - component: {fileID: 2258319670062971877}
   - component: {fileID: 184166824792977447}
+  - component: {fileID: 4472432680241626204}
   m_Layer: 0
   m_Name: Particle System (2)
   m_TagString: Untagged
@@ -19856,6 +19989,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &4472432680241626204
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394506123286246378}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &7791059858031067783
 GameObject:
   m_ObjectHideFlags: 0
@@ -19900,7 +20054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5429467237494864233}
   - component: {fileID: 2771007735794536961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RoadCulDeSacRail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19926,6 +20080,7 @@ Transform:
   - {fileID: 7220831091540311488}
   - {fileID: 1979006780536640994}
   - {fileID: 5579168237614733128}
+  - {fileID: 7755554096387523823}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2771007735794536961

@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 3607922118507851269}
   - component: {fileID: 4077586070302489417}
   - component: {fileID: 86437355649468566}
+  - component: {fileID: 426891785824455148}
   m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
@@ -4960,8 +4961,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
+--- !u!114 &426891785824455148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641903563971404830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac9ecda7fc39548af214a97d69d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkDistance: 0.1
 --- !u!1 &1950466406017587356
 GameObject:
   m_ObjectHideFlags: 0
@@ -4972,7 +4986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5330989175927883611}
   - component: {fileID: 4939498763612264482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RoadCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4997,6 +5011,7 @@ Transform:
   - {fileID: 8277760622678322843}
   - {fileID: 5228810226825019246}
   - {fileID: 6529457761472960095}
+  - {fileID: 6408631026409534253}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4939498763612264482
@@ -5417,6 +5432,7 @@ GameObject:
   - component: {fileID: 2709873310981046468}
   - component: {fileID: 5812096961403485375}
   - component: {fileID: 9100213512413600916}
+  - component: {fileID: 1280033439002185061}
   m_Layer: 0
   m_Name: Particle System (2)
   m_TagString: Untagged
@@ -10239,6 +10255,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &1280033439002185061
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2618975274721064291}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &2743346886366177200
 GameObject:
   m_ObjectHideFlags: 0
@@ -10571,6 +10608,7 @@ GameObject:
   - component: {fileID: 80131705600709860}
   - component: {fileID: 3696672143062012365}
   - component: {fileID: 6939632574861542451}
+  - component: {fileID: 797209755635380204}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -15412,8 +15450,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
+--- !u!114 &797209755635380204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5029405002562333369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac9ecda7fc39548af214a97d69d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkDistance: 0.1
 --- !u!1 &5153876871627254167
 GameObject:
   m_ObjectHideFlags: 0
@@ -15572,6 +15623,103 @@ Transform:
   - {fileID: 4850383519057651025}
   m_Father: {fileID: 8277760622678322843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5372903968278250752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6408631026409534253}
+  - component: {fileID: 1795686391030555226}
+  - component: {fileID: 7022903161076509871}
+  - component: {fileID: 809499558453734208}
+  m_Layer: 9
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6408631026409534253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372903968278250752}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5330989175927883611}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1795686391030555226
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372903968278250752}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 11, y: 0.3, z: 25.5}
+  m_Center: {x: 0, y: 0.45, z: 7.5}
+--- !u!65 &7022903161076509871
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372903968278250752}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 15, y: 0.3, z: 11}
+  m_Center: {x: -13, y: 0.45, z: 0}
+--- !u!114 &809499558453734208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372903968278250752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b565950ee6fc4f439f26833dfd960db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collapsableFogWalls:
+  - {fileID: 797209755635380204}
+  - {fileID: 426891785824455148}
+  enemyPrefabs:
+  - {fileID: 494629391383543628, guid: 879ebfc4f4d5db642adf7b8baea01adb, type: 3}
+  - {fileID: 7772086705221682577, guid: e438dbb9b8ab5e048b264e2f18b525d5, type: 3}
+  - {fileID: 4247019861129684067, guid: eccde4cdc0aa22b4d9d175ad127ddf0c, type: 3}
+  minEnemies: 3
+  maxEnemies: 8
 --- !u!1 &5737189249023427177
 GameObject:
   m_ObjectHideFlags: 0
@@ -15858,6 +16006,7 @@ GameObject:
   - component: {fileID: 8388401589178315681}
   - component: {fileID: 1030198252297561925}
   - component: {fileID: 1480422018548296816}
+  - component: {fileID: 4190085699179487410}
   m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
@@ -20680,6 +20829,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &4190085699179487410
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474463603049962650}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &7486825612250693332
 GameObject:
   m_ObjectHideFlags: 0

@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 4926876304179398879}
   - component: {fileID: 6104920166276229612}
   - component: {fileID: 9176645296067358850}
+  - component: {fileID: 4275450930237581221}
   m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
@@ -4987,6 +4988,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &4275450930237581221
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596950271329747120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &816569955902327585
 GameObject:
   m_ObjectHideFlags: 0
@@ -5063,7 +5085,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2976873092029390873}
   - component: {fileID: 5151921381023198013}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RoadCulDeSac
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5088,6 +5110,7 @@ Transform:
   - {fileID: 975902634743992604}
   - {fileID: 2642988529390349800}
   - {fileID: 5646755872607608556}
+  - {fileID: 7136272851189996815}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5151921381023198013
@@ -5334,6 +5357,80 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &4106794236516757567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7136272851189996815}
+  - component: {fileID: 8203855874155169663}
+  - component: {fileID: 3869899656978419552}
+  m_Layer: 9
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7136272851189996815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106794236516757567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2976873092029390873}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8203855874155169663
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106794236516757567}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 11, y: 0.3, z: 25.5}
+  m_Center: {x: 0, y: 0.45, z: 7.5}
+--- !u!114 &3869899656978419552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106794236516757567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b565950ee6fc4f439f26833dfd960db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collapsableFogWalls:
+  - {fileID: 8686692391387509668}
+  enemyPrefabs:
+  - {fileID: 494629391383543628, guid: 879ebfc4f4d5db642adf7b8baea01adb, type: 3}
+  - {fileID: 7772086705221682577, guid: e438dbb9b8ab5e048b264e2f18b525d5, type: 3}
+  - {fileID: 4247019861129684067, guid: eccde4cdc0aa22b4d9d175ad127ddf0c, type: 3}
+  minEnemies: 3
+  maxEnemies: 8
 --- !u!1 &4356104590476421426
 GameObject:
   m_ObjectHideFlags: 0
@@ -5346,6 +5443,7 @@ GameObject:
   - component: {fileID: 6842706656262262182}
   - component: {fileID: 7124181961861426087}
   - component: {fileID: 7232415603236651904}
+  - component: {fileID: 8686692391387509668}
   m_Layer: 0
   m_Name: Particle System (3)
   m_TagString: Untagged
@@ -10187,8 +10285,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
+--- !u!114 &8686692391387509668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356104590476421426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac9ecda7fc39548af214a97d69d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkDistance: 0.1
 --- !u!1 &4736387003512867632
 GameObject:
   m_ObjectHideFlags: 0
@@ -10200,6 +10311,7 @@ GameObject:
   - component: {fileID: 3436876938095154825}
   - component: {fileID: 4535503614761034916}
   - component: {fileID: 6139097087480144119}
+  - component: {fileID: 7948715488359855380}
   m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
@@ -15022,6 +15134,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &7948715488359855380
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4736387003512867632}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &5275209320027007584
 GameObject:
   m_ObjectHideFlags: 0
@@ -15598,6 +15731,7 @@ GameObject:
   - component: {fileID: 7676851069030516449}
   - component: {fileID: 6182688160891529113}
   - component: {fileID: 2731164648961557204}
+  - component: {fileID: 8110903914016303129}
   m_Layer: 0
   m_Name: Particle System (2)
   m_TagString: Untagged
@@ -20420,6 +20554,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &8110903914016303129
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6945341976021526230}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &7146336904901359061
 GameObject:
   m_ObjectHideFlags: 0

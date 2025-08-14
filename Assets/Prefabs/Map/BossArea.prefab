@@ -2965,7 +2965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8683044837970655853
 Transform:
   m_ObjectHideFlags: 0
@@ -22864,6 +22864,7 @@ GameObject:
   - component: {fileID: 6138614669415009256}
   - component: {fileID: 6025900929465555440}
   - component: {fileID: 5832681475070524827}
+  - component: {fileID: 130462697747046571}
   m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
@@ -27686,6 +27687,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &130462697747046571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3390194005513287981}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &3392962936411156928
 GameObject:
   m_ObjectHideFlags: 0
@@ -34396,6 +34418,7 @@ GameObject:
   - component: {fileID: 6483067742012579914}
   - component: {fileID: 4877731622624551052}
   - component: {fileID: 6811040962600218689}
+  - component: {fileID: 4034697624619138544}
   m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
@@ -34434,7 +34457,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 1, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -39237,8 +39260,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
+--- !u!114 &4034697624619138544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4433282689215032330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac9ecda7fc39548af214a97d69d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkDistance: 0.1
 --- !u!1 &4437497095772520386
 GameObject:
   m_ObjectHideFlags: 0
@@ -41266,6 +41302,7 @@ GameObject:
   - component: {fileID: 8265333134640189401}
   - component: {fileID: 1264367830747721701}
   - component: {fileID: 695719986417891086}
+  - component: {fileID: 7893066303306627308}
   m_Layer: 0
   m_Name: Particle System (2)
   m_TagString: Untagged
@@ -46088,6 +46125,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &7893066303306627308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4612307095064975156}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 41, z: 15}
+  m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &4621115849536369772
 GameObject:
   m_ObjectHideFlags: 0
@@ -72215,7 +72273,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 15, z: 15}
+  m_Size: {x: 1, y: 41, z: 15}
   m_Center: {x: 0, y: 0, z: 7}
 --- !u!1 &8344199395206133409
 GameObject:
@@ -75361,10 +75419,124 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 0
-  <NorthRoadPrefabs>k__BackingField: []
-  <EastRoadPrefabs>k__BackingField: []
-  <SouthRoadPrefabs>k__BackingField: []
-  <WestRoadPrefabs>k__BackingField: []
+  <NorthRoadPrefabs>k__BackingField:
+  - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 5864913858812173581, guid: 09516d2f1db8eb6478d27373a380e3e9, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+    rotations: 5a000000000000000e010000
+    originalRotations: 
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: 5a000000000000000e010000
+    originalRotations: 
+  - prefab: {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
+    rotations: 000000005a000000
+    originalRotations: 
+  - prefab: {fileID: 132047304952049681, guid: 50b2dc15a4aed39469c8c041d09fa6c4, type: 3}
+    rotations: 000000005a000000
+    originalRotations: 
+  - prefab: {fileID: 8107975816218347592, guid: 49d087c985502cf40915c4bea52d8355, type: 3}
+    rotations: 00000000
+    originalRotations: 
+  - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
+    rotations: 00000000
+    originalRotations: 
+  - prefab: {fileID: 4154364170433779805, guid: f01b1b45c197c764db55200bb63b409f, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  <EastRoadPrefabs>k__BackingField:
+  - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
+    rotations: 00000000b4000000
+    originalRotations: 
+  - prefab: {fileID: 4154364170433779805, guid: f01b1b45c197c764db55200bb63b409f, type: 3}
+    rotations: 00000000b4000000
+    originalRotations: 
+  - prefab: {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
+    rotations: 5a000000b4000000
+    originalRotations: 
+  - prefab: {fileID: 132047304952049681, guid: 50b2dc15a4aed39469c8c041d09fa6c4, type: 3}
+    rotations: 5a000000b4000000
+    originalRotations: 
+  - prefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+    rotations: b4000000000000005a000000
+    originalRotations: 
+  - prefab: {fileID: 5864913858812173581, guid: 09516d2f1db8eb6478d27373a380e3e9, type: 3}
+    rotations: 00000000b4000000
+    originalRotations: 
+  - prefab: {fileID: 8107975816218347592, guid: 49d087c985502cf40915c4bea52d8355, type: 3}
+    rotations: 5a000000
+    originalRotations: 
+  - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
+    rotations: 5a000000
+    originalRotations: 
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: 00000000b40000005a000000
+    originalRotations: 
+  <SouthRoadPrefabs>k__BackingField:
+  - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 5864913858812173581, guid: 09516d2f1db8eb6478d27373a380e3e9, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+    rotations: 5a000000b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: 5a000000b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
+    rotations: b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 132047304952049681, guid: 50b2dc15a4aed39469c8c041d09fa6c4, type: 3}
+    rotations: b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 8107975816218347592, guid: 49d087c985502cf40915c4bea52d8355, type: 3}
+    rotations: b4000000
+    originalRotations: 
+  - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
+    rotations: b4000000
+    originalRotations: 
+  - prefab: {fileID: 4154364170433779805, guid: f01b1b45c197c764db55200bb63b409f, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  <WestRoadPrefabs>k__BackingField:
+  - prefab: {fileID: 3277798769697713622, guid: 0ccb5f699f9f3e54c90fda10cb32c6ef, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 4154364170433779805, guid: f01b1b45c197c764db55200bb63b409f, type: 3}
+    rotations: 0e010000
+    originalRotations: 
+  - prefab: {fileID: 1950466406017587356, guid: bdae10d6a5921dc468f68726ad189696, type: 3}
+    rotations: b40000005a000000
+    originalRotations: 
+  - prefab: {fileID: 132047304952049681, guid: 50b2dc15a4aed39469c8c041d09fa6c4, type: 3}
+    rotations: b40000005a000000
+    originalRotations: 
+  - prefab: {fileID: 2150948504129469493, guid: ff46302901d86db4e9c67476faebaf98, type: 3}
+    rotations: 5a000000
+    originalRotations: 
+  - prefab: {fileID: 3954036487325459535, guid: 41aea8ebe6bacaa4bb692bbd828627b7, type: 3}
+    rotations: 000000005a000000b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 7765347481899024103, guid: 5aecfe969abf6c14c9255215ad91b7a0, type: 3}
+    rotations: 000000005a000000b40000000e010000
+    originalRotations: 
+  - prefab: {fileID: 5864913858812173581, guid: 09516d2f1db8eb6478d27373a380e3e9, type: 3}
+    rotations: 5a0000000e010000
+    originalRotations: 
+  - prefab: {fileID: 8107975816218347592, guid: 49d087c985502cf40915c4bea52d8355, type: 3}
+    rotations: 5a000000b400000000000000
+    originalRotations: 
+  - prefab: {fileID: 6025884821150636306, guid: 50ee641141ae4794e99dbcc0ca648450, type: 3}
+    rotations: 5a000000b400000000000000
+    originalRotations: 
+  - prefab: {fileID: 9032024136860039564, guid: 72fb488a856afd64a9376676c5b0f333, type: 3}
+    rotations: 5a000000
+    originalRotations: 
   <RailLikelihood>k__BackingField: 0.35
 --- !u!1 &9156228527048068577
 GameObject:

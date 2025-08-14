@@ -24,7 +24,7 @@ public class RoadGenerator : MonoBehaviour
     private int allowedEnds;
     [SerializeField] private int totalAllowedComponents = 25;
 
-    [SerializeField] private List<GameObject> gridComponents;
+    public static List<GameObject> gridComponents;
     [SerializeField] private List<GameObject> groundComponents;
     private List<Cell> cellsToGenerate;
     private List<GameObject> cells;
@@ -111,30 +111,40 @@ public class RoadGenerator : MonoBehaviour
         else
         {
             GameObject bossGround = Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
+            RoadCulDeSac bossGroundScript = bossGround.GetComponent<RoadCulDeSac>();
+
             DestroyImmediate(cellsToGenerate[0]);
+            DestroyImmediate(cells[0]);
+            
 
-            foreach (Direction direction in groundScript.PlaceableDirections)                                 // Change the groundScript to derive from the attached ground based on the connected fog wall
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))                                 // Change the groundScript to derive from the attached ground based on the connected fog wall
             {
-                if (groundScript.GetNextPosition(direction) == bossGround.transform.position)
-                {
-                    Quaternion rot = Quaternion.identity;
-                    switch (direction)
-                    {
-                        case Direction.North:
-                            rot = Quaternion.Euler(0, 270f, 0);
-                            break;
-                        case Direction.East:
-                            rot = Quaternion.Euler(0, 180f, 0);
-                            break;
-                        case Direction.South:
-                            rot = Quaternion.Euler(0, 90f, 0);
-                            break;
-                        default:
-                            rot = Quaternion.Euler(0, 0, 0);
-                            break;
-                    }
+                Vector3 testDirection = bossGroundScript.GetNextPosition(direction);
 
-                    bossGround.transform.rotation = rot;
+                foreach (GameObject component in gridComponents)
+                {
+                    if (component.transform.position == testDirection)
+                    {
+                        Debug.Log("Are we working");
+                        Quaternion rot = Quaternion.identity;
+                        switch (direction)
+                        {
+                            case Direction.North:
+                                rot = Quaternion.Euler(0, 270f, 0);
+                                break;
+                            case Direction.East:
+                                rot = Quaternion.Euler(0, 180f, 0);
+                                break;
+                            case Direction.South:
+                                rot = Quaternion.Euler(0, 90f, 0);
+                                break;
+                            default:
+                                rot = Quaternion.Euler(0, 0, 0);
+                                break;
+                        }
+
+                        bossGround.transform.rotation = rot;
+                    }
                 }
             }
         }
@@ -190,7 +200,6 @@ public class RoadGenerator : MonoBehaviour
 
         for (int i = 0; i < cellsToGenerate.Count; i++)
         {
-            Debug.Log($"cellsToGenerate index: {i}");
             List<RoadTypeDirection> options = cellsToGenerate[i].tileOptions;
 
             int optionsNumOfUpdatedTimes = 0;
@@ -315,16 +324,11 @@ public class RoadGenerator : MonoBehaviour
         }
         else
         {
-            string q = $"Unfiltered option list for last {cellsToGenerate.Count} cells -- ";
-            foreach (RoadTypeDirection direction in optionList)
-                q += $"prefab: {direction.prefab.GetComponentAtIndex(1).ToString()} | ";
-            Debug.Log(q);
             List<Type> validOptionsPrefabsTypes = new List<Type>();
             foreach (RoadTypeDirection prefab in validOptions)
             {
                 validOptionsPrefabsTypes.Add(prefab.prefab.GetComponentAtIndex(1).GetType());
             }
-            Debug.Log($"GroundComponents: {groundComponents.Count} -- allowedEnds: {allowedEnds}");
             for (int x = optionList.Count - 1; x >= 0; x--)
             {
                 if (!validOptionsPrefabsTypes.Contains(optionList[x].prefab.GetComponentAtIndex(1).GetType()))
@@ -391,8 +395,6 @@ public class RoadGenerator : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
 
-        Debug.Log($"remaining cells: {cellsToGenerate.Count} -- grid components: {gridComponents.Count}");
-
         isReady = true;
     }
 
@@ -401,10 +403,6 @@ public class RoadGenerator : MonoBehaviour
         int randIndex = UnityEngine.Random.Range(0, tempGrid.Count);
         GameObject cell = tempGrid[randIndex];
         Cell cellToFill = (Cell)tempGrid[randIndex].GetComponentAtIndex(tempGrid[randIndex].GetComponentCount() - 1);
-        string s = "Cell Tile Options ";
-        foreach (RoadTypeDirection rtd in cellToFill.tileOptions)
-            s += $"-- Prefab: {rtd.prefab} ";
-        Debug.Log(s);
 
         int random = UnityEngine.Random.Range(0, cellToFill.tileOptions.Count);
         RoadTypeDirection selectedRoad = cellToFill.tileOptions[random];
@@ -421,10 +419,7 @@ public class RoadGenerator : MonoBehaviour
         obj.transform.rotation = Quaternion.Euler(0, y, 0);
         GroundBase.lastTransform = obj.transform;
 
-        Debug.Log($"Instantiated Obj: {obj.GetComponentAtIndex(1).GetType().ToString()}");
-
         allowedEnds += ((GroundBase)foundRoad.prefab.GetComponentAtIndex(1)).extraEnds;
-        Debug.Log($"allowedEnds after obj instantiation: {allowedEnds}");
         gridComponents.Remove(cell);
         GameObject cellActual = cells[Array.FindIndex(cells.ToArray(), go => go == cell)];
         cells.Remove(cellActual);

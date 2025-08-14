@@ -1,40 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 public class FogWall : MonoBehaviour
 {
-    public float checkDistance = 5f;      // how far to check for a road
-    public LayerMask roadLayer;           // set this to the layer your roads are on
+    public float checkDistance = 0.1f;      // how far to check for a road
 
     public void TryFall()
     {
-        RaycastHit hit;
-
-        // Cast a ray forward to see if there's a road behind this wall
-        if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, roadLayer))
+        Vector3 origin = this.transform.position;
+        GroundBase groundScript = (GroundBase)this.transform.parent.gameObject.GetComponentAtIndex(1);
+        
+        foreach (Direction direction in groundScript.PlaceableDirections)
         {
-            // Fall this wall
-            FallWall();
+            Vector3 neighborPos = origin + groundScript.GetNextPosition(direction);
 
-            // Try to find a matching wall on the neighbor
-            FogWall neighborWall = hit.collider.GetComponentInChildren<FogWall>();
-            if (neighborWall != null)
-                neighborWall.FallWall();
+            GameObject neighbor = RoadGenerator.gridComponents.FirstOrDefault(obj => Vector3.Distance(obj.transform.position, neighborPos) < checkDistance);
+            if (neighbor != null)
+            {
+                neighbor.transform.GetComponentInChildren<FogWall>().FallWall();
+                Transform child = neighbor.transform.Find("Fog");
+                List<FogWall> walls = new List<FogWall>();
+                if (child != null)
+                    child = child.Find("Collapsable");
+                    if (child.name != null)
+                        for (int i = 0; i < child.childCount; i++)
+                            walls.Add(child.GetChild(i).GetComponent<FogWall>());
+
+                float minDist = float.MaxValue;
+
+                foreach (FogWall wall in walls)
+                {
+                    float dist = Vector3.Distance(origin, wall.transform.position);
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        wall.FallWall();
+                    }
+                }
+            }
         }
     }
 
     public void FallWall()
     {
-        if (GetComponent<Rigidbody>() != null) return; // already fallen
+        if (gameObject.activeSelf == false)
+            return; // already fallen
 
-        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-        rb.mass = 1f;
-        rb.linearDamping = 1f; // optional: slows down fall
-        rb.angularDamping = 0.5f;
+        bool thing = GetComponent<ParticleSystem>().main.loop;
+        thing = false;
 
         // optional: remove collider so it doesn't block player
-        Collider col = GetComponent<Collider>();
-        if (col != null)
-            col.isTrigger = false;
+        BoxCollider col = GetComponent<BoxCollider>();
+        col.enabled = false;
 
         Destroy(this); // prevent re-triggering
     }

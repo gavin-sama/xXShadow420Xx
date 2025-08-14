@@ -10,7 +10,7 @@ public class RoadThreeWayRail : GroundBase
 
     public override Direction[] PlaceableDirections { get { return new Direction[] { Direction.North, Direction.East, Direction.West }; } }
 
-    public override int extraEnds { get { return 1; } }
+    public override int extraEnds { get { return 2; } }
 
     [field: SerializeField] public override float RailLikelihood { get; set; } = 0.5f;
 }

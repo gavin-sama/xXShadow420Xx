@@ -63,7 +63,7 @@ public class RoadGenerator : MonoBehaviour
 
     void InitializeNextGrid(GameObject groundToGenerateAround)
     {
-        if (!isComplete)
+        if (!isComplete || cellsToGenerate.Count > 1)
         {
             GroundBase groundScript = (GroundBase)groundToGenerateAround.GetComponentAtIndex(1);
             foreach (Direction direction in groundScript.PlaceableDirections)
@@ -90,7 +90,7 @@ public class RoadGenerator : MonoBehaviour
 
                 Cell cellScript = newCell.GetComponentAtIndex(newCell.GetComponentCount() - 1) as Cell;
                 cellScript.CreateCell(false, roadPrefabs);
-                ValidateCellPosition(ref newCell);
+                ValidateCellPosition(ref newCell, groundToGenerateAround);
 
                 if (newCell)
                 {
@@ -102,10 +102,10 @@ public class RoadGenerator : MonoBehaviour
 
             UpdateGeneration();
         }
-        else if (cellsToGenerate.Count > 1)
-        {
-            UpdateGeneration();
-        }
+        //else if (cellsToGenerate.Count > 1)
+        //{
+        //    UpdateGeneration();
+        //}
         else
         {
             Instantiate(bossAreaPrefab, cellsToGenerate[0].gameObject.transform.position, new Quaternion(0, 0, 0, 0));
@@ -113,8 +113,9 @@ public class RoadGenerator : MonoBehaviour
         }
     }
 
-    void ValidateCellPosition(ref GameObject cell)
+    void ValidateCellPosition(ref GameObject cell, GameObject objectGeneratedAround)
     {
+        int invalidCells = 0;
         for (int i = 0; i < gridComponents.Count; i++)
         {
             if (cell.transform.position.x == gridComponents[i].transform.position.x &&
@@ -122,6 +123,21 @@ public class RoadGenerator : MonoBehaviour
                 cell.transform.position.y > gridComponents[i].transform.position.y - GroundBase.heightAdjustment * 4 &&
                 cell.transform.position.y < gridComponents[i].transform.position.y + GroundBase.heightAdjustment * 4)
             {
+                foreach (GameObject component in gridComponents)
+                {
+                    if (cell.transform.position.x == component.transform.position.x &&
+                    cell.transform.position.z == component.transform.position.z &&
+                    cell.transform.position.y > component.transform.position.y - GroundBase.heightAdjustment * 4 &&
+                    cell.transform.position.y < component.transform.position.y + GroundBase.heightAdjustment * 4)
+                    {
+                        allowedEnds--;
+                        if (component.GetComponent<Cell>() != null)
+                            component.GetComponent<Cell>().connections++;
+                    }
+                }
+
+                invalidCells++;
+
                 gridComponents.Remove(cell);
                 cells.Remove(cell);
                 cellsToGenerate.Remove((Cell)cell.GetComponentAtIndex(cell.GetComponentCount() - 1));
@@ -129,12 +145,15 @@ public class RoadGenerator : MonoBehaviour
                 break;
             }
         }
+
+        //if (invalidCells == ((GroundBase)objectGeneratedAround.GetComponentAtIndex(1)).extraEnds + 2)
+        //    allowedEnds--;
     }
 
     void UpdateGeneration()
     {
-        if (allowedEnds < cellsToGenerate.Count)
-            allowedEnds--;
+        //if (allowedEnds < cellsToGenerate.Count)
+        //    allowedEnds--;
 
 
         List<RoadTypeDirection> validOptions;
@@ -157,44 +176,36 @@ public class RoadGenerator : MonoBehaviour
                     Vector3 position = groundScript.GetNextPosition(direction);
                     componentAvailablePositions.Add((position.x, position.z));
                 }
-                int n = 0;
-                foreach ((float x, float z) transform in componentAvailablePositions)
-                    if (groundTransforms.Contains(transform))
-                        n++;
-                if (n == 4)
-                    groundComponents.Remove(groundComponents[x]);
-                else
+
+                (float x, float z) cellPosition = (cellsToGenerate[i].transform.position.x, cellsToGenerate[i].transform.position.z);
+                if (componentAvailablePositions.Contains(cellPosition))
                 {
-                    (float x, float z) cellPosition = (cellsToGenerate[i].transform.position.x, cellsToGenerate[i].transform.position.z);
-                    if (componentAvailablePositions.Contains(cellPosition))
+                    // Is current cell North of groundComponent
+                    if (componentAvailablePositions[0] == cellPosition)
                     {
-                        // Is current cell North of groundComponent
-                        if (componentAvailablePositions[0] == cellPosition)
-                        {
-                            validOptions = groundScript.NorthRoadPrefabs.Select(original => original.Clone()).ToList();
-                            UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x);
-                        }
-                        
-                        // Is current cell East of groundComponent
-                        else if (componentAvailablePositions[1] == cellPosition)
-                        {
-                            validOptions = groundScript.EastRoadPrefabs.Select(original => original.Clone()).ToList();
-                            UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x);
-                        }
+                        validOptions = groundScript.NorthRoadPrefabs.Select(original => original.Clone()).ToList();
+                        UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x, i);
+                    }
+                    
+                    // Is current cell East of groundComponent
+                    else if (componentAvailablePositions[1] == cellPosition)
+                    {
+                        validOptions = groundScript.EastRoadPrefabs.Select(original => original.Clone()).ToList();
+                        UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x, i);
+                    }
 
-                        // Is current cell South of groundComponent
-                        else if (componentAvailablePositions[2] == cellPosition)
-                        {
-                            validOptions = groundScript.SouthRoadPrefabs.Select(original => original.Clone()).ToList();
-                            UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x);
-                        }
+                    // Is current cell South of groundComponent
+                    else if (componentAvailablePositions[2] == cellPosition)
+                    {
+                        validOptions = groundScript.SouthRoadPrefabs.Select(original => original.Clone()).ToList();
+                        UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x, i);
+                    }
 
-                        //Current cell is West of groundComponent
-                        else
-                        {
-                            validOptions = groundScript.WestRoadPrefabs.Select(original => original.Clone()).ToList();
-                            UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x);
-                        }
+                    //Current cell is West of groundComponent
+                    else
+                    {
+                        validOptions = groundScript.WestRoadPrefabs.Select(original => original.Clone()).ToList();
+                        UpdateRules(ref optionsNumOfUpdatedTimes, options, ref validOptions, x, i);
                     }
                 }
             }
@@ -206,7 +217,7 @@ public class RoadGenerator : MonoBehaviour
         StartCoroutine(CheckEntropy());
     }
 
-    void UpdateRules(ref int optionsNumOfUpdatedTimes, List<RoadTypeDirection> options, ref List<RoadTypeDirection> validOptions, int x)
+    void UpdateRules(ref int optionsNumOfUpdatedTimes, List<RoadTypeDirection> options, ref List<RoadTypeDirection> validOptions, int x, int i)
     {
         for (int p = validOptions.Count - 1; p >= 0; p--)
         {
@@ -255,10 +266,10 @@ public class RoadGenerator : MonoBehaviour
             }
         }
         optionsNumOfUpdatedTimes++;
-        CheckValidity(ref options, validOptions);
+        CheckValidity(ref options, validOptions, i);
     }
 
-    void CheckValidity(ref List<RoadTypeDirection> optionList, List<RoadTypeDirection> validOptions)
+    void CheckValidity(ref List<RoadTypeDirection> optionList, List<RoadTypeDirection> validOptions, int i)
     {
         if (optionList.Count == 0)
         {
@@ -286,7 +297,7 @@ public class RoadGenerator : MonoBehaviour
             {
                 validOptionsPrefabsTypes.Add(prefab.prefab.GetComponentAtIndex(1).GetType());
             }
-
+            Debug.Log($"GroundComponents: {groundComponents.Count} -- allowedEnds: {allowedEnds}");
             for (int x = optionList.Count - 1; x >= 0; x--)
             {
                 if (!validOptionsPrefabsTypes.Contains(optionList[x].prefab.GetComponentAtIndex(1).GetType()))
@@ -303,8 +314,25 @@ public class RoadGenerator : MonoBehaviour
                                 optionList.RemoveAt(x);
                                 break;
                             }
+                            else if (groundComponents.Count >= (totalAllowedComponents - allowedEnds)
+                                && cellsToGenerate[i].connections > 0)
+                            {
+                                if (cellsToGenerate[i].connections == 1
+                                    && prefab.prefab.GetComponent<RoadCorner>() == null
+                                    && prefab.prefab.GetComponent<RoadCornerRail>() == null)
+                                    optionList.RemoveAt(x);
+                                else if (cellsToGenerate[i].connections == 2
+                                    && prefab.prefab.GetComponent<RoadThreeWay>() == null
+                                    && prefab.prefab.GetComponent<RoadThreeWayRail>() == null)
+                                    optionList.RemoveAt(x);
+                                else if (cellsToGenerate[i].connections == 3
+                                    && prefab.prefab.GetComponent<RoadIntersection>() == null
+                                    && prefab.prefab.GetComponent<RoadIntersectionRail>() == null)
+                                    optionList.RemoveAt(x);
+                                break;
+                            }
                             // If remaining cells up to total allowed == allowed ends, must be culdesac
-                            else if (groundComponents.Count > (totalAllowedComponents - allowedEnds) && prefab.prefab.GetComponent<RoadCulDeSac>() == null && prefab.prefab.GetComponent<RoadCulDeSacRail>() == null)
+                            else if (groundComponents.Count >= (totalAllowedComponents - allowedEnds) && prefab.prefab.GetComponent<RoadCulDeSac>() == null && prefab.prefab.GetComponent<RoadCulDeSacRail>() == null)
                             {
                                 optionList.RemoveAt(x);
                                 break;
@@ -367,9 +395,9 @@ public class RoadGenerator : MonoBehaviour
         GroundBase.lastTransform = obj.transform;
 
         Debug.Log($"Instantiated Obj: {obj.GetComponentAtIndex(1).GetType().ToString()}");
-        if (obj.GetComponent<RoadCulDeSac>() != null || obj.GetComponent<RoadCulDeSacRail>() != null)
-            allowedEnds--;
+
         allowedEnds += ((GroundBase)foundRoad.prefab.GetComponentAtIndex(1)).extraEnds;
+        Debug.Log($"allowedEnds after obj instantiation: {allowedEnds}");
         gridComponents.Remove(cell);
         GameObject cellActual = cells[Array.FindIndex(cells.ToArray(), go => go == cell)];
         cells.Remove(cellActual);

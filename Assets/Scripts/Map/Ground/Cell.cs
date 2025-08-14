@@ -5,6 +5,7 @@ public class Cell : MonoBehaviour
 {
     public bool filled;
     public List<RoadTypeDirection> tileOptions;
+    public int connections = 0;
 
     public void CreateCell(bool filledState, List<GameObject> roads)
     {

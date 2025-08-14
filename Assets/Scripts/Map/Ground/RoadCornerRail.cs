@@ -10,7 +10,7 @@ public class RoadCornerRail : GroundBase
 
     public override Direction[] PlaceableDirections { get { return new Direction[] { Direction.North, Direction.West }; } }
 
-    public override int extraEnds { get { return 0; } }
+    public override int extraEnds { get { return 1; } }
 
     [field: SerializeField] public override float RailLikelihood { get; set; } = 0.5f;
 }

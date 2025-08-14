@@ -55,11 +55,11 @@ public class MainMenu : MonoBehaviour
         while (timer < musicFadeInDuration)
         {
             timer += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0f, 0.4f, timer / musicFadeInDuration);
+            musicSource.volume = Mathf.Lerp(0f, 0.1f, timer / musicFadeInDuration);
             yield return null;
         }
 
-        musicSource.volume = 0.4f;
+        musicSource.volume = 0.1f;
     }
 
     public void NewGame()

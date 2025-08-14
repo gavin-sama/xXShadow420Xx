@@ -1,0 +1,19 @@
+name: Unity EditMode Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Unity EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        with:
+          testMode: EditMode
+          unityVersion: 6000.0.40f1 # <-- change to your Unity version
+          githubToken: ${{ secrets.GITHUB_TOKEN }}

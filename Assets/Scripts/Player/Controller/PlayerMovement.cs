@@ -283,6 +283,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Debug method to visualize current movement direction
+    /*
     void OnGUI()
     {
         if (Application.isPlaying)
@@ -294,5 +295,6 @@ public class PlayerMovement : MonoBehaviour
             GUI.Label(new Rect(10, 90, 200, 20), $"Cooldown Left: {Mathf.Max(0, (lastDodgeTime + dodgeCooldown - Time.time)).ToString("F1")}s");
         }
     }
+    */
 
 }

@@ -35,13 +35,13 @@ public class PlayerStats : MonoBehaviour
     public static int healthUpgrades = 0;
     public static int speedUpgrades = 0;
 
-    public static int permAttackUpgrades = 0;
-    public static int permHealthUpgrades = 0;
-    public static int permSpeedUpgrades = 0;
+    public int permAttackUpgrades = 0;
+    public int permHealthUpgrades = 0;
+    public int permSpeedUpgrades = 0;
 
-    public static bool hasResurrection = false;
-    public static bool extraCoins = false;
-    public static bool lowHealthStealth = false;
+    public bool hasResurrection = false;
+    public bool extraCoins = false;
+    public bool lowHealthStealth = false;
 
     private bool isStealthed = false;
     private float stealthDuration = 10f;
@@ -243,6 +243,14 @@ public class PlayerStats : MonoBehaviour
             newStats.currentXp = this.currentXp;
             PlayerStats.maxHealth = PlayerStats.maxHealth;
             newStats.currentHealth = this.currentHealth;
+
+            newStats.permAttackUpgrades = this.permAttackUpgrades;
+            newStats.permHealthUpgrades = this.permHealthUpgrades;
+            newStats.permSpeedUpgrades = this.permSpeedUpgrades;
+
+            newStats.hasResurrection = this.hasResurrection;
+            newStats.extraCoins = this.extraCoins;
+            newStats.lowHealthStealth = this.lowHealthStealth;
         }
         
                 
@@ -368,14 +376,16 @@ public class PlayerStats : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         // Reset player stats
-        PlayerStats.attackUpgrades = 0;
-        PlayerStats.healthUpgrades = 0;
-        PlayerStats.speedUpgrades = 0;
+        attackUpgrades = 0;
+        healthUpgrades = 0;
+        speedUpgrades = 0;
 
-        PlayerAttack.attackDamage = 20;
-        playerClassData.walkSpeed = 6f;
-        playerClassData.runSpeed = 12f;
-        maxHealth = 100;
+        PlayerAttack.attackDamage = 20 + permAttackUpgrades * 5;
+        playerClassData.walkSpeed = 6f + permSpeedUpgrades * 0.5f;
+        playerClassData.runSpeed = 12f + permSpeedUpgrades * 0.5f;
+        maxHealth = 100 + permHealthUpgrades * 10;
+
+        currentHealth = maxHealth;
 
         xpCap = baseXpCap;
         currentXp = 0;

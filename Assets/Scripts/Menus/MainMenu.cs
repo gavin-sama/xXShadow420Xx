@@ -9,7 +9,6 @@ public class MainMenu : MonoBehaviour
     public GameObject savesCanvas;
     public Button newButton;
     public Button loadButton;
-    public GameObject pauseMenuPanel; // Assign your pause/options panel in Inspector
 
     public AudioSource musicSource;
     public float musicFadeInDuration = 2f;
@@ -85,16 +84,6 @@ public class MainMenu : MonoBehaviour
                 return true;
         }
         return false;
-    }
-
-    
-
-    public void OpenOptions()
-    {
-        if (pauseMenuPanel != null)
-        {
-            pauseMenuPanel.SetActive(true);
-        }
     }
 
     private int CountSaves()

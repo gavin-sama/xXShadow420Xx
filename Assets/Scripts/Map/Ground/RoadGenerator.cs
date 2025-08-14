@@ -19,6 +19,7 @@ public class RoadGenerator : MonoBehaviour
     public GameObject MenuManagerPrefab;
     public GameObject CameraManagerPrefab;
     public GameObject EventManagerPrefab;
+    public GameObject Camera;
 
     [SerializeField] private List<GameObject> roadPrefabs;
     [SerializeField] private GameObject bossAreaPrefab;
@@ -176,6 +177,7 @@ public class RoadGenerator : MonoBehaviour
         Instantiate(GameManagerPrefab);
         Instantiate(EventManagerPrefab);
         Instantiate(CameraManagerPrefab);
+        DestroyImmediate(Camera);
         Instantiate(MenuManagerPrefab);
 
         this.gameObject.SetActive(false);

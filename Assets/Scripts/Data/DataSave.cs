@@ -10,6 +10,24 @@ public static class DataSave
     {
         switch (runningLoad)
         {
+            case 0:
+                gameData.load0 = new PlayerData()
+                {
+                    healthPoints = PlayerStats.maxHealth,
+                    attackDamage = PlayerAttack.attackDamage,
+                    attackRange = PlayerAttack.attackRange,
+                    attackSpeed = PlayerAttack.attackSpeed,
+                    teeth = PlayerStats.teethCurrency,
+                    killsLastRun = PlayerDataManager.killsLastRun,
+                    totalKills = PlayerDataManager.totalKills,
+                    hasResurrection = PlayerStats.hasResurrection,
+                    extraCoins = PlayerStats.extraCoins,
+                    lowHealthStealth = PlayerStats.lowHealthStealth,
+                    permHealthUpgrades = PlayerStats.permHealthUpgrades,
+                    permAttackUpgrades = PlayerStats.permAttackUpgrades,
+                    permSpeedUpgrades = PlayerStats.permSpeedUpgrades
+                };
+                break;
             case 1:
                 gameData.load1 = new PlayerData()
                 {
@@ -100,6 +118,7 @@ public static class DataSave
             DataLoads data = new DataLoads()
             {
                 saves = gameData.saves,
+                load0 = (gameData.load0 ??= null), 
                 load1 = (gameData.load1 ??= null),
                 load2 = (gameData.load2 ??= null),
                 load3 = (gameData.load3 ??= null),
@@ -107,8 +126,9 @@ public static class DataSave
             };
 
             string json = JsonUtility.ToJson(data);
-            string path = Application.persistentDataPath + "/playerData.json";
+            string path = Application.persistentDataPath + "/playerData" + runningLoad + ".json";
             System.IO.File.WriteAllText(path, json);
+            Debug.Log("Saved player data to: " + path);
         }
     }
 
@@ -116,6 +136,22 @@ public static class DataSave
     {
         switch (runningLoad)
         {
+            case 0:
+                if (gameData.load0 == null) 
+                    goto default;
+                PlayerStats.maxHealth = gameData.load0.healthPoints;
+                PlayerAttack.attackDamage = gameData.load0.attackDamage;
+                PlayerAttack.attackSpeed = gameData.load0.attackSpeed;
+                PlayerStats.teethCurrency = gameData.load0.teeth;
+                PlayerDataManager.killsLastRun = gameData.load0.killsLastRun;
+                PlayerDataManager.totalKills = gameData.load0.totalKills;
+                PlayerStats.hasResurrection = gameData.load0.hasResurrection;
+                PlayerStats.extraCoins = gameData.load0.extraCoins;
+                PlayerStats.lowHealthStealth = gameData.load0.lowHealthStealth;
+                PlayerStats.permHealthUpgrades = gameData.load0.permHealthUpgrades;
+                PlayerStats.permAttackUpgrades = gameData.load0.permAttackUpgrades;
+                PlayerStats.permSpeedUpgrades = gameData.load0.permSpeedUpgrades;
+                break;
             case 1:
                 if (gameData.load1 == null)
                 {
@@ -204,7 +240,7 @@ public static class DataSave
 
     public static void LoadPlayerData()
     {
-        string path = Application.persistentDataPath + "/playerData.json";
+        string path = Application.persistentDataPath + "/playerData" + runningLoad + ".json"; // use runningLoad
         if (File.Exists(path))
         {
             Debug.Log(path);
@@ -214,6 +250,7 @@ public static class DataSave
             gameData = new DataLoads()
             {
                 saves = loadedData.saves,
+                load0 = (loadedData.load0 ??= null),
                 load1 = (loadedData.load1 ??= null),
                 load2 = (loadedData.load2 ??= null),
                 load3 = (loadedData.load3 ??= null),

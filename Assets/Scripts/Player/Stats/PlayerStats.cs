@@ -338,6 +338,23 @@ public class PlayerStats : MonoBehaviour
 
         Debug.Log("You died!");
 
+        // Ensure runningLoad is correct before saving
+        if (DataSave.runningLoad <= 0)
+        {
+            if (PlayerPrefs.HasKey("runningLoad"))
+            {
+                DataSave.runningLoad = PlayerPrefs.GetInt("runningLoad");
+                Debug.Log("Recovered runningLoad from PlayerPrefs: " + DataSave.runningLoad);
+            }
+            else
+            {
+                Debug.LogWarning("No runningLoad found — defaulting to slot 1");
+                DataSave.runningLoad = 1;
+            }
+        }
+
+        Debug.Log("RunningLoad at death: " + DataSave.runningLoad);
+
         DataSave.SaveInstancePlayerData();
         DataSave.SavePlayerData();
 
@@ -350,9 +367,8 @@ public class PlayerStats : MonoBehaviour
         StartCoroutine(FadeScreen());
 
         GetComponent<PlayerMovement>().enabled = false;
-        GetComponent<CharacterController>().enabled = false; // if used
+        GetComponent<CharacterController>().enabled = false;
         GetComponent<CinemachineCamera>().enabled = false;
-
     }
 
     public void OnDeathAnimationFinished()

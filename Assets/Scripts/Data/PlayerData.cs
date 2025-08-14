@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerData
 {
     
+    public int selectedOutfitIndex;
     public static int SelectedOutfitIndex;
 
     public float healthPoints = 100;

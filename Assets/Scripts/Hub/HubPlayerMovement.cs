@@ -234,6 +234,7 @@ public class HubPlayerMovement : MonoBehaviour
     }
 
     // Debug method to visualize current movement direction
+    /*
     void OnGUI()
     {
         if (Application.isPlaying)
@@ -243,6 +244,7 @@ public class HubPlayerMovement : MonoBehaviour
             GUI.Label(new Rect(10, 50, 200, 20), $"Running: {isRunning}");
         }
     }
+    */
     
     //Ian added this to stop Hub Character from moving in the menus
     public void SetMovementEnabled(bool enabled)

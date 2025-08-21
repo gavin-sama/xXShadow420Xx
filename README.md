@@ -1,76 +1,40 @@
-# <code style="color : blue">xXShadow420Xx</code>
-### CSCI4250 Software Engineering I & II ETSU
-#### RPG Game
+# Project Sleep by the xXShadow420Xx group. 
+----
+#### UNRELEASED ❌
+#### Our game is a Rogue-Like, Horror, and Fantasy all in one. 
+* Basic enemy AI pathfinding
+* Integrated combat animations
+* Tile-Based Procedural generation for levels
+* Upgrades and class evolutions
+* Enemy wave spawn
+* Original Player & Enemy Models
+* ETC.
+--- 
+
+![Main Menu](https://github.com/gavin-sama/xXShadow420Xx/blob/main/Assets/2D%20Sprites/MainMenu.png?raw=true)
 
 
-# Core Requirements
 
-## Game Mechanics
-The game must implement:
-- A character system with at least 3 distinct character classes or roles
-- A progression system (experience points, levels, or equivalent)
-- An inventory system for managing items and equipment
-- A combat or challenge resolution system
 
-## Technical Requirements
-The application must:
-- Run on desktop platforms (Windows, MacOS, Linux)
-- Maintain a stable 30 FPS minimum on medium-range hardware
-- Support saving and loading game state
-- Implement proper error handling and graceful failure recovery
-- Include appropriate logging for debugging and monitoring
-- Follow object-oriented design principles
 
-## User Interface
-The game must provide:
-- A main menu with options for New Game, Load Game, and Settings
-- An in-game menu system for character/inventory management
-- Clear visual feedback for player actions and game events
-- Tooltips or help system for game mechanics
-- Configuration options for basic settings (sound, display)
 
 ---
-
-# Development Requirements
-
-## Research & Planning
-Teams must:
-- Conduct and document market research of similar games
-- Create and maintain a product backlog using Agile methodologies
-- Develop a detailed game design document
-- Research and document technical feasibility of proposed features
-
-## Implementation
-Teams must:
-- Use version control (Git) with proper branching strategy
-- Follow consistent coding standards (to be documented)
-- Create modular, maintainable code with proper documentation
-- Use design patterns appropriate for game development
-
-## Quality Assurance
-Teams must:
-- Develop and maintain a formal testing strategy
-- Implement unit tests with minimum 70% code coverage
-- Perform regular integration testing
-- Conduct user acceptance testing with documented feedback
-- Track and manage bugs using issue tracking system
-
-## Documentation
-Archive the following:
-- Technical documentation including architecture design
-- API documentation for major systems
-- User manual/gameplay guide
-- Installation and deployment guides
-- Regular progress reports and sprint retrospectives
-
+#### For more information regarding the game... Compose an email at jaspakilla@gmail.com 
 ---
+#### As the game is currently a WIP, it has not been released to the public. The future of this game is undecided, but with the help of developers that see this. Maybe one day, this game can be released to Steam. 
 
-# Evaluation Criteria
-The project's success will be determined by the following criteria:
-- Technical implementation quality
-- Code organization and maintainability
-- Documentation completeness
-- Testing coverage and quality
-- Project management effectiveness
-- Gameplay experience
-- Innovation and creativity within requirements
+Getting Started
+
+To get started with this game, follow these steps:
+
+    Clone the repository from https://github.com/gavin-sama/xXShadow420Xx.
+    Open the project in Unity.
+    Customize game settings and assets to suit your preferences.
+
+Contributing
+Contributions are welcome! If you have suggestions, bug reports, or would like to contribute code, please follow these guidelines:
+
+    Fork the repository.
+    Create a new branch for your feature or bug fix.
+    Make your changes and test thoroughly.
+    Submit a pull request with a clear description of your changes.
